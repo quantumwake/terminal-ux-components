@@ -28,19 +28,9 @@ Provided by the host app (not bundled):
 - `react`, `react-dom` (>=17)
 - `lucide-react` (optional) — icons used by Checkbox/TagField/InfoButton
 - `@headlessui/react`, `@heroicons/react` (optional) — used by `TerminalDropdown`
-- `@quantumwake/kgraph` (optional) — required only for the `studio` exports
 
-## Studio (read-only kgraph graph)
-
-Shared light-theme, read-only graph renderers (used by `alethic-ism-publish-ui`
-and available to the enterprise studio for previews):
-
-- `StudioGraph` — a read-only `KGraphCanvas` (white bg, fit-to-view, no
-  drag/connect) that renders every node as `StudioNode` and every edge as
-  `CleanEdge`. Pass pre-mapped `nodes`/`edges`; put `{kind, typeLabel, title,
-  subtitle}` (`StudioNodeData`) on each `node.data`.
-- `StudioNode`, `CleanEdge`, `NODE_WIDTH`/`NODE_HEIGHT`, and helpers
-  `kindForNodeType(nodeType)` / `displayType(nodeType)`.
+> The read-only kgraph studio renderers (StudioGraph/StudioNode/CleanEdge) live
+> in **`@quantumwake/kgraph/ism`**, not here — this package is graph-free.
 
 ## Components
 
@@ -55,7 +45,7 @@ Current export set (`useTheme()`-based, fully typed):
 
 Incremental extraction (dogfooded by enterprise consuming each release):
 
-- **0.1.0 (current)** — theme plumbing + the 10 leaf primitives above.
+- **0.2.0 (current)** — theme plumbing + the 10 leaf primitives above.
 - **next** — composites (`TerminalDialog`, `TerminalContextMenu`,
   `TerminalHoverMenu`, `TerminalTabView`, …), then the stateful
   `TerminalDataTable`. `canvas/` and the `ism|ismql|statefs` domain components
