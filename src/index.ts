@@ -2,11 +2,6 @@
 export { ThemeProvider, useTheme } from './theme';
 export type { Theme, ThemeProviderProps } from './theme';
 
-// Studio (read-only kgraph node/edge renderers + canvas wrapper).
-// Requires the @quantumwake/kgraph peer dependency.
-export { StudioGraph, StudioNode, CleanEdge, NODE_WIDTH, NODE_HEIGHT, kindForNodeType, displayType } from './studio';
-export type { StudioGraphProps, StudioNodeKind, StudioNodeData } from './studio';
-
 // Leaf primitives
 export { TerminalButton } from './components/TerminalButton';
 export type { TerminalButtonProps } from './components/TerminalButton';
