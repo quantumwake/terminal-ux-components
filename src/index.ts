@@ -32,3 +32,50 @@ export type { TerminalInfoButtonProps } from './components/TerminalInfoButton';
 
 export { TerminalDropdown } from './components/TerminalDropdown';
 export type { TerminalDropdownProps, DropdownValue } from './components/TerminalDropdown';
+
+// Ported leaf components
+export { TerminalCursor } from './components/TerminalCursor';
+export type { TerminalCursorProps } from './components/TerminalCursor';
+
+export { TerminalHeader } from './components/TerminalHeader';
+export type { TerminalHeaderProps } from './components/TerminalHeader';
+
+export { TerminalFooter } from './components/TerminalFooter';
+export type { TerminalFooterProps } from './components/TerminalFooter';
+
+export { TerminalFileInput } from './components/TerminalFileInput';
+export type { TerminalFileInputProps } from './components/TerminalFileInput';
+
+export { TerminalSidebar } from './components/TerminalSidebar';
+export type { TerminalSidebarProps } from './components/TerminalSidebar';
+
+export { TerminalTabButton } from './components/TerminalTabButton';
+export type { TerminalTabButtonProps } from './components/TerminalTabButton';
+
+export { TerminalTabViewSection } from './components/TerminalTabViewSection';
+export type { TerminalTabViewSectionProps, TerminalTabViewSectionItem } from './components/TerminalTabViewSection';
+
+export { TerminalFileUpload } from './components/TerminalFileUpload';
+export type { TerminalFileUploadProps } from './components/TerminalFileUpload';
+
+export { TerminalAutocomplete } from './components/TerminalAutocomplete';
+export type { TerminalAutocompleteProps } from './components/TerminalAutocomplete';
+
+export { TerminalContextMenu } from './components/TerminalContextMenu';
+export type { TerminalContextMenuProps, TerminalContextMenuItem, TerminalContextMenuPosition } from './components/TerminalContextMenu';
+
+export { TerminalHoverMenu } from './components/TerminalHoverMenu';
+export type { TerminalHoverMenuProps, TerminalHoverMenuActionButton } from './components/TerminalHoverMenu';
+
+// Ported composite components
+export { TerminalDialog } from './components/TerminalDialog';
+export type { TerminalDialogProps } from './components/TerminalDialog';
+
+export { TerminalTabBar } from './components/TerminalTabBar';
+export type { TerminalTabBarProps, TerminalTabBarTab } from './components/TerminalTabBar';
+
+export { TerminalDialogConfirmation } from './components/TerminalDialogConfirmation';
+export type { TerminalDialogConfirmationProps } from './components/TerminalDialogConfirmation';
+
+export { TerminalDataTable2 } from './components/TerminalDataTable2';
+export type { TerminalDataTable2Props } from './components/TerminalDataTable2';
