@@ -6,7 +6,7 @@
   "author": "QuantumWake",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/quantumwake/terminal-ux-component.git"
+    "url": "git+https://github.com/quantumwake/terminal-ux-components.git"
   },
   "keywords": [
     "react",
