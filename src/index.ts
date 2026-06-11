@@ -1,5 +1,5 @@
 // Theme plumbing
-export { ThemeProvider, useTheme } from './theme';
+export { ThemeProvider, useTheme, defaultTheme } from './theme';
 export type { Theme, ThemeProviderProps } from './theme';
 
 // Leaf primitives
@@ -79,3 +79,9 @@ export type { TerminalDialogConfirmationProps } from './components/TerminalDialo
 
 export { TerminalDataTable2 } from './components/TerminalDataTable2';
 export type { TerminalDataTable2Props } from './components/TerminalDataTable2';
+
+export { TerminalSlider } from './components/TerminalSlider';
+export type { TerminalSliderProps } from './components/TerminalSlider';
+
+export { TerminalSelect } from './components/TerminalSelect';
+export type { TerminalSelectProps, TerminalSelectOption } from './components/TerminalSelect';
