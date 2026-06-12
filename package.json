@@ -1,6 +1,6 @@
 {
   "name": "@quantumwake/terminal-ux-components",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Terminal-style React UX components for the Alethic ISM apps.",
   "license": "MIT",
   "author": "QuantumWake",
