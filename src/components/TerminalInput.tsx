@@ -63,7 +63,7 @@ export const TerminalInput: React.FC<TerminalInputProps> = ({
     const sizeStyle = sizes[size];
 
     return (
-        <div className="relative flex items-center">
+        <div className="relative flex items-center w-full">
             {icon && (
                 <span className="absolute left-3 text-midnight-text-muted">
                     {icon}
