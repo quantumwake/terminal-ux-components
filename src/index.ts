@@ -88,3 +88,5 @@ export type { TerminalSliderProps } from './components/TerminalSlider';
 
 export { TerminalSelect } from './components/TerminalSelect';
 export type { TerminalSelectProps, TerminalSelectOption } from './components/TerminalSelect';
+export { TerminalSecretReveal } from './components/TerminalSecretReveal';
+export type { TerminalSecretRevealProps } from './components/TerminalSecretReveal';
