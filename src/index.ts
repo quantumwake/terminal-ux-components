@@ -90,3 +90,5 @@ export { TerminalSelect } from './components/TerminalSelect';
 export type { TerminalSelectProps, TerminalSelectOption } from './components/TerminalSelect';
 export { TerminalSecretReveal } from './components/TerminalSecretReveal';
 export type { TerminalSecretRevealProps } from './components/TerminalSecretReveal';
+export { TerminalTabView } from './components/TerminalTabView';
+export type { TerminalTabViewProps, TerminalTabViewTab } from './components/TerminalTabView';
