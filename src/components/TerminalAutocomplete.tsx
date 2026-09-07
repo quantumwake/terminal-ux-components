@@ -13,6 +13,17 @@ export interface TerminalAutocompleteProps {
     disabled?: boolean;
     formatDisplay?: (item: any) => string;
     filterFn?: (items: any[], term: string) => any[];
+    /**
+     * Server-driven search: called with the typed term; the host refreshes
+     * `items` and passes `filterFn={(items) => items}` so nothing is
+     * filtered twice. `loading` shows a hint while the page is in flight.
+     */
+    onSearchChange?: (term: string) => void;
+    loading?: boolean;
+    /** Shown when a term matches nothing. */
+    emptyText?: string;
+    /** Show every item on focus, before any term is typed (default true). */
+    openOnFocus?: boolean;
 }
 
 export const TerminalAutocomplete: React.FC<TerminalAutocompleteProps> = ({
@@ -26,6 +37,10 @@ export const TerminalAutocomplete: React.FC<TerminalAutocompleteProps> = ({
     disabled = false,
     formatDisplay,
     filterFn,
+    onSearchChange,
+    loading = false,
+    emptyText = 'No matches found',
+    openOnFocus = true,
 }) => {
     const theme = useTheme();
     const [isOpen, setIsOpen] = useState(false);
@@ -53,16 +68,21 @@ export const TerminalAutocomplete: React.FC<TerminalAutocompleteProps> = ({
         setHighlightedIndex(-1);
     }, [searchTerm, items]);
 
-    // Set initial value
+    // Mirror the host's `value` into the box — when the value changes, or
+    // when the selected item's display text changes (a name that arrived
+    // after the id). Never on a bare items refresh: a server-searched list
+    // reloads while typing and must not clobber the term. An empty value
+    // clears the box.
+    const selectedItem = value ? items.find((item) => item[valueField] === value) : undefined;
+    const selectedDisplay = selectedItem ? (formatDisplay ? formatDisplay(selectedItem) : selectedItem[displayField]) : '';
     useEffect(() => {
-        if (value && items.length > 0) {
-            const selectedItem = items.find((item) => item[valueField] === value);
-            if (selectedItem) {
-                const display = formatDisplay ? formatDisplay(selectedItem) : selectedItem[displayField];
-                setSearchTerm(display);
-            }
+        if (!value) {
+            setSearchTerm('');
+            return;
         }
-    }, [value, items]);
+        if (!selectedDisplay) return;
+        setSearchTerm(selectedDisplay);
+    }, [value, selectedDisplay]);
 
     // Handle click outside
     useEffect(() => {
@@ -117,9 +137,11 @@ export const TerminalAutocomplete: React.FC<TerminalAutocompleteProps> = ({
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
         setIsOpen(true);
+        onSearchChange?.(e.target.value);
     };
 
     const handleFocus = () => {
+        if (!openOnFocus) return;
         setIsOpen(true);
     };
 
@@ -181,7 +203,7 @@ export const TerminalAutocomplete: React.FC<TerminalAutocompleteProps> = ({
                 </div>
             )}
 
-            {isOpen && searchTerm && filteredItems.length === 0 && (
+            {isOpen && searchTerm && filteredItems.length === 0 && !loading && (
                 <div className={`
                     absolute z-[100] w-full mt-1
                     ${theme.bg} ${theme.border}
@@ -191,7 +213,13 @@ export const TerminalAutocomplete: React.FC<TerminalAutocompleteProps> = ({
                     ${theme.text} ${theme.font} text-sm
                     opacity-50
                 `}>
-                    No matches found
+                    {emptyText}
+                </div>
+            )}
+
+            {isOpen && loading && filteredItems.length === 0 && (
+                <div className={`absolute z-[100] w-full mt-1 ${theme.bg} ${theme.border} border rounded-none shadow-lg px-3 py-2 ${theme.text} ${theme.font} text-sm opacity-50`}>
+                    searching…
                 </div>
             )}
         </div>

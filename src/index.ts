@@ -92,3 +92,7 @@ export { TerminalSecretReveal } from './components/TerminalSecretReveal';
 export type { TerminalSecretRevealProps } from './components/TerminalSecretReveal';
 export { TerminalTabView } from './components/TerminalTabView';
 export type { TerminalTabViewProps, TerminalTabViewTab } from './components/TerminalTabView';
+export { TerminalPagedList, usePagedList } from './components/TerminalPagedList';
+export type { TerminalPagedListProps, PagedListState, PagedResult } from './components/TerminalPagedList';
+export { TerminalErrorBoundary } from './components/TerminalErrorBoundary';
+export type { TerminalErrorBoundaryProps } from './components/TerminalErrorBoundary';
