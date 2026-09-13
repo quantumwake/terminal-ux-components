@@ -12,6 +12,16 @@ export interface TerminalTabViewSectionProps {
     items: Record<string, TerminalTabViewSectionItem>;
     depth?: number;
     sub?: boolean;
+    /** Initial collapsed state when uncontrolled. Ignored once `collapsed` is passed. */
+    defaultCollapsed?: boolean;
+    /** Controlled collapsed state. Once passed, the section never changes it on its own — the caller updates it from `onToggle`. */
+    collapsed?: boolean;
+    /** Called with the collapsed state a header click asks for, in both controlled and uncontrolled use. */
+    onToggle?: (collapsed: boolean) => void;
+    /** An optional count rendered beside the title, in the library's muted count style. */
+    count?: number;
+    /** Rendered after the items, e.g. a "show more" row. */
+    footer?: React.ReactNode;
 }
 
 export const TerminalTabViewSection: React.FC<TerminalTabViewSectionProps> = ({
@@ -19,10 +29,25 @@ export const TerminalTabViewSection: React.FC<TerminalTabViewSectionProps> = ({
     items,
     depth,
     sub = false,
+    defaultCollapsed = false,
+    collapsed,
+    onToggle,
+    count,
+    footer,
 }) => {
     const level = depth ?? (sub ? 2 : 0);
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed);
+    const isControlled = collapsed !== undefined;
+    const isCollapsed = isControlled ? collapsed : internalCollapsed;
     const theme = useTheme();
+
+    const handleToggle = () => {
+        const next = !isCollapsed;
+        if (!isControlled) {
+            setInternalCollapsed(next);
+        }
+        onToggle?.(next);
+    };
 
     // Visual hierarchy by depth level
     const styles = (() => {
@@ -55,10 +80,13 @@ export const TerminalTabViewSection: React.FC<TerminalTabViewSectionProps> = ({
         <>
             <div className={`border-0 ${theme.border} w-full flex flex-col ${styles.indent}`}>
                 {/* collapse button */}
-                <button onClick={() => setIsCollapsed((prevState) => !prevState)} className={styles.header}>
+                <button onClick={handleToggle} aria-expanded={!isCollapsed} className={styles.header}>
                     <div className="flex items-center gap-1.5">
                         <span className={theme.textAccent}>{styles.prefix}</span>
                         <span className={`text-xs ${styles.headerText}`}>{title}</span>
+                        {count !== undefined && (
+                            <span className={`font-mono text-[10px] ${theme.default.text.muted}`}>({count})</span>
+                        )}
                     </div>
                     {isCollapsed ? (
                         <ChevronRight className={`w-3 h-3 ${theme.textAccent}`} />
@@ -73,6 +101,7 @@ export const TerminalTabViewSection: React.FC<TerminalTabViewSectionProps> = ({
                         {Object.entries(items).map(([key, sub]) => (
                             <div key={key} className="overflow-visible">{sub.content}</div>
                         ))}
+                        {footer}
                     </div>
                 )}
             </div>
