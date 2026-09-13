@@ -41,6 +41,34 @@ Current export set (`useTheme()`-based, fully typed):
   `TerminalCheckbox`, `TerminalToggle`, `TerminalContainer`, `TerminalSection`,
   `TerminalTagField`, `TerminalInfoButton`, `TerminalDropdown`
 
+### `TerminalTabViewSection`
+
+A collapsible, titled group of items. Uncontrolled by default (starts open,
+manages its own open/closed state); pass `collapsed` to drive it from the
+host instead.
+
+```tsx
+<TerminalTabViewSection
+  title="Applications"
+  items={items}
+  count={items.length}
+  defaultCollapsed
+  collapsed={isOpen}
+  onToggle={(collapsed) => setIsOpen(collapsed)}
+  footer={<ShowMoreButton />}
+/>
+```
+
+- `defaultCollapsed` — initial state when uncontrolled (default: open).
+- `collapsed` — controlled state; once passed, the section never changes it
+  on its own, so the host must update it from `onToggle`.
+- `onToggle(collapsed)` — called with the state a header click asks for, in
+  both controlled and uncontrolled use.
+- `count` — an optional count rendered beside the title.
+- `footer` — rendered after the items, e.g. a "show more" row.
+- The header is a real `<button>` with `aria-expanded`, so it is keyboard
+  reachable and toggles on Enter/Space for free.
+
 ## Migration status
 
 Incremental extraction (dogfooded by enterprise consuming each release):
