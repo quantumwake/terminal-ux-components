@@ -96,3 +96,5 @@ export { TerminalPagedList, usePagedList } from './components/TerminalPagedList'
 export type { TerminalPagedListProps, PagedListState, PagedResult } from './components/TerminalPagedList';
 export { TerminalErrorBoundary } from './components/TerminalErrorBoundary';
 export type { TerminalErrorBoundaryProps } from './components/TerminalErrorBoundary';
+export { TerminalMeter } from './components/TerminalMeter';
+export type { TerminalMeterProps } from './components/TerminalMeter';
