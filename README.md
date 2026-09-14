@@ -39,7 +39,7 @@ Current export set (`useTheme()`-based, fully typed):
 - **Theme:** `ThemeProvider`, `useTheme`
 - **Primitives:** `TerminalButton`, `TerminalLabel`, `TerminalInput`,
   `TerminalCheckbox`, `TerminalToggle`, `TerminalContainer`, `TerminalSection`,
-  `TerminalTagField`, `TerminalInfoButton`, `TerminalDropdown`
+  `TerminalTagField`, `TerminalInfoButton`, `TerminalDropdown`, `TerminalMeter`
 
 ### `TerminalTabViewSection`
 
@@ -69,6 +69,29 @@ host instead.
 - The header is a real `<button>` with `aria-expanded`, so it is keyboard
   reachable and toggles on Enter/Space for free.
 
+### `TerminalMeter`
+
+A horizontal meter for a ratio in `[0, 1]` — disk/memory usage, quota
+consumed, etc. Values outside the range are clamped for display; an absent
+(`undefined` or `NaN`) value renders an em dash and an empty bar, never 0%.
+
+```tsx
+<TerminalMeter
+  label="Memory"
+  value={usedBytes / totalBytes}
+  caption={`${formatGiB(usedBytes)} / ${formatGiB(totalBytes)}`}
+  threshold={0.85}
+/>
+```
+
+- `threshold` — a tick mark at that ratio; the bar switches to the theme's
+  warning colour once `value` reaches it.
+- `size` — `'small' | 'medium'` (default `'medium'`).
+- `showPercent` — renders `NN%` after the bar (default `true`); the percent is
+  still reflected in `aria-label` even when hidden.
+- Renders with `role="meter"` and `aria-valuenow`/`aria-valuemin`/
+  `aria-valuemax`, so assistive tech reads it like any other meter.
+
 ## Migration status
 
 Incremental extraction (dogfooded by enterprise consuming each release):
@@ -86,6 +109,7 @@ npm install
 npm run build      # tsup → dist/ (esm + cjs + .d.ts)
 npm run dev        # tsup --watch
 npm run lint       # tsc --noEmit
+npm run test       # vitest run
 ```
 
 No environment variables — this is a presentational component library with no
