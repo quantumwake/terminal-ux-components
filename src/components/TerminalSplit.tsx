@@ -73,12 +73,16 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
     );
 
     // moveDivider shifts divider i by delta (a fraction of the pane area),
-    // clamped so neither neighbour drops below minSize.
+    // clamped so neither neighbour drops below minSize. A pair already past
+    // the limit (a narrower window than its sizes were set on) only moves
+    // toward it, never jumps against the drag.
     const moveDivider = useCallback(
         (from: number[], i: number, delta: number, total: number) => {
-            const min = total > 0 ? Math.min(minSize / total, (from[i] + from[i + 1]) / 2) : 0;
             const pair = from[i] + from[i + 1];
-            const left = Math.min(Math.max(from[i] + delta, min), pair - min);
+            const min = total > 0 ? Math.min(minSize / total, pair / 2) : 0;
+            const lo = Math.min(min, from[i]);
+            const hi = Math.max(pair - min, from[i]);
+            const left = Math.min(Math.max(from[i] + delta, lo), hi);
             const next = [...from];
             next[i] = left;
             next[i + 1] = pair - left;

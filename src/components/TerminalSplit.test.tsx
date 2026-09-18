@@ -90,6 +90,23 @@ describe('TerminalSplit', () => {
         expect(onSizesChange.mock.calls.length).toBe(calls);
     });
 
+    it('moves a pane that is already past minSize only toward the limit, never against the drag', () => {
+        const onSizesChange = vi.fn();
+        const { container } = render(
+            <TerminalSplit sizes={[0.7, 0.3]} onSizesChange={onSizesChange} minSize={220} dividerSize={0}>
+                <div>a</div>
+                <div>b</div>
+            </TerminalSplit>,
+        );
+        sized(container, 600);
+        const sep = screen.getByRole('separator');
+        fireEvent.pointerDown(sep, { clientX: 420, pointerId: 1 });
+        fireEvent.pointerMove(sep, { clientX: 421, pointerId: 1 });
+        expect(onSizesChange.mock.lastCall![0][0]).toBeCloseTo(0.7);
+        fireEvent.pointerMove(sep, { clientX: 400, pointerId: 1 });
+        expect(onSizesChange.mock.lastCall![0][0]).toBeCloseTo(0.7 - 20 / 600);
+    });
+
     it('evens a pair out on double-click', () => {
         const onSizesChange = vi.fn();
         render(
