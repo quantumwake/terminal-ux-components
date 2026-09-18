@@ -98,3 +98,6 @@ export { TerminalErrorBoundary } from './components/TerminalErrorBoundary';
 export type { TerminalErrorBoundaryProps } from './components/TerminalErrorBoundary';
 export { TerminalMeter } from './components/TerminalMeter';
 export type { TerminalMeterProps } from './components/TerminalMeter';
+
+export { TerminalSplit } from './components/TerminalSplit';
+export type { TerminalSplitProps } from './components/TerminalSplit';

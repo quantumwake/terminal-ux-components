@@ -40,6 +40,7 @@ Current export set (`useTheme()`-based, fully typed):
 - **Primitives:** `TerminalButton`, `TerminalLabel`, `TerminalInput`,
   `TerminalCheckbox`, `TerminalToggle`, `TerminalContainer`, `TerminalSection`,
   `TerminalTagField`, `TerminalInfoButton`, `TerminalDropdown`, `TerminalMeter`
+- **Layout:** `TerminalSplit`
 
 ### `TerminalTabViewSection`
 
@@ -91,6 +92,34 @@ consumed, etc. Values outside the range are clamped for display; an absent
   still reflected in `aria-label` even when hidden.
 - Renders with `role="meter"` and `aria-valuenow`/`aria-valuemin`/
   `aria-valuemax`, so assistive tech reads it like any other meter.
+
+### `TerminalSplit`
+
+Any number of panes, side by side or stacked, with a draggable divider
+between each pair. Dragging a divider trades space between the two panes
+next to it only.
+
+```tsx
+<TerminalSplit
+  direction="horizontal"          // or "vertical" (stacked)
+  sizes={sizes}                    // optional: controlled fractions, one per pane
+  onSizesChange={setSizes}
+  minSize={160}
+  dividerClassName="bg-border hover:bg-accent/50"
+>
+  {panes.map((p) => <Pane key={p.id} {...p} />)}
+</TerminalSplit>
+```
+
+- Uncontrolled by default (equal shares, or `defaultSizes`); pass `sizes` to
+  drive it from the host. When the pane count changes and the sizes no longer
+  fit, it falls back to equal shares.
+- `minSize` — the smallest a pane may get, in pixels (default 120).
+- Dividers are `role="separator"`: arrow keys move a focused divider by 2%,
+  and a double-click evens its two panes out.
+- Layout is inline styles, so it works under any stylesheet. The divider's
+  default look uses the midnight classes; hosts with their own palette pass
+  `dividerClassName` (and `paneClassName` for the pane wrappers).
 
 ## Migration status
 
