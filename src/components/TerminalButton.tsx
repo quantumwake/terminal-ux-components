@@ -11,6 +11,8 @@ export interface TerminalButtonProps {
     style?: React.CSSProperties | string;
     className?: string;
     title?: string;
+    /** Accessible name when the label alone doesn't say what the button does ("add 3 selected"). */
+    'aria-label'?: string;
 }
 
 export const TerminalButton: React.FC<TerminalButtonProps> = ({
@@ -23,6 +25,7 @@ export const TerminalButton: React.FC<TerminalButtonProps> = ({
     style = '',
     className = '',
     title,
+    'aria-label': ariaLabel,
 }) => {
     const theme = useTheme();
 
@@ -59,6 +62,7 @@ export const TerminalButton: React.FC<TerminalButtonProps> = ({
             disabled={disabled}
             className={`${baseStyle} ${variantStyle} ${sizeStyle} ${className}`}
             title={title}
+            aria-label={ariaLabel}
         >
             {icon && <span className="flex-shrink-0">{icon}</span>}
             {children}

@@ -81,7 +81,10 @@ export { TerminalDataTable2 } from './components/TerminalDataTable2';
 export type { TerminalDataTable2Props } from './components/TerminalDataTable2';
 
 export { TerminalTable } from './components/TerminalTable';
-export type { TerminalTableProps, TerminalTableColumn } from './components/TerminalTable';
+export type { TerminalTableProps, TerminalTableColumn, TerminalTableSort, TerminalTableSortDirection } from './components/TerminalTable';
+
+export { TerminalTransferList } from './components/TerminalTransferList';
+export type { TerminalTransferListProps, TerminalTransferListItem, TerminalTransferListAddAllResult } from './components/TerminalTransferList';
 
 export { TerminalSlider } from './components/TerminalSlider';
 export type { TerminalSliderProps } from './components/TerminalSlider';
