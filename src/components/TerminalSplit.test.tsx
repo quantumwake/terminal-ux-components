@@ -148,3 +148,118 @@ describe('TerminalSplit', () => {
         expect(screen.getByRole('separator')).not.toHaveClass('bg-midnight-border');
     });
 });
+
+describe('TerminalSplit collapsed panes', () => {
+    it('keeps a collapsed pane mounted but out of the layout and the accessibility tree', () => {
+        const { container } = render(
+            <TerminalSplit sizes={[0.2, 0.5, 0.3]} collapsed={[true, false, false]}>
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+            </TerminalSplit>,
+        );
+        const [a] = panesOf(container) as HTMLElement[];
+        expect(screen.getByText('a')).toBeInTheDocument();
+        expect(a).toHaveAttribute('data-collapsed', 'true');
+        expect(a).toHaveAttribute('aria-hidden', 'true');
+        expect(a.style.flex).toBe('0 0 0px');
+        expect(a.style.visibility).toBe('hidden');
+    });
+
+    it('shares the room among the panes still showing, in proportion', () => {
+        const { container } = render(
+            <TerminalSplit sizes={[0.2, 0.5, 0.3]} collapsed={[true, false, false]}>
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+            </TerminalSplit>,
+        );
+        const [, b, c] = panesOf(container);
+        expect(grow(b)).toBeCloseTo(0.625);
+        expect(grow(c)).toBeCloseTo(0.375);
+    });
+
+    it('draws dividers only between the panes still showing', () => {
+        const three = (collapsed: boolean[]) => (
+            <TerminalSplit collapsed={collapsed}>
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+            </TerminalSplit>
+        );
+        const { rerender } = render(three([false, false, false]));
+        expect(screen.getAllByRole('separator')).toHaveLength(2);
+        rerender(three([true, false, false]));
+        expect(screen.getAllByRole('separator')).toHaveLength(1);
+        rerender(three([false, true, false]));
+        expect(screen.getAllByRole('separator')).toHaveLength(1);
+        rerender(three([false, false, true]));
+        expect(screen.getAllByRole('separator')).toHaveLength(1);
+        rerender(three([true, true, false]));
+        expect(screen.queryAllByRole('separator')).toHaveLength(0);
+        rerender(three([true, true, true]));
+        expect(screen.queryAllByRole('separator')).toHaveLength(0);
+    });
+
+    it('restores the collapsed pane to the size it had', () => {
+        const view = (collapsed: boolean[]) => (
+            <TerminalSplit sizes={[0.25, 0.75]} collapsed={collapsed}>
+                <div>a</div>
+                <div>b</div>
+            </TerminalSplit>
+        );
+        const { container, rerender } = render(view([true, false]));
+        expect(grow(panesOf(container)[1])).toBeCloseTo(1);
+        rerender(view([false, false]));
+        expect(grow(panesOf(container)[0])).toBeCloseTo(0.25);
+        expect(grow(panesOf(container)[1])).toBeCloseTo(0.75);
+    });
+
+    it('does not unmount a pane when it collapses and expands', () => {
+        let mounts = 0;
+        const Probe = () => {
+            React.useEffect(() => {
+                mounts += 1;
+            }, []);
+            return <span>probe</span>;
+        };
+        const view = (collapsed: boolean[]) => (
+            <TerminalSplit collapsed={collapsed}>
+                <Probe />
+                <div>b</div>
+            </TerminalSplit>
+        );
+        const { rerender } = render(view([false, false]));
+        rerender(view([true, false]));
+        rerender(view([false, false]));
+        expect(mounts).toBe(1);
+    });
+
+    it('moves the divider across a collapsed pane and leaves that pane alone', () => {
+        const onSizesChange = vi.fn();
+        render(
+            <TerminalSplit sizes={[0.3, 0.2, 0.5]} collapsed={[false, true, false]} onSizesChange={onSizesChange} minSize={10}>
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+            </TerminalSplit>,
+        );
+        fireEvent.keyDown(screen.getByRole('separator'), { key: 'ArrowRight' });
+        const next = onSizesChange.mock.calls[0][0] as number[];
+        expect(next[1]).toBeCloseTo(0.2);
+        expect(next[0]).toBeGreaterThan(0.3);
+        expect(next[2]).toBeLessThan(0.5);
+        expect(next[0] + next[1] + next[2]).toBeCloseTo(1);
+    });
+
+    it('ignores a flag list of the wrong length', () => {
+        const { container } = render(
+            <TerminalSplit collapsed={[true]}>
+                <div>a</div>
+                <div>b</div>
+            </TerminalSplit>,
+        );
+        for (const p of panesOf(container)) expect(p).not.toHaveAttribute('data-collapsed');
+        expect(screen.getAllByRole('separator')).toHaveLength(1);
+    });
+});
