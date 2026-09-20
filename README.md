@@ -40,7 +40,7 @@ Current export set (`useTheme()`-based, fully typed):
 - **Primitives:** `TerminalButton`, `TerminalLabel`, `TerminalInput`,
   `TerminalCheckbox`, `TerminalToggle`, `TerminalContainer`, `TerminalSection`,
   `TerminalTagField`, `TerminalInfoButton`, `TerminalDropdown`, `TerminalMeter`
-- **Layout:** `TerminalSplit`
+- **Layout:** `TerminalSplit`, `useFullscreen`
 
 ### `TerminalTabViewSection`
 
@@ -120,6 +120,38 @@ next to it only.
 - Layout is inline styles, so it works under any stylesheet. The divider's
   default look uses the midnight classes; hosts with their own palette pass
   `dividerClassName` (and `paneClassName` for the pane wrappers).
+- `collapsed` — one flag per pane, to hide a sidebar or a panel without
+  losing it. A collapsed pane takes no room but **stays mounted**, so its
+  scroll position, drafts and open streams survive; the others share the room,
+  dividers are drawn only between panes still showing, and the collapsed
+  pane's size is kept, so expanding puts it back. Hidden panes are marked
+  `data-collapsed` and `aria-hidden` and are out of the tab order. Set
+  `dividerSize` to a small value (1, say) for hairline dividers.
+
+```tsx
+const [sidebarOpen, setSidebarOpen] = useState(true);
+<TerminalSplit sizes={[0.22, 0.78]} collapsed={[!sidebarOpen, false]}>
+  <Sidebar />
+  <Main />
+</TerminalSplit>
+```
+
+### `useFullscreen`
+
+A hook over the browser's Fullscreen API, for the whole page or for one
+element (`useFullscreen(ref)`).
+
+```tsx
+const full = useFullscreen();
+<button onClick={full.toggle}>{full.active ? 'exit' : 'full screen'}</button>
+```
+
+- Returns `{ active, supported, enter, exit, toggle }`. `active` follows the
+  browser's own state, so it turns false when the user presses Escape.
+- Browsers grant full screen only inside a user gesture such as a click, and
+  some embedded views do not have it at all. `enter` and `toggle` resolve to
+  whether it worked and never throw, so the host can fall back to its own
+  full-window layout when they resolve false.
 
 ### `TerminalTable`
 

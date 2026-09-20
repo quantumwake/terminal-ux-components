@@ -104,3 +104,5 @@ export type { TerminalMeterProps } from './components/TerminalMeter';
 
 export { TerminalSplit } from './components/TerminalSplit';
 export type { TerminalSplitProps } from './components/TerminalSplit';
+export { useFullscreen } from './components/useFullscreen';
+export type { FullscreenState } from './components/useFullscreen';
