@@ -11,6 +11,9 @@ export interface SegmentedNavProps {
     value: string;
     onChange: (id: string) => void;
     label?: string;
+    // small is a page's own tabs (board 4's Board · Channel · People and
+    // agents · Settings); the default is the app's header nav.
+    size?: 'default' | 'small';
 }
 
 // Selected segment fill from the Agents mockup. It sits between the chip and
@@ -23,6 +26,7 @@ export const SegmentedNav: React.FC<SegmentedNavProps> = ({
     value,
     onChange,
     label = 'Sections',
+    size = 'default',
 }) => (
     <div
         role="tablist"
@@ -49,9 +53,9 @@ export const SegmentedNav: React.FC<SegmentedNavProps> = ({
                     style={{
                         border: 0,
                         borderRadius: 6,
-                        padding: '8px 14px',
+                        padding: size === 'small' ? '7px 12px' : '8px 14px',
                         font: 'inherit',
-                        fontSize: 14,
+                        fontSize: size === 'small' ? 13 : 14,
                         cursor: 'pointer',
                         background: selected ? segmentOn : 'transparent',
                         color: selected ? studio.text : studio.textFaint,

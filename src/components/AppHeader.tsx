@@ -207,7 +207,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     {action.label}
                 </button>
             ) : user ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: studio.textFaint }}>
                     <span
                         aria-hidden="true"
                         style={{
@@ -218,16 +218,15 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                             height: 28,
                             borderRadius: '50%',
                             background: studio.job.person,
-                            color: studio.ground,
+                            color: '#0d1a0c',
                             fontSize: 11,
-                            fontWeight: 650,
+                            fontWeight: 600,
                         }}
                     >
                         {user.initials || initials(user.name)}
                     </span>
                     <span>
-                        {user.name}
-                        <span style={{ color: studio.textFaint }}> · {user.role}</span>
+                        {user.name} · {user.role}
                     </span>
                 </div>
             ) : null}

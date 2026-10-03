@@ -55,7 +55,7 @@ describe('AppHeader', () => {
             />,
         );
         expect(screen.getByText('KR')).toBeInTheDocument();
-        expect(screen.getAllByText('Kasra').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('Kasra · Owner').length).toBeGreaterThan(0);
     });
 
     it('shows New agent when the screen passes an action', () => {
@@ -74,7 +74,7 @@ describe('AppHeader', () => {
 
     it('opens the organization menu and reports the one that was chosen', () => {
         const { onOrganization } = renderHeader();
-        expect(screen.getByText('Kasra')).toBeInTheDocument();
+        expect(screen.getByText('Kasra · Owner')).toBeInTheDocument();
         expect(screen.getByText(/Owner/)).toBeInTheDocument();
         expect(screen.queryByRole('menu')).not.toBeInTheDocument();
         fireEvent.click(screen.getByRole('button', { name: 'Quantum Wake' }));
