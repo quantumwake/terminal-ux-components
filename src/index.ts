@@ -150,3 +150,5 @@ export { ChannelRow } from './components/ChannelRow';
 export type { ChannelRowProps } from './components/ChannelRow';
 export { ActionBox, Notice } from './components/Notice';
 export type { ActionBoxProps, NoticeProps } from './components/Notice';
+export { PostItem, postKindColor, postKinds } from './components/PostItem';
+export type { PostItemProps } from './components/PostItem';
