@@ -2,9 +2,12 @@ import React from 'react';
 import { studio } from '../theme/studio';
 import { MilestoneStrip } from './MilestoneStrip';
 
+export type WorkflowJob = 'coordinator' | 'builder' | 'reviewer' | 'security' | 'person';
+
 export interface WorkflowAgent {
     handle: string;
     glyph: string;
+    job: WorkflowJob;
 }
 
 export interface WorkflowStage {
@@ -28,14 +31,8 @@ export interface WorkflowListProps {
     onAddStage?: (milestoneId: string) => void;
 }
 
-const tint: Record<string, string> = {
-    CH: studio.job.coordinator,
-    RV: studio.job.reviewer,
-    SE: studio.job.security,
-};
-
-function chipColor(glyph: string): string {
-    return tint[glyph] ?? studio.accent;
+function chipColor(job: WorkflowJob): string {
+    return studio.job[job];
 }
 
 export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected, onSelect, onAddStage }) => (
@@ -76,13 +73,14 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected
                                 {stage.who.map((agent) => (
                                     <span
                                         key={agent.handle}
+                                        role="img"
                                         aria-label={agent.handle}
                                         style={{
                                             width: 20,
                                             height: 20,
                                             flexShrink: 0,
                                             borderRadius: 5,
-                                            background: chipColor(agent.glyph),
+                                            background: chipColor(agent.job),
                                             color: '#160d07',
                                             display: 'flex',
                                             alignItems: 'center',

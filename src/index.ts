@@ -130,6 +130,6 @@ export type { SwimLanesProps, SwimLane } from './components/SwimLanes';
 export { MilestoneStrip } from './components/MilestoneStrip';
 export type { MilestoneStripProps } from './components/MilestoneStrip';
 export { WorkflowList } from './components/WorkflowList';
-export type { WorkflowListProps, WorkflowMilestone, WorkflowStage, WorkflowAgent } from './components/WorkflowList';
+export type { WorkflowListProps, WorkflowMilestone, WorkflowStage, WorkflowAgent, WorkflowJob } from './components/WorkflowList';
 export { ChannelRail } from './components/ChannelRail';
 export type { ChannelRailProps, ChannelRailItem } from './components/ChannelRail';

@@ -53,7 +53,7 @@ describe('SwimLanes', () => {
 describe('MilestoneStrip', () => {
     it('shows the organization lock and offers no way to rename the milestone', () => {
         render(<MilestoneStrip name="In progress" check="Claimed by someone" />);
-        expect(screen.getByLabelText('Set by the organization')).toBeInTheDocument();
+        expect(screen.getByRole('img', { name: 'Set by the organization' })).toBeInTheDocument();
         expect(screen.getByText('In progress')).toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
         expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
@@ -74,7 +74,7 @@ describe('WorkflowList', () => {
                         id: 'progress',
                         name: 'In progress',
                         check: 'Claimed by someone',
-                        stages: [{ id: 'build', name: 'Build', check: 'Tests pass', who: [{ handle: 'cloud-cursor', glyph: 'CC' }] }],
+                        stages: [{ id: 'build', name: 'Build', check: 'Tests pass', who: [{ handle: 'cloud-cursor', glyph: 'RV', job: 'builder' }] }],
                     },
                 ]}
             />,
@@ -82,7 +82,9 @@ describe('WorkflowList', () => {
         const stage = screen.getByRole('button', { name: /Build/ });
         expect(stage).toHaveAttribute('aria-pressed', 'true');
         expect(stage).toHaveStyle({ marginLeft: '24px', borderColor: studio.accent });
-        expect(screen.getByLabelText('cloud-cursor')).toHaveTextContent('CC');
+        const chip = screen.getByRole('img', { name: 'cloud-cursor' });
+        expect(chip).toHaveTextContent('RV');
+        expect(chip).toHaveStyle({ backgroundColor: studio.job.builder });
         fireEvent.click(screen.getByRole('button', { name: 'Add a stage under In progress' }));
         expect(onAddStage).toHaveBeenCalledWith('progress');
         fireEvent.click(stage);
