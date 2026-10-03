@@ -20,7 +20,6 @@ export const StatusDot: React.FC<StatusDotProps> = ({ color, label, size = 8 }) 
                 height: size,
                 borderRadius: '50%',
                 flexShrink: 0,
-                boxSizing: 'border-box',
                 ...(color ? { background: color } : { border: '1px dashed #8a8178' }),
             }}
         />
