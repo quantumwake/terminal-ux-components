@@ -150,3 +150,5 @@ export { ChannelRow } from './components/ChannelRow';
 export type { ChannelRowProps } from './components/ChannelRow';
 export { ActionBox, Notice } from './components/Notice';
 export type { ActionBoxProps, NoticeProps } from './components/Notice';
+export { TextField, SelectField, FormActions } from './components/FormParts';
+export type { TextFieldProps, SelectFieldProps, FormActionsProps } from './components/FormParts';
