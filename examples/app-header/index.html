@@ -7,28 +7,29 @@
 <style>
   body { margin: 0; background: #0f0e0d; }
   button { font: inherit; }
+  #root { min-height: 960px; }
 </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react/jsx-runtime": "https://esm.sh/react@19.0.0/jsx-runtime",
+    "react-dom": "https://esm.sh/react-dom@19.0.0?deps=react@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client?deps=react@19.0.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.563.0?deps=react@19.0.0",
+    "@headlessui/react": "https://esm.sh/@headlessui/react@2.2.9?deps=react@19.0.0,react-dom@19.0.0",
+    "@heroicons/react/24/solid": "https://esm.sh/@heroicons/react@2.2.0/24/solid?deps=react@19.0.0",
+    "@heroicons/react/24/outline": "https://esm.sh/@heroicons/react@2.2.0/24/outline?deps=react@19.0.0"
+  }
+}
+</script>
 </head>
 <body>
 <!--
-  The header from docs/design/mockups/app-v2/source/Agents.dc.html.
-  The pixel gate clips this page to the top 72px of 8-Agents.png.
+  Mounts the built AppHeader (examples/app-header/demo.js, the createRoot call).
+  Build first: npm run build. The pixel gate clips the top 72px of 8-Agents.png.
 -->
-<div style="min-height: 960px; background: #0f0e0d; color: #ece6df; font-family: 'IBM Plex Sans', system-ui, sans-serif; display: flex; flex-direction: column">
-<header style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 28px; border-bottom: 1px solid #2a2622; background: #141210; flex-wrap: wrap">
-<div style="display: flex; align-items: center; gap: 14px">
-<div style="width: 28px; height: 28px; border-radius: 6px; background: #e8743b; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: #160d07; font-size: 14px">A</div>
-<span style="font-weight: 600; font-size: 17px">Agent Studio</span>
-<button type="button" style="display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 8px; border: 1px solid #2a2622; background: #1c1a17; color: #ece6df; font-size: 13px; cursor: pointer">Quantum Wake<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-</div>
-<nav aria-label="Sections" style="display: flex; gap: 4px; background: #1c1a17; border: 1px solid #2a2622; border-radius: 8px; padding: 4px">
-<span style="padding: 8px 14px; border-radius: 6px; color: #a39a90; font-size: 14px">Home</span>
-<span style="padding: 8px 14px; border-radius: 6px; color: #a39a90; font-size: 14px">Projects</span>
-<span style="padding: 8px 14px; border-radius: 6px; background: #2b2520; color: #ece6df; font-size: 14px">Agents</span>
-<span style="padding: 8px 14px; border-radius: 6px; color: #a39a90; font-size: 14px">Organization</span>
-</nav>
-<button type="button" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 8px; border: none; background: #e8743b; color: #160d07; font-weight: 600; font-size: 14px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New agent</button>
-</header>
-</div>
+<div id="root"></div>
+<script type="module" src="./demo.js"></script>
 </body>
 </html>

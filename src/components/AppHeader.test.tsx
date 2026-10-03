@@ -60,7 +60,7 @@ describe('AppHeader', () => {
         const { onOrganization } = renderHeader();
         expect(screen.getByText('Kasra')).toBeInTheDocument();
         expect(screen.getByText(/Owner/)).toBeInTheDocument();
-        fireEvent.change(screen.getByRole('combobox', { name: 'Organization' }), { target: { value: 'Other' } });
-        expect(onOrganization).toHaveBeenCalledWith('Other');
+        fireEvent.click(screen.getByRole('button', { name: 'Quantum Wake' }));
+        expect(onOrganization).toHaveBeenCalledWith('Quantum Wake');
     });
 });
