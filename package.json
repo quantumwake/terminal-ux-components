@@ -1,6 +1,6 @@
 {
   "name": "@quantumwake/terminal-ux-components",
-  "version": "0.3.14",
+  "version": "0.4.0",
   "description": "Terminal-style React UX components for the Alethic ISM apps.",
   "license": "MIT",
   "author": "QuantumWake",
@@ -40,6 +40,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
+    "prepare": "npm run build",
     "dev": "tsup --watch",
     "lint": "tsc --noEmit",
     "test": "vitest run",
