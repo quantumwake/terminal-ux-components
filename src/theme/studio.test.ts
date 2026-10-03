@@ -12,6 +12,11 @@ describe('studio tokens', () => {
         expect(studio.textMuted).toBe('#c9c0b6');
         expect(studio.textFaint).toBe('#a39a90');
         expect(studio.accent).toBe('#e8743b');
+        expect(studio.link).toBe('#f0a070');
+        expect(studio.inspector).toBe('#131110');
+        expect(studio.terminal).toBe('#0a0908');
+        expect(studio.dashed).toBe('#3a342e');
+        expect(studio.textQuiet).toBe('#8a8178');
         expect(studio.job).toEqual({
             coordinator: '#f2b35b',
             builder: '#e8743b',
