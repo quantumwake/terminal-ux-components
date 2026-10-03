@@ -13,6 +13,11 @@ export interface SegmentedNavProps {
     label?: string;
 }
 
+// Selected segment fill from the Agents mockup. It sits between the chip and
+// the line, and it is not one of the page surfaces.
+const segmentOn = '#2b2520';
+const chip = '#1c1a17';
+
 export const SegmentedNav: React.FC<SegmentedNavProps> = ({
     items,
     value,
@@ -23,13 +28,12 @@ export const SegmentedNav: React.FC<SegmentedNavProps> = ({
         role="tablist"
         aria-label={label}
         style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 2,
-            padding: 3,
-            background: studio.ground,
+            display: 'flex',
+            gap: 4,
+            background: chip,
             border: `1px solid ${studio.line}`,
-            borderRadius: 10,
+            borderRadius: 8,
+            padding: 4,
             fontFamily: studio.font,
         }}
     >
@@ -44,12 +48,12 @@ export const SegmentedNav: React.FC<SegmentedNavProps> = ({
                     onClick={() => onChange(item.id)}
                     style={{
                         border: 0,
-                        borderRadius: 8,
-                        padding: '6px 14px',
+                        borderRadius: 6,
+                        padding: '8px 14px',
                         font: 'inherit',
-                        fontSize: 13,
+                        fontSize: 14,
                         cursor: 'pointer',
-                        background: selected ? studio.card : 'transparent',
+                        background: selected ? segmentOn : 'transparent',
                         color: selected ? studio.text : studio.textFaint,
                     }}
                 >

@@ -52,7 +52,7 @@ describe('AppHeader', () => {
                 action={{ label: 'New agent' }}
             />,
         );
-        expect(screen.getByRole('button', { name: '+ New agent' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'New agent' })).toBeInTheDocument();
         expect(screen.getByRole('tab', { name: 'Agents' })).toHaveAttribute('aria-selected', 'true');
     });
 

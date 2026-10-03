@@ -40,16 +40,15 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: 16,
-                height: 72,
-                padding: '0 28px',
+                gap: 20,
+                padding: '14px 28px',
                 background: studio.header,
                 borderBottom: `1px solid ${studio.line}`,
                 fontFamily: studio.font,
                 color: studio.text,
             }}
         >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, minWidth: 0 }}>
                 <span
                     aria-hidden="true"
                     style={{
@@ -60,15 +59,16 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         height: 28,
                         borderRadius: 6,
                         background: studio.accent,
-                        color: studio.ground,
-                        fontWeight: 650,
+                        color: '#160d07',
+                        fontFamily: studio.mono,
+                        fontWeight: 600,
                         fontSize: 14,
                         flex: 'none',
                     }}
                 >
                     {mark}
                 </span>
-                <span style={{ fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap' }}>{product}</span>
+                <span style={{ fontSize: 17, fontWeight: 600, whiteSpace: 'nowrap' }}>{product}</span>
                 <label style={{ display: 'inline-flex', alignItems: 'center' }}>
                     <span className="sr-only" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
                         Organization
@@ -79,11 +79,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         onChange={(event) => onOrganization?.(event.target.value)}
                         style={{
                             appearance: 'none',
-                            background: studio.header,
-                            color: studio.textMuted,
+                            background: '#1c1a17',
+                            color: studio.text,
                             border: `1px solid ${studio.line}`,
                             borderRadius: 8,
-                            padding: '4px 28px 4px 10px',
+                            padding: '7px 12px',
                             font: 'inherit',
                             fontSize: 13,
                         }}
@@ -100,19 +100,22 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     type="button"
                     onClick={action.onClick}
                     style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 8,
                         border: 0,
                         borderRadius: 8,
-                        height: 38,
-                        padding: '0 16px',
+                        padding: '10px 16px',
                         background: studio.accent,
-                        color: studio.ground,
+                        color: '#160d07',
                         font: 'inherit',
                         fontSize: 14,
                         fontWeight: 600,
                         cursor: 'pointer',
                     }}
                 >
-                    + {action.label}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                    {action.label}
                 </button>
             ) : user ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
