@@ -9,11 +9,14 @@
 //     --clip 0,0,1440,72 --out examples/app-header/gate
 //
 // The story is placed with its top-left at the clip's corner, on the studio
-// ground, in a 1440x960 page with the mockups' fonts. The shot and the
+// ground (or --ground: what the part sits on in the board, a table's panel
+// or a selected row), in a 1440x960 page with the mockups' fonts. The shot and the
 // mockup are both cut to the clip, then compared as the portal gate does:
 // pixelmatch threshold 0.1, fail above 1% of pixels. --mockup has no
 // default (MOCKUPS_DIR names the directory, and --board the file in it), so
-// no seat's own path is baked in.
+// no seat's own path is baked in. A story that imports nothing from
+// src/components is refused. The clip must be the component's own box in the
+// board: its top-left is where the story is mounted.
 
 import { createServer } from 'node:http'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -73,8 +76,18 @@ createRoot(document.getElementById('story')).render(React.isValidElement(Story) 
         jsx: 'automatic',
         define: { 'process.env.NODE_ENV': '"production"' },
         logLevel: 'silent',
+        metafile: true,
     })
+    const fromSrc = Object.keys(out.metafile.inputs).filter((f) => isComponent(f))
+    if (fromSrc.length === 0) throw new Error(`${story} imports nothing from src/components: a story must mount the component it checks`)
     return out.outputFiles[0].text
+}
+
+// isComponent is whether a bundled input is library code under
+// src/components (reviewer @1917): a story that only draws markup measures
+// nothing.
+export function isComponent(path) {
+    return /(^|\/)src\/components\/[^/]+\.tsx?$/.test(path)
 }
 
 async function main() {
@@ -84,6 +97,7 @@ async function main() {
             mockup: { type: 'string' },
             board: { type: 'string' },
             clip: { type: 'string' },
+            ground: { type: 'string', default: '#0f0e0d' },
             out: { type: 'string' },
             chrome: { type: 'string', default: process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' },
         },
@@ -94,6 +108,7 @@ async function main() {
         process.exit(2)
     }
     const clip = parseClip(values.clip)
+    if (!/^#[0-9a-fA-F]{6}$/.test(values.ground)) throw new Error(`ground ${values.ground}: want #rrggbb`)
     const js = await bundle(values.story)
     const server = createServer((req, res) => {
         if (req.url === '/story.js') {
@@ -101,7 +116,7 @@ async function main() {
             return res.end(js)
         }
         res.writeHead(200, { 'content-type': 'text/html' })
-        res.end(page(clip))
+        res.end(page(clip, values.ground))
     })
     await new Promise((r) => server.listen(0, '127.0.0.1', r))
     const browser = await chromium.launch({ executablePath: values.chrome, headless: true })
