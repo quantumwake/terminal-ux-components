@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { studio } from '../theme/studio';
 import { SegmentedNav, SegmentedNavItem } from './SegmentedNav';
 
@@ -34,7 +34,42 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     action,
 }) => {
     const [orgOpen, setOrgOpen] = useState(false);
+    const [orgActive, setOrgActive] = useState(0);
+    const chipRef = useRef<HTMLButtonElement>(null);
+    const menuRef = useRef<HTMLSpanElement>(null);
     const choices = organizations && organizations.length > 0 ? organizations : [organization];
+    const closeOrg = (focusChip: boolean) => {
+        setOrgOpen(false);
+        if (focusChip) chipRef.current?.focus();
+    };
+    useEffect(() => {
+        if (!orgOpen) return;
+        const onKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') closeOrg(true);
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                event.preventDefault();
+                setOrgActive((index) => {
+                    const step = event.key === 'ArrowDown' ? 1 : -1;
+                    return (index + step + choices.length) % choices.length;
+                });
+            }
+        };
+        const onPointer = (event: MouseEvent) => {
+            const target = event.target as Node;
+            if (menuRef.current?.contains(target) || chipRef.current?.contains(target)) return;
+            setOrgOpen(false);
+        };
+        document.addEventListener('keydown', onKey);
+        document.addEventListener('mousedown', onPointer);
+        return () => {
+            document.removeEventListener('keydown', onKey);
+            document.removeEventListener('mousedown', onPointer);
+        };
+    }, [orgOpen, choices.length]);
+    useEffect(() => {
+        if (!orgOpen) return;
+        menuRef.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')[orgActive]?.focus();
+    }, [orgOpen, orgActive]);
     return (
         <header
             style={{
@@ -72,10 +107,17 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 <span style={{ fontSize: 17, fontWeight: 600, whiteSpace: 'nowrap' }}>{product}</span>
                 <span style={{ position: 'relative' }}>
                     <button
+                        ref={chipRef}
                         type="button"
                         aria-haspopup="menu"
                         aria-expanded={orgOpen}
-                        onClick={() => setOrgOpen((open) => !open)}
+                        onClick={() => {
+                            if (orgOpen) setOrgOpen(false);
+                            else {
+                                setOrgActive(Math.max(0, choices.indexOf(organization)));
+                                setOrgOpen(true);
+                            }
+                        }}
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -95,6 +137,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     </button>
                     {orgOpen ? (
                         <span
+                            ref={menuRef}
                             role="menu"
                             aria-label="Organizations"
                             style={{

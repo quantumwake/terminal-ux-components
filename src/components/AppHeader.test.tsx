@@ -67,4 +67,18 @@ describe('AppHeader', () => {
         expect(onOrganization).toHaveBeenCalledWith('Other');
         expect(screen.queryByRole('menu')).not.toBeInTheDocument();
     });
+
+    it('closes the organization menu from the keyboard and from outside', () => {
+        renderHeader();
+        const chip = screen.getByRole('button', { name: 'Quantum Wake' });
+        fireEvent.click(chip);
+        fireEvent.keyDown(document, { key: 'ArrowDown' });
+        expect(screen.getByRole('menuitem', { name: 'Other' })).toHaveFocus();
+        fireEvent.keyDown(document, { key: 'Escape' });
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+        expect(chip).toHaveFocus();
+        fireEvent.click(chip);
+        fireEvent.mouseDown(document.body);
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    });
 });
