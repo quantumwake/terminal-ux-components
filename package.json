@@ -44,6 +44,7 @@
     "lint": "tsc --noEmit",
     "test": "vitest run",
     "gate:header": "node scripts/header-pixel.mjs",
+    "gate:story": "node scripts/story-gate.mjs",
     "test:watch": "vitest",
     "prepublishOnly": "npm run lint && npm run build",
     "release": "npm run lint && npm run build && npm publish --access public",
