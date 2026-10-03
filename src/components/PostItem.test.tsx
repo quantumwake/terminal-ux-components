@@ -40,7 +40,17 @@ describe('PostItem', () => {
     it('follows the board chip', () => {
         const onCard = vi.fn();
         render(<PostItem {...post} onCard={onCard} />);
-        fireEvent.click(screen.getByRole('link', { name: /on the board/ }));
+        fireEvent.click(screen.getByRole('button', { name: /on the board/ }));
         expect(onCard).toHaveBeenCalledOnce();
+    });
+
+    it('renders an image tag and a javascript link as text', () => {
+        const { container } = render(
+            <PostItem {...post} card={undefined} text={'<img src=x onerror=alert(1)> [go](javascript:alert(1))'} />,
+        );
+        expect(container.querySelector('img')).toBeNull();
+        expect(container.querySelector('a')).toBeNull();
+        expect(screen.getByText(/onerror/)).toBeInTheDocument();
+        expect(screen.getByText(/javascript:/)).toBeInTheDocument();
     });
 });

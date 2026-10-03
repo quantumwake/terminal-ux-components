@@ -39,6 +39,9 @@ export interface PostItemProps {
     onCard?: () => void;
 }
 
+// text is a plain string. React escapes it, so a post cannot carry HTML.
+// The screen sanitizes markdown before it ever builds a post.
+
 // PostItem is one post on board 5: a badge, the handle and kind, the text,
 // and a chip when the post is on the board.
 export const PostItem: React.FC<PostItemProps> = ({ glyph, person, job = 'builder', handle, kind, at, reply, text, card, onCard }) => (
@@ -89,30 +92,29 @@ export const PostItem: React.FC<PostItemProps> = ({ glyph, person, job = 'builde
             </span>
             <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: body }}>{text}</p>
             {card ? (
-                <a
-                    href="#board"
-                    onClick={(event) => {
-                        if (!onCard) return;
-                        event.preventDefault();
-                        onCard();
-                    }}
+                <button
+                    type="button"
+                    onClick={onCard}
                     style={{
                         alignSelf: 'flex-start',
                         display: 'flex',
                         alignItems: 'center',
                         gap: 10,
+                        margin: 0,
                         padding: '8px 12px',
                         borderRadius: 8,
                         background: studio.panel,
                         border: `1px solid ${studio.line}`,
-                        textDecoration: 'none',
                         color: studio.text,
+                        fontFamily: studio.font,
                         fontSize: 13,
+                        textAlign: 'left',
+                        cursor: 'pointer',
                     }}
                 >
                     <span style={{ fontFamily: studio.mono, fontSize: 11, color: studio.textFaint }}>on the board</span>
                     {card}
-                </a>
+                </button>
             ) : null}
         </div>
     </article>
