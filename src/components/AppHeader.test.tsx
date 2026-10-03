@@ -42,6 +42,22 @@ describe('AppHeader', () => {
         expect(onNavigate).toHaveBeenCalledWith('agents');
     });
 
+    it('uses the given initials, and otherwise the first letters of the name', () => {
+        renderHeader();
+        expect(screen.getByText('K')).toBeInTheDocument();
+        render(
+            <AppHeader
+                organization="Quantum Wake"
+                nav={nav}
+                current="projects"
+                onNavigate={() => {}}
+                user={{ name: 'Kasra', role: 'Owner', initials: 'KR' }}
+            />,
+        );
+        expect(screen.getByText('KR')).toBeInTheDocument();
+        expect(screen.getAllByText('Kasra').length).toBeGreaterThan(0);
+    });
+
     it('shows New agent when the screen passes an action', () => {
         render(
             <AppHeader

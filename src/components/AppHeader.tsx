@@ -11,7 +11,7 @@ export interface AppHeaderProps {
     nav: SegmentedNavItem[];
     current: string;
     onNavigate: (id: string) => void;
-    user?: { name: string; role: string };
+    user?: { name: string; role: string; initials?: string };
     action?: { label: string; onClick?: () => void };
 }
 
@@ -223,7 +223,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                             fontWeight: 650,
                         }}
                     >
-                        {initials(user.name)}
+                        {user.initials || initials(user.name)}
                     </span>
                     <span>
                         {user.name}
