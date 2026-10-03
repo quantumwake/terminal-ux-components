@@ -121,3 +121,15 @@ export { AgentBadge } from './components/AgentBadge';
 export type { BadgeProps as AgentBadgeProps, Job } from './components/AgentBadge';
 export { PersonBadge } from './components/PersonBadge';
 export type { PersonBadgeProps } from './components/PersonBadge';
+
+export { WorkCard } from './components/WorkCard';
+export type { WorkCardProps } from './components/WorkCard';
+export type { WorkCardItem } from './components/cardChrome';
+export { SwimLanes } from './components/SwimLanes';
+export type { SwimLanesProps, SwimLane } from './components/SwimLanes';
+export { MilestoneStrip } from './components/MilestoneStrip';
+export type { MilestoneStripProps } from './components/MilestoneStrip';
+export { WorkflowList } from './components/WorkflowList';
+export type { WorkflowListProps, WorkflowMilestone, WorkflowStage, WorkflowAgent, WorkflowJob } from './components/WorkflowList';
+export { ChannelRail } from './components/ChannelRail';
+export type { ChannelRailProps, ChannelRailItem } from './components/ChannelRail';
