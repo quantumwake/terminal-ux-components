@@ -111,3 +111,5 @@ export { SegmentedNav } from './components/SegmentedNav';
 export type { SegmentedNavProps, SegmentedNavItem } from './components/SegmentedNav';
 export { AppHeader } from './components/AppHeader';
 export type { AppHeaderProps } from './components/AppHeader';
+export { SelectableRowTable } from './components/SelectableRowTable';
+export type { SelectableRowTableProps, SelectableColumn, SelectableRow } from './components/SelectableRowTable';
