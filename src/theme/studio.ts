@@ -10,7 +10,12 @@ export const studio = {
     text: '#ece6df',
     textMuted: '#c9c0b6',
     textFaint: '#a39a90',
+    textQuiet: '#8a8178',
     accent: '#e8743b',
+    link: '#f0a070',
+    inspector: '#131110',
+    terminal: '#0a0908',
+    dashed: '#3a342e',
     job: {
         coordinator: '#f2b35b',
         builder: '#e8743b',

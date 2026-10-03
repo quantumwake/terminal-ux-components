@@ -1,6 +1,7 @@
+import { studio } from '../../src/theme/studio'
 import { Inspector } from '../../src/components/Inspector'
 
-const tone = { ok: '#9fd39b', warn: '#f0a070', muted: '#8a8178', '': '#c9c0b6' }
+const tone = { ok: studio.job.person, warn: studio.link, muted: studio.textQuiet, '': studio.textMuted }
 const lines = [
     ['$ npm test -- portal/src/studio', ''],
     ['  PASS  home.test.js (14 tests)', 'ok'],
@@ -31,7 +32,7 @@ export default <div style={{ height: 887 }}>
             {lines.map(([text, kind]) => (
                 <span key={text} style={{ whiteSpace: 'pre', color: tone[kind] }}>{text}</span>
             ))}
-            <span style={{ color: '#e8743b' }}>▌</span>
+            <span style={{ color: studio.accent }}>▌</span>
         </>}
         posts={[
             { at: '09:30', where: 'studio', text: 'pushed the Home screen; screenshots next' },
