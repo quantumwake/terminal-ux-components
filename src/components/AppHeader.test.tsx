@@ -56,11 +56,15 @@ describe('AppHeader', () => {
         expect(screen.getByRole('tab', { name: 'Agents' })).toHaveAttribute('aria-selected', 'true');
     });
 
-    it('shows the person and reports an organization change', () => {
+    it('opens the organization menu and reports the one that was chosen', () => {
         const { onOrganization } = renderHeader();
         expect(screen.getByText('Kasra')).toBeInTheDocument();
         expect(screen.getByText(/Owner/)).toBeInTheDocument();
-        fireEvent.change(screen.getByRole('combobox', { name: 'Organization' }), { target: { value: 'Other' } });
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+        fireEvent.click(screen.getByRole('button', { name: 'Quantum Wake' }));
+        expect(screen.getByRole('menu', { name: 'Organizations' })).toBeInTheDocument();
+        fireEvent.click(screen.getByRole('menuitem', { name: 'Other' }));
         expect(onOrganization).toHaveBeenCalledWith('Other');
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument();
     });
 });

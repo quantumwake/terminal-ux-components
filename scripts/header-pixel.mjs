@@ -11,7 +11,11 @@ import pixelmatch from 'pixelmatch'
 import { PNG } from 'pngjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const mockupPath = process.argv[2] || join(root, '../statefs.ai-test-glob/docs/design/mockups/app-v2/8-Agents.png')
+const mockupPath = process.argv[2]
+if (!mockupPath) {
+    console.error('usage: node scripts/header-pixel.mjs <mockup.png>')
+    process.exit(2)
+}
 const out = join(root, 'examples/app-header/gate')
 const chrome = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
