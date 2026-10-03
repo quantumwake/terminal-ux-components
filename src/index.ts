@@ -121,7 +121,6 @@ export { AgentBadge } from './components/AgentBadge';
 export type { BadgeProps as AgentBadgeProps, Job } from './components/AgentBadge';
 export { PersonBadge } from './components/PersonBadge';
 export type { PersonBadgeProps } from './components/PersonBadge';
-
 export { WorkCard } from './components/WorkCard';
 export type { WorkCardProps } from './components/WorkCard';
 export type { WorkCardItem } from './components/cardChrome';
@@ -133,3 +132,5 @@ export { WorkflowList } from './components/WorkflowList';
 export type { WorkflowListProps, WorkflowMilestone, WorkflowStage, WorkflowAgent, WorkflowJob } from './components/WorkflowList';
 export { ChannelRail } from './components/ChannelRail';
 export type { ChannelRailProps, ChannelRailItem } from './components/ChannelRail';
+export { Inspector } from './components/Inspector';
+export type { InspectorProps, InspectorPost } from './components/Inspector';
