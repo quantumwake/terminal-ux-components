@@ -154,3 +154,5 @@ export { PostItem, postKindColor, postKinds } from './components/PostItem';
 export type { PostItemProps } from './components/PostItem';
 export { Composer, composerKinds } from './components/Composer';
 export type { ComposerProps, ComposerKind } from './components/Composer';
+export { RailList } from './components/RailList';
+export type { RailListProps, RailWork, RailMember } from './components/RailList';
