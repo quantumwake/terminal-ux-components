@@ -17,7 +17,7 @@ export interface SwimLanesProps {
 }
 
 export const SwimLanes: React.FC<SwimLanesProps> = ({ lanes, selected, onSelect }) => (
-    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(lanes.length, 1)}, minmax(0, 1fr))`, gap: 10 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(lanes.length, 1)}, minmax(0, 1fr))`, gap: 10, width: '100%', fontFamily: studio.font, color: studio.text }}>
         {lanes.map((lane) => (
             <section
                 key={lane.id}

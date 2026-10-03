@@ -29,6 +29,9 @@ export const WorkCard: React.FC<WorkCardProps> = ({ item, selected = false, onSe
                 background: chrome.background,
                 border: `1px solid ${chrome.borderColor}`,
                 fontFamily: studio.font,
+                width: '100%',
+                margin: 0,
+                boxSizing: 'border-box',
             }}
         >
             <span style={{ display: 'flex', justifyContent: 'space-between', gap: 6, width: '100%' }}>
