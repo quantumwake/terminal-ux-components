@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { studio } from '../theme/studio';
 import { SegmentedNav, SegmentedNavItem } from './SegmentedNav';
 
@@ -25,6 +25,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     product = 'Agent Studio',
     mark = 'A',
     organization,
+    organizations,
     onOrganization,
     nav,
     current,
@@ -32,6 +33,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     user,
     action,
 }) => {
+    const [orgOpen, setOrgOpen] = useState(false);
+    const choices = organizations && organizations.length > 0 ? organizations : [organization];
     return (
         <header
             style={{
@@ -67,26 +70,75 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     {mark}
                 </span>
                 <span style={{ fontSize: 17, fontWeight: 600, whiteSpace: 'nowrap' }}>{product}</span>
-                <button
-                    type="button"
-                    onClick={() => onOrganization?.(organization)}
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        padding: '7px 12px',
-                        borderRadius: 8,
-                        border: `1px solid ${studio.line}`,
-                        background: '#1c1a17',
-                        color: studio.text,
-                        font: 'inherit',
-                        fontSize: 13,
-                        cursor: 'pointer',
-                    }}
-                >
-                    {organization}
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
-                </button>
+                <span style={{ position: 'relative' }}>
+                    <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={orgOpen}
+                        onClick={() => setOrgOpen((open) => !open)}
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            padding: '7px 12px',
+                            borderRadius: 8,
+                            border: `1px solid ${studio.line}`,
+                            background: '#1c1a17',
+                            color: studio.text,
+                            font: 'inherit',
+                            fontSize: 13,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        {organization}
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+                    </button>
+                    {orgOpen ? (
+                        <span
+                            role="menu"
+                            aria-label="Organizations"
+                            style={{
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                marginTop: 4,
+                                minWidth: '100%',
+                                background: '#1c1a17',
+                                border: `1px solid ${studio.line}`,
+                                borderRadius: 8,
+                                padding: 4,
+                                zIndex: 1,
+                            }}
+                        >
+                            {choices.map((name) => (
+                                <button
+                                    key={name}
+                                    type="button"
+                                    role="menuitem"
+                                    onClick={() => {
+                                        setOrgOpen(false);
+                                        onOrganization?.(name);
+                                    }}
+                                    style={{
+                                        display: 'block',
+                                        width: '100%',
+                                        textAlign: 'left',
+                                        border: 0,
+                                        borderRadius: 6,
+                                        padding: '6px 10px',
+                                        background: 'transparent',
+                                        color: studio.text,
+                                        font: 'inherit',
+                                        fontSize: 13,
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    {name}
+                                </button>
+                            ))}
+                        </span>
+                    ) : null}
+                </span>
             </div>
             <SegmentedNav items={nav} value={current} onChange={onNavigate} />
             {action ? (
