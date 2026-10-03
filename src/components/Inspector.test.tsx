@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Inspector } from './Inspector';
+import { formatSince, Inspector } from './Inspector';
 
 describe('Inspector', () => {
     it('shows the claimed work and the terminal for a Cloud agent', () => {
@@ -75,5 +75,13 @@ describe('Inspector', () => {
         );
         expect(screen.queryByRole('log')).not.toBeInTheDocument();
         expect(screen.getByText(/enrolled by hand/)).toBeInTheDocument();
+        expect(screen.queryByText('Latest on its channels')).not.toBeInTheDocument();
+    });
+
+    it('formats since against the given clock and leaves a written label alone', () => {
+        expect(formatSince('2026-10-03T09:30:00.000Z', '2026-10-03T09:55:00.000Z')).toBe('25 min');
+        expect(formatSince('2026-10-03T07:55:00.000Z', '2026-10-03T09:55:00.000Z')).toBe('2 h');
+        expect(formatSince('26 h owed', '2026-10-03T09:55:00.000Z')).toBe('26 h owed');
+        expect(formatSince('2026-10-03T09:30:00.000Z')).toBe('');
     });
 });

@@ -18,7 +18,16 @@ export interface InspectorProps {
     stage: string;
     state: string;
     stateColor?: string;
-    since: string;
+    /**
+     * When this state began, as an ISO instant, epoch, or Date. A label that
+     * is not an instant ("26 h owed", "since 07:50") is shown as written.
+     */
+    since: string | number | Date;
+    /**
+     * The clock `since` is formatted against. The gate passes a fixed instant
+     * so the label does not move. An instant with no clock draws nothing.
+     */
+    now?: string | number | Date;
     where: string;
     /**
      * `cloud` is a Cloud machine. `remote` was enrolled by hand, so its
@@ -37,6 +46,32 @@ export interface InspectorProps {
 }
 
 const link = { color: '#f0a070', textDecoration: 'none' } as const;
+
+function toMillis(value: string | number | Date | undefined): number | null {
+    if (value == null) return null;
+    if (value instanceof Date) {
+        const t = value.getTime();
+        return Number.isNaN(t) ? null : t;
+    }
+    if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+    if (/^\d{4}-\d{2}-\d{2}T/.test(value)) {
+        const t = Date.parse(value);
+        return Number.isNaN(t) ? null : t;
+    }
+    return null;
+}
+
+// formatSince turns a start instant and a fixed clock into the board's label
+// ("25 min", "2 h"). A label that is not an instant is returned unchanged.
+export function formatSince(since: string | number | Date, now?: string | number | Date): string {
+    const start = toMillis(since);
+    if (start == null) return String(since);
+    const end = toMillis(now);
+    if (end == null) return '';
+    const mins = Math.max(0, Math.floor((end - start) / 60000));
+    if (mins < 60) return `${mins} min`;
+    return `${Math.floor(mins / 60)} h`;
+}
 const kicker = { fontSize: 11, textTransform: 'uppercase' as const, letterSpacing: '0.05em', color: '#a39a90' };
 
 // Inspector is the selected agent's panel on board 8: who they are, the work
@@ -53,6 +88,7 @@ export const Inspector: React.FC<InspectorProps> = ({
     state,
     stateColor = '#e8743b',
     since,
+    now,
     where,
     runs,
     terminal,
@@ -94,7 +130,7 @@ export const Inspector: React.FC<InspectorProps> = ({
         <div style={{ padding: '12px 14px', borderRadius: 10, background: '#1a1714', border: '1px solid #2a2622', display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={kicker}>Claimed work</span>
             <a href="#" style={{ fontSize: 15, color: '#ece6df', textDecoration: 'none' }}>{work}</a>
-            <span style={{ fontSize: 12, color: '#a39a90' }}>{project} · {stage} · <span style={{ color: stateColor }}>{state}</span> · {since}</span>
+            <span style={{ fontSize: 12, color: '#a39a90' }}>{project} · {stage} · <span style={{ color: stateColor }}>{state}</span> · {formatSince(since, now)}</span>
         </div>
         {owned ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -121,16 +157,18 @@ export const Inspector: React.FC<InspectorProps> = ({
                 <span>This agent was enrolled by hand on someone’s own computer, so its terminal stays there. You see its posts and claims, not its screen.</span>
             </div>
         )}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span style={kicker}>Latest on its channels</span>
-            {posts.map((post) => (
-                <div key={post.at + post.text} style={{ display: 'grid', gridTemplateColumns: '44px minmax(0, 1fr)', gap: 10, fontSize: 13, lineHeight: 1.45 }}>
-                    <span style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 11, color: '#a39a90', paddingTop: 2 }}>{post.at}</span>
-                    <span><span style={{ fontFamily: '"IBM Plex Mono", monospace', color: '#a39a90' }}>{post.where}</span> {post.text}</span>
-                </div>
-            ))}
-            <a href="#" style={{ ...link, fontSize: 13 }}>Open the channel</a>
-        </div>
+        {posts.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <span style={kicker}>Latest on its channels</span>
+                {posts.map((post) => (
+                    <div key={post.at + post.text} style={{ display: 'grid', gridTemplateColumns: '44px minmax(0, 1fr)', gap: 10, fontSize: 13, lineHeight: 1.45 }}>
+                        <span style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: 11, color: '#a39a90', paddingTop: 2 }}>{post.at}</span>
+                        <span><span style={{ fontFamily: '"IBM Plex Mono", monospace', color: '#a39a90' }}>{post.where}</span> {post.text}</span>
+                    </div>
+                ))}
+                <a href="#" style={{ ...link, fontSize: 13 }}>Open the channel</a>
+            </div>
+        )}
     </aside>
     );
 };
