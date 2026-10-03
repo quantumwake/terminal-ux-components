@@ -133,4 +133,4 @@ export type { WorkflowListProps, WorkflowMilestone, WorkflowStage, WorkflowAgent
 export { ChannelRail } from './components/ChannelRail';
 export type { ChannelRailProps, ChannelRailItem } from './components/ChannelRail';
 export { Inspector } from './components/Inspector';
-export type { InspectorProps, InspectorLine, InspectorPost } from './components/Inspector';
+export type { InspectorProps, InspectorPost } from './components/Inspector';

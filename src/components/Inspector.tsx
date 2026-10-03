@@ -1,11 +1,6 @@
 import React from 'react';
 import { AgentBadge, Job } from './AgentBadge';
 
-export interface InspectorLine {
-    text: string;
-    tone?: '' | 'ok' | 'warn' | 'muted';
-}
-
 export interface InspectorPost {
     at: string;
     where: string;
@@ -25,11 +20,22 @@ export interface InspectorProps {
     stateColor?: string;
     since: string;
     where: string;
-    terminal?: InspectorLine[];
+    /**
+     * `cloud` is a Cloud machine. `remote` was enrolled by hand, so its
+     * terminal stays on that computer. Defaults to `cloud` when `terminal`
+     * is set, otherwise `remote`.
+     */
+    runs?: 'cloud' | 'remote';
+    /**
+     * What the machine's owner sees inside the terminal. The live read-only
+     * terminal goes here. Omit it for a Cloud agent this viewer does not own:
+     * the panel then shows neither the terminal nor Take over.
+     */
+    terminal?: React.ReactNode;
+    onTakeOver?: () => void;
     posts: InspectorPost[];
 }
 
-const toneColor = { ok: '#9fd39b', warn: '#f0a070', muted: '#8a8178', '': '#c9c0b6' };
 const link = { color: '#f0a070', textDecoration: 'none' } as const;
 const kicker = { fontSize: 11, textTransform: 'uppercase' as const, letterSpacing: '0.05em', color: '#a39a90' };
 
@@ -48,9 +54,19 @@ export const Inspector: React.FC<InspectorProps> = ({
     stateColor = '#e8743b',
     since,
     where,
+    runs,
     terminal,
+    onTakeOver,
     posts,
-}) => (
+}) => {
+    const place = runs ?? (terminal != null ? 'cloud' : 'remote');
+    const owned = place === 'cloud' && terminal != null;
+    const press = (event: React.MouseEvent<HTMLAnchorElement>) => {
+        if (!onTakeOver) return;
+        event.preventDefault();
+        onTakeOver();
+    };
+    return (
     <aside
         aria-label="Selected agent"
         style={{
@@ -80,22 +96,24 @@ export const Inspector: React.FC<InspectorProps> = ({
             <a href="#" style={{ fontSize: 15, color: '#ece6df', textDecoration: 'none' }}>{work}</a>
             <span style={{ fontSize: 12, color: '#a39a90' }}>{project} · {stage} · <span style={{ color: stateColor }}>{state}</span> · {since}</span>
         </div>
-        {terminal ? (
+        {owned ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                     <span style={kicker}>Terminal · {where}</span>
                     <span style={{ display: 'flex', gap: 10, fontSize: 12 }}>
                         <a href="#" style={link}>Open full screen</a>
-                        <a href="#" style={link}>Take over</a>
+                        <a href="#" style={link} onClick={press}>Take over</a>
                     </span>
                 </span>
                 <div role="log" aria-label="Terminal" style={{ background: '#0a0908', border: '1px solid #2a2622', borderRadius: 10, padding: '12px 14px', fontFamily: '"IBM Plex Mono", monospace', fontSize: 12, lineHeight: 1.6, color: '#c9c0b6', display: 'flex', flexDirection: 'column', gap: 1, minHeight: 250 }}>
-                    {terminal.map((line) => (
-                        <span key={line.text} style={{ whiteSpace: 'pre', color: toneColor[line.tone ?? ''] }}>{line.text}</span>
-                    ))}
-                    <span style={{ color: '#e8743b' }}>▌</span>
+                    {terminal}
                 </div>
                 <span style={{ fontSize: 12, color: '#a39a90' }}>Only the machine’s owner sees this terminal. It runs with their logins, so it is read only until they take over, and every take over is recorded. Everyone else sees the agent’s state and work.</span>
+            </div>
+        ) : place === 'cloud' ? (
+            <div style={{ padding: 14, borderRadius: 10, border: '1px dashed #3a342e', display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, lineHeight: 1.5, color: '#c9c0b6' }}>
+                <span style={{ fontWeight: 600, color: '#ece6df' }}>Only the machine’s owner sees its terminal</span>
+                <span>It runs with their logins. You see this agent’s state and work, not its screen.</span>
             </div>
         ) : (
             <div style={{ padding: 14, borderRadius: 10, border: '1px dashed #3a342e', display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, lineHeight: 1.5, color: '#c9c0b6' }}>
@@ -114,6 +132,7 @@ export const Inspector: React.FC<InspectorProps> = ({
             <a href="#" style={{ ...link, fontSize: 13 }}>Open the channel</a>
         </div>
     </aside>
-);
+    );
+};
 
 export default Inspector;
