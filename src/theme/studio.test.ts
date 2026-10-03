@@ -12,6 +12,8 @@ describe('studio tokens', () => {
         expect(studio.textMuted).toBe('#c9c0b6');
         expect(studio.textFaint).toBe('#a39a90');
         expect(studio.accent).toBe('#e8743b');
+        expect(studio.ink).toBe('#160d07');
+        expect(studio.notice).toBe('#f3d2b0');
         expect(studio.link).toBe('#f0a070');
         expect(studio.inspector).toBe('#131110');
         expect(studio.terminal).toBe('#0a0908');
