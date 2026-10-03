@@ -12,6 +12,8 @@ export const studio = {
     textFaint: '#a39a90',
     textQuiet: '#8a8178',
     accent: '#e8743b',
+    ink: '#160d07',
+    notice: '#f3d2b0',
     link: '#f0a070',
     inspector: '#131110',
     terminal: '#0a0908',
