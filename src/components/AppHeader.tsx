@@ -11,7 +11,8 @@ export interface AppHeaderProps {
     nav: SegmentedNavItem[];
     current: string;
     onNavigate: (id: string) => void;
-    user: { name: string; role: string };
+    user?: { name: string; role: string };
+    action?: { label: string; onClick?: () => void };
 }
 
 function initials(name: string): string {
@@ -30,6 +31,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     current,
     onNavigate,
     user,
+    action,
 }) => {
     const choices = organizations && organizations.length > 0 ? organizations : [organization];
     return (
@@ -39,8 +41,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: 16,
-                height: 56,
-                padding: '0 16px',
+                height: 72,
+                padding: '0 28px',
                 background: studio.header,
                 borderBottom: `1px solid ${studio.line}`,
                 fontFamily: studio.font,
@@ -93,29 +95,50 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 </label>
             </div>
             <SegmentedNav items={nav} value={current} onChange={onNavigate} />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-                <span
-                    aria-hidden="true"
+            {action ? (
+                <button
+                    type="button"
+                    onClick={action.onClick}
                     style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 28,
-                        height: 28,
-                        borderRadius: '50%',
-                        background: studio.job.person,
+                        border: 0,
+                        borderRadius: 8,
+                        height: 38,
+                        padding: '0 16px',
+                        background: studio.accent,
                         color: studio.ground,
-                        fontSize: 11,
-                        fontWeight: 650,
+                        font: 'inherit',
+                        fontSize: 14,
+                        fontWeight: 600,
+                        cursor: 'pointer',
                     }}
                 >
-                    {initials(user.name)}
-                </span>
-                <span>
-                    {user.name}
-                    <span style={{ color: studio.textFaint }}> · {user.role}</span>
-                </span>
-            </div>
+                    + {action.label}
+                </button>
+            ) : user ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                    <span
+                        aria-hidden="true"
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 28,
+                            height: 28,
+                            borderRadius: '50%',
+                            background: studio.job.person,
+                            color: studio.ground,
+                            fontSize: 11,
+                            fontWeight: 650,
+                        }}
+                    >
+                        {initials(user.name)}
+                    </span>
+                    <span>
+                        {user.name}
+                        <span style={{ color: studio.textFaint }}> · {user.role}</span>
+                    </span>
+                </div>
+            ) : null}
         </header>
     );
 };

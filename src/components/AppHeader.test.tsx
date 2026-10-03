@@ -42,6 +42,20 @@ describe('AppHeader', () => {
         expect(onNavigate).toHaveBeenCalledWith('agents');
     });
 
+    it('shows New agent when the screen passes an action', () => {
+        render(
+            <AppHeader
+                organization="Quantum Wake"
+                nav={nav}
+                current="agents"
+                onNavigate={() => {}}
+                action={{ label: 'New agent' }}
+            />,
+        );
+        expect(screen.getByRole('button', { name: '+ New agent' })).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Agents' })).toHaveAttribute('aria-selected', 'true');
+    });
+
     it('shows the person and reports an organization change', () => {
         const { onOrganization } = renderHeader();
         expect(screen.getByText('Kasra')).toBeInTheDocument();
