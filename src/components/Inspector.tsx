@@ -46,7 +46,7 @@ export interface InspectorProps {
     posts: InspectorPost[];
 }
 
-const link = { color: studio.link, textDecoration: 'none' } as const;
+const link = { color: studio.link } as const;
 
 function toMillis(value: string | number | Date | undefined): number | null {
     if (value == null) return null;
