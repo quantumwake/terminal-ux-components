@@ -90,7 +90,7 @@ export const SelectableRowTable: React.FC<SelectableRowTableProps> = ({
                         }}
                     >
                         {row.cells.map((cell, index) => (
-                            <span key={index} role="cell">{cell}</span>
+                            <span key={index} role="cell" style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>{cell}</span>
                         ))}
                     </button>
                 );
