@@ -1,6 +1,6 @@
 // Theme plumbing
-export { ThemeProvider, useTheme, defaultTheme } from './theme';
-export type { Theme, ThemeProviderProps } from './theme';
+export { ThemeProvider, useTheme, defaultTheme, studio } from './theme';
+export type { Theme, ThemeProviderProps, StudioTokens } from './theme';
 
 // Leaf primitives
 export { TerminalButton } from './components/TerminalButton';
@@ -106,3 +106,8 @@ export { TerminalSplit } from './components/TerminalSplit';
 export type { TerminalSplitProps } from './components/TerminalSplit';
 export { useFullscreen } from './components/useFullscreen';
 export type { FullscreenState } from './components/useFullscreen';
+
+export { SegmentedNav } from './components/SegmentedNav';
+export type { SegmentedNavProps, SegmentedNavItem } from './components/SegmentedNav';
+export { AppHeader } from './components/AppHeader';
+export type { AppHeaderProps } from './components/AppHeader';
