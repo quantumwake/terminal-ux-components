@@ -2,7 +2,7 @@
 import { describe, it, expect } from 'vitest'
 import { PNG } from 'pngjs'
 // @ts-expect-error: a plain .mjs script
-import { compare, crop, page, parseClip, LIMIT } from './story-gate.mjs'
+import { compare, crop, isComponent, page, parseClip, LIMIT } from './story-gate.mjs'
 
 const png = (w: number, h: number, paint = (_x: number, _y: number) => [15, 14, 13]) => {
     const p = new PNG({ width: w, height: h })
@@ -47,5 +47,13 @@ describe('story gate', () => {
         expect(html).toContain('<script src="/story.js"></script>')
         expect(html).toContain('left:28px;top:213px;width:879px')
         expect(html).toContain('IBM+Plex+Sans')
+    })
+
+    it('counts only library components as what a story mounts', () => {
+        expect(isComponent('src/components/AppHeader.tsx')).toBe(true)
+        expect(isComponent('/abs/tux/src/components/StatusDot.ts')).toBe(true)
+        for (const not of ['examples/app-header/story.tsx', 'src/theme/studio.ts', 'node_modules/react/index.js', 'src/components/x/deep.tsx', 'notsrc/components/A.tsx']) {
+            expect(isComponent(not), not).toBe(false)
+        }
     })
 })
