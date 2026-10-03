@@ -43,6 +43,7 @@
     "dev": "tsup --watch",
     "lint": "tsc --noEmit",
     "test": "vitest run",
+    "gate:header": "node scripts/header-pixel.mjs",
     "test:watch": "vitest",
     "prepublishOnly": "npm run lint && npm run build",
     "release": "npm run lint && npm run build && npm publish --access public",
@@ -51,11 +52,11 @@
     "version:minor": "npm version minor && npm run release"
   },
   "peerDependencies": {
-    "react": ">=17.0.0",
-    "react-dom": ">=17.0.0",
-    "lucide-react": ">=0.4.0",
     "@headlessui/react": ">=2.0.0",
-    "@heroicons/react": ">=2.0.0"
+    "@heroicons/react": ">=2.0.0",
+    "lucide-react": ">=0.4.0",
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
   },
   "peerDependenciesMeta": {
     "lucide-react": {
@@ -69,18 +70,22 @@
     }
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "lucide-react": "^0.563.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "jsdom": "^25.0.1",
+    "lucide-react": "^0.563.0",
+    "pixelmatch": "^7.2.0",
+    "playwright-core": "^1.63.0",
+    "pngjs": "^7.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tsup": "^8.4.0",
     "typescript": "^5.7.0",
-    "vitest": "^3.2.7",
-    "jsdom": "^25.0.1",
-    "@testing-library/react": "^16.3.3",
-    "@testing-library/jest-dom": "^6.9.1"
+    "vitest": "^3.2.7"
   }
 }
