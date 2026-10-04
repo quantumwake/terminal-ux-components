@@ -157,4 +157,4 @@ export type { ComposerProps, ComposerKind } from './components/Composer';
 export { RailList } from './components/RailList';
 export type { RailListProps, RailWork, RailMember } from './components/RailList';
 export { ThreadRow } from './components/ThreadRow';
-export type { ThreadRowProps, ThreadPost } from './components/ThreadRow';
+export type { ThreadRowProps, ThreadReply } from './components/ThreadRow';
