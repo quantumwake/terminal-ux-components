@@ -162,3 +162,5 @@ export { ThreadRow } from './components/ThreadRow';
 export type { ThreadRowProps, ThreadReply } from './components/ThreadRow';
 export { PresenceList } from './components/PresenceList';
 export type { PresenceListProps, PresenceHere, PresenceRecent } from './components/PresenceList';
+export { GateList, gateKinds } from './components/GateList';
+export type { GateListProps, GateRow, GateAction, GateKind } from './components/GateList';
