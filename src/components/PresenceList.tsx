@@ -1,0 +1,192 @@
+import React from 'react';
+import { studio } from '../theme/studio';
+import type { Job } from './AgentBadge';
+
+// Board 1's rail. Agents appear while they listen on this channel and leave
+// when they stop. Nobody is added by hand.
+const footnote =
+    'Click one to see what it is doing. From presence: agents show up when they listen here and drop off when they stop. Nobody is added by hand. An agent with no persona given is General: it can do anything until it is given one.';
+
+export interface PresenceHere {
+    id: string;
+    glyph: string;
+    person?: boolean;
+    job?: Job;
+    handle: string;
+    note: string;
+    state: 'here' | 'working';
+    href?: string;
+}
+
+export interface PresenceRecent {
+    id: string;
+    glyph: string;
+    person?: boolean;
+    job?: Job;
+    handle: string;
+    note: string;
+}
+
+export interface PresenceListProps {
+    here: PresenceHere[];
+    recent?: PresenceRecent[];
+    onSelect?: (id: string) => void;
+}
+
+function Badge({ glyph, person, job = 'builder' }: { glyph: string; person?: boolean; job?: Job }) {
+    return (
+        <span
+            aria-hidden
+            style={{
+                width: 28,
+                height: 28,
+                flexShrink: 0,
+                borderRadius: person ? '50%' : 7,
+                background: person ? studio.job.person : studio.job[job],
+                color: studio.ink,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: studio.mono,
+                fontWeight: 600,
+                fontSize: 11,
+            }}
+        >
+            {glyph}
+        </span>
+    );
+}
+
+function Heading({ children, lift }: { children: React.ReactNode; lift?: boolean }) {
+    return (
+        <span
+            style={{
+                fontSize: 11,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: studio.textFaint,
+                marginTop: lift ? 4 : 0,
+            }}
+        >
+            {children}
+        </span>
+    );
+}
+
+function Row({
+    glyph,
+    person,
+    job,
+    handle,
+    note,
+    state,
+    href,
+    onClick,
+}: {
+    glyph: string;
+    person?: boolean;
+    job?: Job;
+    handle: string;
+    note: string;
+    state?: 'here' | 'working';
+    href?: string;
+    onClick?: () => void;
+}) {
+    const body = (
+        <>
+            <Badge glyph={glyph} person={person} job={job} />
+            <span style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minWidth: 0 }}>
+                <span style={{ fontFamily: studio.mono, fontSize: 13 }}>{handle}</span>
+                <span style={{ fontSize: 11, color: studio.textFaint }}>{note}</span>
+            </span>
+            {state ? (
+                <span
+                    aria-label={state}
+                    style={{
+                        width: 9,
+                        height: 9,
+                        borderRadius: '50%',
+                        flexShrink: 0,
+                        background: state === 'working' ? studio.accent : studio.job.person,
+                    }}
+                />
+            ) : null}
+        </>
+    );
+    const shared: React.CSSProperties = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        color: studio.text,
+        textDecoration: 'none',
+        padding: state ? 4 : 0,
+        borderRadius: 8,
+        font: 'inherit',
+        textAlign: 'left',
+        background: 'none',
+        border: 'none',
+        width: '100%',
+        boxSizing: 'border-box',
+    };
+    if (!state) {
+        return (
+            <div style={{ ...shared, opacity: 0.6, cursor: 'default' }}>
+                {body}
+            </div>
+        );
+    }
+    if (href) {
+        return (
+            <a href={href} title="Open its terminal, recorded session and work" onClick={onClick} style={{ ...shared, cursor: 'pointer' }}>
+                {body}
+            </a>
+        );
+    }
+    return (
+        <button type="button" title="Open its terminal, recorded session and work" onClick={onClick} style={{ ...shared, cursor: 'pointer' }}>
+            {body}
+        </button>
+    );
+}
+
+// PresenceList is the Here now rail on board 1. here is listening now;
+// recent has dropped off. A row with a person draws a circle; an agent draws
+// a square in its job colour. text is plain.
+export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], onSelect }) => (
+    <section
+        aria-label="Who is here"
+        style={{
+            boxSizing: 'border-box',
+            width: '100%',
+            background: studio.inspector,
+            padding: 18,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
+            fontFamily: studio.font,
+            color: studio.text,
+        }}
+    >
+        <Heading>Here now · {here.length}</Heading>
+        {here.map((a) => (
+            <Row
+                key={a.id}
+                glyph={a.glyph}
+                person={a.person}
+                job={a.job}
+                handle={a.handle}
+                note={a.note}
+                state={a.state}
+                href={a.href}
+                onClick={onSelect ? () => onSelect(a.id) : undefined}
+            />
+        ))}
+        {recent.length ? <Heading lift>Recently here</Heading> : null}
+        {recent.map((a) => (
+            <Row key={a.id} glyph={a.glyph} person={a.person} job={a.job} handle={a.handle} note={a.note} />
+        ))}
+        <span style={{ fontSize: 12, color: studio.textFaint, lineHeight: 1.5 }}>{footnote}</span>
+    </section>
+);
+
+export default PresenceList;
