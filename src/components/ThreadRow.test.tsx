@@ -49,6 +49,12 @@ describe('ThreadRow', () => {
         expect(onReply).toHaveBeenCalledOnce();
     });
 
+    it('opens a reply field on a post that has no replies yet', () => {
+        render(<ThreadRow {...post} replies={[]} open />);
+        expect(screen.queryByRole('list', { name: 'Replies' })).toBeNull();
+        expect(screen.getByRole('textbox', { name: 'Reply in thread' })).toBeInTheDocument();
+    });
+
     it('does not send an empty reply', () => {
         const onReply = vi.fn();
         render(<ThreadRow {...post} open draft="   " onReply={onReply} />);

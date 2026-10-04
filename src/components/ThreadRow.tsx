@@ -153,8 +153,9 @@ export const ThreadRow: React.FC<ThreadRowProps> = ({
                     </span>
                 </div>
             </div>
-            {open && replies.length ? (
+            {open ? (
                 <div style={{ margin: '8px 0 2px 84px', paddingLeft: 14, borderLeft: `2px solid ${studio.dashed}`, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {replies.length ? (
                     <ol aria-label="Replies" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
                         {replies.map((reply, index) => (
                             <li key={`${reply.handle}-${reply.at}-${index}`} style={{ display: 'grid', gridTemplateColumns: '24px minmax(0, 1fr)', gap: 10 }}>
@@ -170,6 +171,7 @@ export const ThreadRow: React.FC<ThreadRowProps> = ({
                             </li>
                         ))}
                     </ol>
+                    ) : null}
                     <form
                         aria-label="Reply to this post"
                         onSubmit={(event) => {
