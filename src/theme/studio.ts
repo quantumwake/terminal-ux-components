@@ -6,6 +6,8 @@ export const studio = {
     header: '#141210',
     panel: '#151311',
     card: '#1a1714',
+    // A picked row (board 4's selected shell).
+    selected: '#2b2520',
     line: '#2a2622',
     text: '#ece6df',
     textMuted: '#c9c0b6',

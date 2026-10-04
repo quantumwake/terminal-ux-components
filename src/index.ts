@@ -144,6 +144,8 @@ export { ListPicker } from './components/ListPicker';
 export type { ListPickerProps, ListPickerItem } from './components/ListPicker';
 export { Panel } from './components/Panel';
 export type { PanelProps } from './components/Panel';
+export { MachineCard } from './components/MachineCard';
+export type { MachineCardProps, MachineShell, ShellState } from './components/MachineCard';
 export { MemberRow } from './components/MemberRow';
 export type { MemberRowProps } from './components/MemberRow';
 export { ChannelRow } from './components/ChannelRow';
