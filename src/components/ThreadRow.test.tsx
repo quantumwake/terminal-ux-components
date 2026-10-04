@@ -1,56 +1,63 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ThreadRow, type ThreadPost } from './ThreadRow';
+import { ThreadRow, type ThreadReply } from './ThreadRow';
 
-const post: ThreadPost = {
-    glyph: 'CH',
-    job: 'coordinator',
-    handle: 'champion',
-    kind: 'request',
-    at: '08:40',
-    text: 'Approve the screens before the build starts.',
+const reply: ThreadReply = {
+    glyph: 'BU',
+    job: 'builder',
+    handle: 'builder',
+    kind: 'claim',
+    at: '09:02',
+    text: 'Claimed. Starting with the export endpoint and a test.',
 };
 
-const reply: ThreadPost = {
+const post = {
+    pos: 2301,
     glyph: 'KR',
     person: true,
-    handle: 'kasra',
-    kind: 'comment',
-    at: '08:44',
-    text: 'Approved. Start with the channel.',
+    handle: 'Kasra',
+    kind: 'request',
+    at: '09:02',
+    text: 'Add a CSV export to the reports page.',
+    state: 'In Review · waiting on you to approve',
+    warn: true,
+    replies: [reply],
 };
 
 describe('ThreadRow', () => {
-    it('shows the post and groups each reply under it', () => {
-        render(<ThreadRow post={post} replies={[reply]} />);
-        expect(screen.getByText(post.text)).toBeInTheDocument();
+    it('keeps a reply under its post when the thread is open', () => {
+        render(<ThreadRow {...post} open />);
         const list = screen.getByRole('list', { name: 'Replies' });
         expect(list).toContainElement(screen.getByText(reply.text));
-        expect(list.compareDocumentPosition(screen.getByText(post.text)) & Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy();
+        expect(screen.getByText('Hide 1 reply')).toBeInTheDocument();
     });
 
-    it('sends the reply the box holds', () => {
+    it('hides the replies until the thread is opened', () => {
+        render(<ThreadRow {...post} />);
+        expect(screen.queryByText(reply.text)).toBeNull();
+        expect(screen.getByText('1 reply')).toBeInTheDocument();
+    });
+
+    it('sends the draft when the reply field is submitted', () => {
         const onReply = vi.fn();
         const onDraft = vi.fn();
-        render(<ThreadRow post={post} draft="On it." onDraft={onDraft} onReply={onReply} />);
-        fireEvent.change(screen.getByRole('textbox', { name: 'Reply' }), { target: { value: 'Done.' } });
+        render(<ThreadRow {...post} open draft="On it." onDraft={onDraft} onReply={onReply} />);
+        fireEvent.change(screen.getByRole('textbox', { name: 'Reply in thread' }), { target: { value: 'Done.' } });
         expect(onDraft).toHaveBeenCalledWith('Done.');
-        fireEvent.click(screen.getByRole('button', { name: 'Reply' }));
+        fireEvent.submit(screen.getByRole('form', { name: 'Reply to this post' }));
         expect(onReply).toHaveBeenCalledOnce();
     });
 
     it('does not send an empty reply', () => {
         const onReply = vi.fn();
-        render(<ThreadRow post={post} draft="   " onReply={onReply} />);
-        fireEvent.click(screen.getByRole('button', { name: 'Reply' }));
+        render(<ThreadRow {...post} open draft="   " onReply={onReply} />);
+        fireEvent.submit(screen.getByRole('form', { name: 'Reply to this post' }));
         expect(onReply).not.toHaveBeenCalled();
     });
 
     it('renders markup in a reply as text', () => {
-        const { container } = render(
-            <ThreadRow post={post} replies={[{ ...reply, text: '<img src=x onerror=alert(1)>' }]} />,
-        );
+        const { container } = render(<ThreadRow {...post} open replies={[{ ...reply, text: '<img src=x onerror=alert(1)>' }]} />);
         expect(container.querySelector('img')).toBeNull();
         expect(screen.getByText(/onerror/)).toBeInTheDocument();
     });
