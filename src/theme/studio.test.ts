@@ -8,6 +8,7 @@ describe('studio tokens', () => {
         expect(studioDark.panel).toBe('#151311');
         expect(studioDark.card).toBe('#1a1714');
         expect(studioDark.line).toBe('#2a2622');
+        expect(studioDark.segment).toBe(studioDark.selected);
         expect(studioDark.text).toBe('#ece6df');
         expect(studioDark.textMuted).toBe('#c9c0b6');
         expect(studioDark.textFaint).toBe('#a39a90');
