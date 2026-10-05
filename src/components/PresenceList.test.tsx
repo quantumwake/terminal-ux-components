@@ -35,6 +35,13 @@ describe('PresenceList', () => {
         expect(screen.queryByText('Recently here')).toBeNull();
     });
 
+    it('draws a given heading in place of the default one', () => {
+        render(<PresenceList here={here} heading={<div data-testid="own-heading">Here now · 2 (folds)</div>} />);
+        expect(screen.getByTestId('own-heading')).toBeInTheDocument();
+        expect(screen.queryByText('Here now · 2')).toBeNull();
+        expect(screen.getByRole('button', { name: /builder/ })).toBeInTheDocument();
+    });
+
     it('renders a note as text', () => {
         const { container } = render(
             <PresenceList here={[{ ...here[0], note: '<img src=x onerror=alert(1)>' }]} />,

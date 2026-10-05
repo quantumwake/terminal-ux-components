@@ -31,6 +31,9 @@ export interface PresenceListProps {
     here: PresenceHere[];
     recent?: PresenceRecent[];
     onSelect?: (id: string) => void;
+    // heading replaces the default "Here now · N" row, in the same place and
+    // gap, so a screen can draw its own row (a fold button beside the count).
+    heading?: React.ReactNode;
 }
 
 function Badge({ glyph, person, job = 'builder' }: { glyph: string; person?: boolean; job?: Job }) {
@@ -152,7 +155,7 @@ function Row({
 // PresenceList is the Here now rail on board 1. here is listening now;
 // recent has dropped off. A row with a person draws a circle; an agent draws
 // a square in its job colour. text is plain.
-export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], onSelect }) => (
+export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], onSelect, heading }) => (
     <section
         aria-label="Who is here"
         style={{
@@ -167,7 +170,7 @@ export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], o
             color: studio.text,
         }}
     >
-        <Heading>Here now · {here.length}</Heading>
+        {heading ?? <Heading>Here now · {here.length}</Heading>}
         {here.map((a) => (
             <Row
                 key={a.id}
