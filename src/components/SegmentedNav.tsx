@@ -18,7 +18,7 @@ export interface SegmentedNavProps {
 
 // Selected segment fill from the Agents mockup. It sits between the chip and
 // the line, and it is not one of the page surfaces.
-const segmentOn = studio.selected;
+const segmentOn = studio.segment;
 const chip = studio.track;
 
 export const SegmentedNav: React.FC<SegmentedNavProps> = ({

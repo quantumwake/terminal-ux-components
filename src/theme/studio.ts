@@ -13,6 +13,10 @@ type Palette = {
     card: string;
     // A picked row (board 4's selected shell).
     selected: string;
+    // The selected segment of a segmented control (the header nav, a tab
+    // strip), on the track. Its own token, so a light theme can make it
+    // stand off the track while cards keep selected.
+    segment: string;
     line: string;
     text: string;
     textMuted: string;
@@ -60,6 +64,7 @@ export const studioDark: Palette = {
     panel: '#151311',
     card: '#1a1714',
     selected: '#2b2520',
+    segment: '#2b2520',
     line: '#2a2622',
     text: '#ece6df',
     textMuted: '#c9c0b6',
