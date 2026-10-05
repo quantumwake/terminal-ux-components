@@ -16,7 +16,7 @@ export const MilestoneStrip: React.FC<MilestoneStripProps> = ({ name, check }) =
             gap: 10,
             padding: '8px 12px',
             borderRadius: 8,
-            background: '#1c1a17',
+            background: studio.track,
             fontSize: 13,
             fontFamily: studio.font,
         }}

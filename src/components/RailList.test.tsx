@@ -19,9 +19,9 @@ describe('RailList', () => {
     it('counts the open work and marks the one waiting on you', () => {
         render(<RailList work={work} members={members} />);
         expect(screen.getByText('Open work here · 2')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Approve the Projects screens/ })).toHaveStyle({ borderColor: '#6a3e22' });
-        expect(screen.getByText('working')).toHaveStyle({ color: studio.accent });
-        expect(screen.getByText('away')).toHaveStyle({ color: studio.textFaint });
+        expect(screen.getByRole('button', { name: /Approve the Projects screens/ })).toHaveInlineStyle({ borderColor: studio.accentLine });
+        expect(screen.getByText('working')).toHaveInlineStyle({ color: studio.accent });
+        expect(screen.getByText('away')).toHaveInlineStyle({ color: studio.textFaint });
     });
 
     it('opens a work row', () => {

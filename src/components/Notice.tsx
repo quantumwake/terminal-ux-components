@@ -7,12 +7,12 @@ export interface ActionBoxProps {
     actions: { label: string; onClick?: () => void }[];
 }
 
-const outline: React.CSSProperties = { padding: '8px 12px', borderRadius: 6, border: '1px solid #3a342e', background: 'none', color: studio.text, font: 'inherit', fontSize: 13, cursor: 'pointer' };
+const outline: React.CSSProperties = { padding: '8px 12px', borderRadius: 6, border: `1px solid ${studio.dashed}`, background: 'none', color: studio.text, font: 'inherit', fontSize: 13, cursor: 'pointer' };
 
 // ActionBox is a dashed invitation to do something (board 4's "Add a
 // channel"): a title, a line of text and outlined buttons.
 export const ActionBox: React.FC<ActionBoxProps> = ({ title, text, actions }) => (
-    <div style={{ padding: '12px 14px', borderRadius: 10, border: '1px dashed #3a342e', display: 'flex', flexDirection: 'column', gap: 8, fontFamily: studio.font, color: studio.text }}>
+    <div style={{ padding: '12px 14px', borderRadius: 10, border: `1px dashed ${studio.dashed}`, display: 'flex', flexDirection: 'column', gap: 8, fontFamily: studio.font, color: studio.text }}>
         <span style={{ fontWeight: 600, fontSize: 14 }}>{title}</span>
         <span style={{ fontSize: 13, color: studio.textMuted, lineHeight: 1.5 }}>{text}</span>
         <span style={{ display: 'flex', gap: 8 }}>

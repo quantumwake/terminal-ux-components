@@ -19,9 +19,9 @@ export interface SelectableRowTableProps {
     label?: string;
 }
 
-const chip = '#1a1714';
-const selected = '#221d19';
-const rule = '#221f1b';
+const chip = studio.card;
+const selected = studio.rowSelected;
+const rule = studio.rule;
 
 export const SelectableRowTable: React.FC<SelectableRowTableProps> = ({
     columns,

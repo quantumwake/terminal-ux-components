@@ -3,7 +3,7 @@ import { studio } from '../theme/studio';
 import type { Job } from './AgentBadge';
 
 // Board 5's post body. It sits between the text and muted tokens.
-const body = '#e2dbd2';
+const body = studio.textBody;
 
 // Every kind the viewer posts gets a pill. The six on board 5 use that
 // board's colours; report, status and artifact use studio tokens so a

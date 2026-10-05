@@ -66,7 +66,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                         color: studio.text,
                         font: 'inherit',
                         background: on ? studio.selected : studio.card,
-                        border: `1px solid ${on ? studio.accent : studio.line}`,
+                        borderWidth: 1, borderStyle: 'solid', borderColor: on ? studio.accent : studio.line,
                     }}
                 >
                     <AgentBadge glyph={s.glyph} job={s.job} size={28} />

@@ -20,7 +20,7 @@ export const StatusDot: React.FC<StatusDotProps> = ({ color, label, size = 8 }) 
                 height: size,
                 borderRadius: '50%',
                 flexShrink: 0,
-                ...(color ? { background: color } : { border: '1px dashed #8a8178' }),
+                ...(color ? { background: color } : { borderWidth: '1px', borderStyle: 'dashed', borderColor: studio.textQuiet }),
             }}
         />
         {label !== undefined && <span style={{ color: color ?? studio.textFaint }}>{label}</span>}

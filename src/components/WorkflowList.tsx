@@ -59,16 +59,16 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected
                                 cursor: 'pointer',
                                 textAlign: 'left',
                                 color: studio.text,
-                                background: on ? '#1f1a16' : studio.panel,
-                                border: `1px solid ${on ? studio.accent : studio.line}`,
+                                background: on ? studio.activeSurface : studio.panel,
+                                borderWidth: 1, borderStyle: 'solid', borderColor: on ? studio.accent : studio.line,
                                 fontFamily: studio.font,
                             }}
                         >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6a6158" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={studio.textDim} strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                                 <path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" />
                             </svg>
                             <span style={{ fontWeight: 600, fontSize: 15 }}>{stage.name}</span>
-                            <span style={{ fontSize: 13, color: '#f3d2b0' }}>{stage.check}</span>
+                            <span style={{ fontSize: 13, color: studio.notice }}>{stage.check}</span>
                             <span style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                                 {stage.who.map((agent) => (
                                     <span
@@ -81,7 +81,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected
                                             flexShrink: 0,
                                             borderRadius: 5,
                                             background: chipColor(agent.job),
-                                            color: '#160d07',
+                                            color: studio.ink,
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
@@ -105,7 +105,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected
                         alignSelf: 'flex-start',
                         padding: '6px 12px',
                         borderRadius: 6,
-                        border: '1px dashed #3a342e',
+                        border: `1px dashed ${studio.dashed}`,
                         background: 'none',
                         color: studio.textFaint,
                         fontSize: 12,

@@ -34,8 +34,8 @@ export const FilterChips: React.FC<FilterChipsProps> = ({ items, value, onChange
                         fontFamily: studio.font,
                         fontSize: 13,
                         color: studio.text,
-                        background: on ? '#2b2520' : studio.panel,
-                        border: `1px solid ${on ? studio.accent : studio.line}`,
+                        background: on ? studio.selected : studio.panel,
+                        borderWidth: 1, borderStyle: 'solid', borderColor: on ? studio.accent : studio.line,
                     }}
                 >
                     {item.name}

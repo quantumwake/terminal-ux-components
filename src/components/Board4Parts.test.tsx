@@ -16,7 +16,7 @@ describe('ListPicker', () => {
         render(<ListPicker label="Projects" searchLabel="Find a project" items={items} value="a" onSelect={onSelect} onQuery={onQuery} action={{ label: 'New project', onClick: onAction }} />);
         expect(screen.getByRole('complementary', { name: 'Projects' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Studio/ })).toHaveAttribute('aria-pressed', 'true');
-        expect(screen.getByRole('button', { name: /Studio/ })).toHaveStyle({ border: `1px solid ${studio.accent}` });
+        expect(screen.getByRole('button', { name: /Studio/ })).toHaveInlineStyle({ borderColor: studio.accent });
         expect(screen.getByRole('button', { name: 'Cloud' })).toHaveAttribute('aria-pressed', 'false');
         fireEvent.click(screen.getByRole('button', { name: 'Cloud' }));
         expect(onSelect).toHaveBeenCalledWith('b');
@@ -44,12 +44,12 @@ describe('MemberRow and ChannelRow', () => {
     it('draws an agent with its handle in mono, its detail and its stages', () => {
         render(<MemberRow badge={<span>B</span>} name="champion" mono detail="Coordinator · Kasra’s · This Mac" note="Propose" />);
         expect(screen.getByText('champion')).toHaveStyle({ fontFamily: studio.mono });
-        expect(screen.getByText('Coordinator · Kasra’s · This Mac')).toHaveStyle({ color: studio.textFaint });
-        expect(screen.getByText('Propose')).toHaveStyle({ color: studio.textMuted });
+        expect(screen.getByText('Coordinator · Kasra’s · This Mac')).toHaveInlineStyle({ color: studio.textFaint });
+        expect(screen.getByText('Propose')).toHaveInlineStyle({ color: studio.textMuted });
     });
     it('draws a person on one line with the role at the right', () => {
         render(<MemberRow badge={<span>KR</span>} name="Kasra" note="Project owner" />);
-        expect(screen.getByText('Project owner')).toHaveStyle({ color: studio.textFaint });
+        expect(screen.getByText('Project owner')).toHaveInlineStyle({ color: studio.textFaint });
         expect(screen.getByText('Kasra').closest('div')).toHaveStyle({ justifyContent: 'space-between' });
     });
     it('draws a channel with its kind as a pill', () => {

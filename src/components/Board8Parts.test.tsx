@@ -23,8 +23,8 @@ describe('FilterChips', () => {
 
     it('rings the chosen chip in the accent and the rest in the line colour', () => {
         render(<FilterChips items={items} value="all" onChange={() => {}} />);
-        expect(screen.getByRole('button', { name: 'All 9' })).toHaveStyle({ border: `1px solid ${studio.accent}` });
-        expect(screen.getByRole('button', { name: 'Working 3' })).toHaveStyle({ border: `1px solid ${studio.line}` });
+        expect(screen.getByRole('button', { name: 'All 9' })).toHaveInlineStyle({ borderColor: studio.accent });
+        expect(screen.getByRole('button', { name: 'Working 3' })).toHaveInlineStyle({ borderColor: studio.line });
     });
 
     it('reports the key of the chip clicked, and a chip with no count shows only its name', () => {
@@ -44,8 +44,8 @@ describe('StatusDot', () => {
 
     it('with no colour, is a dashed ring and a faint label', () => {
         const { container } = render(<StatusDot label="Not listening" />);
-        expect(container.querySelector('[aria-hidden="true"]')).toHaveStyle({ border: '1px dashed #8a8178' });
-        expect(screen.getByText('Not listening')).toHaveStyle({ color: studio.textFaint });
+        expect(container.querySelector('[aria-hidden="true"]')).toHaveInlineStyle({ borderWidth: '1px', borderStyle: 'dashed', borderColor: studio.textQuiet });
+        expect(screen.getByText('Not listening')).toHaveInlineStyle({ color: studio.textFaint });
     });
 });
 
@@ -53,7 +53,7 @@ describe('AgentBadge and PersonBadge', () => {
     it('tints an agent by its job and rounds its corners, wider when large', () => {
         const { rerender } = render(<AgentBadge glyph="RV" job="reviewer" label="reviewer" />);
         const badge = screen.getByRole('img', { name: 'reviewer' });
-        expect(badge).toHaveStyle({ background: studio.job.reviewer, width: '30px', borderRadius: '7px', fontSize: '11px' });
+        expect(badge).toHaveInlineStyle({ background: studio.job.reviewer, width: '30px', borderRadius: '7px', fontSize: '11px' });
         rerender(<AgentBadge glyph="RV" job="reviewer" label="reviewer" size={48} />);
         expect(screen.getByRole('img', { name: 'reviewer' })).toHaveStyle({ width: '48px', borderRadius: '12px', fontSize: '16px' });
     });
@@ -65,6 +65,6 @@ describe('AgentBadge and PersonBadge', () => {
 
     it('draws a person round, on the person tint', () => {
         render(<PersonBadge glyph="KR" label="Kasra" />);
-        expect(screen.getByRole('img', { name: 'Kasra' })).toHaveStyle({ background: studio.job.person, borderRadius: '50%' });
+        expect(screen.getByRole('img', { name: 'Kasra' })).toHaveInlineStyle({ background: studio.job.person, borderRadius: '50%' });
     });
 });

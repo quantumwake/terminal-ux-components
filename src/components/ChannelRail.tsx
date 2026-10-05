@@ -51,7 +51,7 @@ export const ChannelRail: React.FC<ChannelRailProps> = ({ channels, selected, on
                         border: 'none',
                         textAlign: 'left',
                         color: studio.text,
-                        background: on ? '#2b2520' : 'none',
+                        background: on ? studio.selected : 'none',
                         fontFamily: studio.font,
                     }}
                 >
@@ -63,7 +63,7 @@ export const ChannelRail: React.FC<ChannelRailProps> = ({ channels, selected, on
                                 padding: '1px 7px',
                                 borderRadius: 999,
                                 background: studio.accent,
-                                color: '#160d07',
+                                color: studio.ink,
                                 fontWeight: 600,
                             }}
                         >
@@ -80,7 +80,7 @@ export const ChannelRail: React.FC<ChannelRailProps> = ({ channels, selected, on
                 marginTop: 6,
                 padding: 8,
                 borderRadius: 6,
-                border: '1px dashed #3a342e',
+                border: `1px dashed ${studio.dashed}`,
                 background: 'none',
                 color: studio.textFaint,
                 fontSize: 12,

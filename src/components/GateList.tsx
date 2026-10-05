@@ -12,9 +12,9 @@ const kindLabel: Record<GateKind, string> = {
     evidence: 'evidence attached',
 };
 
-const unmet = '#f0a070';
-const met = '#9fd39b';
-const actionBorder = '#6a3e22';
+const unmet = studio.link;
+const met = studio.job.person;
+const actionBorder = studio.accentLine;
 
 export interface GateRow {
     id: string;

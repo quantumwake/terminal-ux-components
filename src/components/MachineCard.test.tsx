@@ -13,13 +13,13 @@ describe('MachineCard', () => {
     it('draws the machine, its shells and rings the picked one', () => {
         render(<MachineCard name="studio-1" kind="Cloud" cloud note="Yours · running 3h · Standard · 2 shells" shells={shells} selected="builder" />);
         expect(screen.getByRole('region', { name: 'studio-1' })).toBeInTheDocument();
-        expect(screen.getByText('Cloud')).toHaveStyle({ color: studio.link });
+        expect(screen.getByText('Cloud')).toHaveInlineStyle({ color: studio.link });
         const picked = screen.getByRole('button', { name: /builder/ });
         expect(picked).toHaveAttribute('aria-pressed', 'true');
-        expect(picked).toHaveStyle({ borderColor: studio.accent, background: studio.selected });
+        expect(picked).toHaveInlineStyle({ borderColor: studio.accent, background: studio.selected });
         expect(screen.getByRole('button', { name: /reviewer/ })).toHaveAttribute('aria-pressed', 'false');
-        expect(screen.getByRole('img', { name: 'working' })).toHaveStyle({ background: studio.accent });
-        expect(screen.getByRole('img', { name: 'listening' })).toHaveStyle({ background: studio.job.person });
+        expect(screen.getByRole('img', { name: 'working' })).toHaveInlineStyle({ background: studio.accent });
+        expect(screen.getByRole('img', { name: 'listening' })).toHaveInlineStyle({ background: studio.job.person });
     });
 
     it('picks a shell', () => {
@@ -40,8 +40,8 @@ describe('MachineCard', () => {
         rerender(<MachineCard name="Kasra’s MacBook" kind="Connected computer" note="Yours · last seen 10:02" shells={[{ ...shells[1], state: 'gone' }]} />);
         expect(screen.queryByRole('button', { name: 'New shell' })).toBeNull();
         expect(screen.queryByRole('button', { name: 'Stop machine' })).toBeNull();
-        expect(screen.getByText('Connected computer')).toHaveStyle({ color: studio.textFaint });
-        expect(screen.getByRole('img', { name: 'gone' })).toHaveStyle({ background: studio.dashed });
+        expect(screen.getByText('Connected computer')).toHaveInlineStyle({ color: studio.textFaint });
+        expect(screen.getByRole('img', { name: 'gone' })).toHaveInlineStyle({ background: studio.dashed });
     });
 
     it('renders names as text', () => {
