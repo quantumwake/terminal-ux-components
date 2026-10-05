@@ -25,7 +25,7 @@ export const AgentBadge: React.FC<BadgeProps> = ({ glyph, job = 'builder', size 
                 flexShrink: 0,
                 borderRadius: big ? 12 : 7,
                 background: studio.job[job],
-                color: '#160d07',
+                color: studio.ink,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

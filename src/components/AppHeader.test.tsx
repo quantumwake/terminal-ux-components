@@ -31,7 +31,7 @@ function renderHeader(current = 'home') {
 describe('AppHeader', () => {
     it('paints the header bar in the studio header colour', () => {
         renderHeader();
-        expect(screen.getByRole('banner')).toHaveStyle({ backgroundColor: studio.header });
+        expect(screen.getByRole('banner')).toHaveInlineStyle({ background: studio.header });
     });
 
     it('marks the current section and reports a click on another', () => {

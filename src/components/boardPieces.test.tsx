@@ -31,10 +31,10 @@ const lanes = [
 describe('WorkCard', () => {
     it('marks a selected card with the accent and a missing objective in the warm tint', () => {
         render(<WorkCard item={lanes[1].items[0]} selected />);
-        expect(screen.getByRole('button', { name: /Approve the Projects screens/ })).toHaveStyle({ borderColor: studio.accent });
+        expect(screen.getByRole('button', { name: /Approve the Projects screens/ })).toHaveInlineStyle({ borderColor: studio.accent });
         render(<WorkCard item={lanes[0].items[1]} />);
         const pills = screen.getAllByText('no objective');
-        expect(pills[pills.length - 1]).toHaveStyle({ color: '#f0a070', borderColor: '#6a3e22' });
+        expect(pills[pills.length - 1]).toHaveInlineStyle({ color: studio.link, borderColor: studio.accentLine });
     });
 });
 
@@ -81,10 +81,10 @@ describe('WorkflowList', () => {
         );
         const stage = screen.getByRole('button', { name: /Build/ });
         expect(stage).toHaveAttribute('aria-pressed', 'true');
-        expect(stage).toHaveStyle({ marginLeft: '24px', borderColor: studio.accent });
+        expect(stage).toHaveInlineStyle({ marginLeft: '24px', borderColor: studio.accent });
         const chip = screen.getByRole('img', { name: 'cloud-cursor' });
         expect(chip).toHaveTextContent('RV');
-        expect(chip).toHaveStyle({ backgroundColor: studio.job.builder });
+        expect(chip).toHaveInlineStyle({ background: studio.job.builder });
         fireEvent.click(screen.getByRole('button', { name: 'Add a stage under In progress' }));
         expect(onAddStage).toHaveBeenCalledWith('progress');
         fireEvent.click(stage);

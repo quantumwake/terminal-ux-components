@@ -27,7 +27,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({ item, selected = false, onSe
                 textAlign: 'left',
                 color: studio.text,
                 background: chrome.background,
-                border: `1px solid ${chrome.borderColor}`,
+                borderWidth: 1, borderStyle: 'solid', borderColor: chrome.borderColor,
                 fontFamily: studio.font,
                 width: '100%',
                 margin: 0,
@@ -45,7 +45,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({ item, selected = false, onSe
                     fontSize: 11,
                     padding: '2px 8px',
                     borderRadius: 999,
-                    border: `1px solid ${objective.borderColor}`,
+                    borderWidth: 1, borderStyle: 'solid', borderColor: objective.borderColor,
                     color: objective.color,
                 }}
             >

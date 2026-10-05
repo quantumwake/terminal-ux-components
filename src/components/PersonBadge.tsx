@@ -20,7 +20,7 @@ export const PersonBadge: React.FC<PersonBadgeProps> = ({ glyph, size = 30, labe
             flexShrink: 0,
             borderRadius: '50%',
             background: studio.job.person,
-            color: '#0d1a0c',
+            color: studio.personInk,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

@@ -2,10 +2,10 @@ import { studio } from '../theme/studio';
 
 // Colours from docs/design/mockups/app-v2/source/Board.dc.html.
 const flagColor: Record<string, string> = {
-    yours: '#f0a070',
-    stuck: '#f0a070',
-    'no objective': '#f0a070',
-    done: '#9fd39b',
+    yours: studio.link,
+    stuck: studio.link,
+    'no objective': studio.link,
+    done: studio.job.person,
 };
 
 export interface WorkCardItem {
@@ -24,12 +24,12 @@ export function flagTint(flag: string | undefined): string {
 }
 
 export function cardChrome(item: WorkCardItem, selected: boolean): { background: string; borderColor: string } {
-    if (selected) return { background: '#2b2520', borderColor: studio.accent };
-    if (item.yours) return { background: studio.card, borderColor: '#6a3e22' };
+    if (selected) return { background: studio.selected, borderColor: studio.accent };
+    if (item.yours) return { background: studio.card, borderColor: studio.accentLine };
     return { background: studio.card, borderColor: studio.line };
 }
 
 export function objectiveChrome(objective: string | undefined): { text: string; borderColor: string; color: string } {
-    if (objective) return { text: objective, borderColor: '#3a342e', color: studio.textMuted };
-    return { text: 'no objective', borderColor: '#6a3e22', color: '#f0a070' };
+    if (objective) return { text: objective, borderColor: studio.dashed, color: studio.textMuted };
+    return { text: 'no objective', borderColor: studio.accentLine, color: studio.link };
 }

@@ -3,7 +3,7 @@ import { studio } from '../theme/studio';
 import type { Job } from './AgentBadge';
 
 // The waiting row on board 5. Same warm border as a yours card.
-const waiting = { background: '#1a1612', border: '#6a3e22', detail: '#f0a070' };
+const waiting = { background: studio.waitingSurface, border: studio.accentLine, detail: studio.link };
 
 const stateColor: Record<string, string> = {
     working: studio.accent,
@@ -89,7 +89,7 @@ export const RailList: React.FC<RailListProps> = ({ work, members, onOpen }) => 
                         padding: '9px 10px',
                         borderRadius: 8,
                         background: item.yours ? waiting.background : studio.panel,
-                        border: `1px solid ${item.yours ? waiting.border : studio.line}`,
+                        borderWidth: 1, borderStyle: 'solid', borderColor: item.yours ? waiting.border : studio.line,
                         color: studio.text,
                         fontFamily: studio.font,
                         fontSize: 13,

@@ -27,7 +27,7 @@ export const Panel: React.FC<PanelProps> = ({ title, action, note, gap = 10, sty
                     <button
                         type="button"
                         onClick={action.onClick}
-                        style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid #3a342e', background: 'none', color: studio.text, font: 'inherit', fontSize: 12, cursor: 'pointer' }}
+                        style={{ padding: '6px 12px', borderRadius: 6, border: `1px solid ${studio.dashed}`, background: 'none', color: studio.text, font: 'inherit', fontSize: 12, cursor: 'pointer' }}
                     >
                         {action.label}
                     </button>

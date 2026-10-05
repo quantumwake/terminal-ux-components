@@ -18,7 +18,7 @@ describe('PostItem', () => {
     it('shows the handle, the kind, and the board chip', () => {
         render(<PostItem {...post} />);
         expect(screen.getByText('champion')).toBeInTheDocument();
-        expect(screen.getByText('request')).toHaveStyle({ color: studio.job.coordinator });
+        expect(screen.getByText('request')).toHaveInlineStyle({ color: studio.job.coordinator });
         expect(screen.getByText('on the board')).toBeInTheDocument();
         expect(screen.getByText('Approve the Projects screens')).toBeInTheDocument();
     });
@@ -34,7 +34,7 @@ describe('PostItem', () => {
 
     it('still shows a kind the map does not name', () => {
         render(<PostItem {...post} kind="note" card={undefined} />);
-        expect(screen.getByText('note')).toHaveStyle({ color: studio.textFaint });
+        expect(screen.getByText('note')).toHaveInlineStyle({ color: studio.textFaint });
     });
 
     it('follows the board chip', () => {

@@ -6,9 +6,9 @@ import { postKindColor } from './PostItem';
 // Board 1 draws a pass in the reviewer's colour. PostItem has no pass kind.
 const kindColor = (kind: string) => (kind === 'pass' ? studio.job.reviewer : postKindColor(kind));
 
-const ink = '#160d07';
-const body = '#e2dbd2';
-const posColor = '#6a6158';
+const ink = studio.ink;
+const body = studio.textBody;
+const posColor = studio.textDim;
 
 export interface ThreadReply {
     glyph: string;
@@ -100,7 +100,7 @@ export const ThreadRow: React.FC<ThreadRowProps> = ({
                 display: 'flex',
                 flexDirection: 'column',
                 padding: '8px 0',
-                borderBottom: '1px solid #1d1a17',
+                borderBottom: `1px solid ${studio.threadRule}`,
                 fontFamily: studio.font,
                 color: studio.text,
                 boxSizing: 'border-box',
