@@ -25,6 +25,18 @@ const sized = (c: HTMLElement, width: number, height = 400) => {
 };
 
 describe('TerminalSplit', () => {
+    it('names each divider when given labels, and falls back to "resize panes"', () => {
+        render(
+            <TerminalSplit dividerLabels={['Resize the channel list']}>
+                <div>a</div>
+                <div>b</div>
+                <div>c</div>
+            </TerminalSplit>,
+        );
+        const dividers = screen.getAllByRole('separator');
+        expect(dividers.map((d) => d.getAttribute('aria-label'))).toEqual(['Resize the channel list', 'resize panes']);
+    });
+
     it('renders every child as a pane with a divider between each pair', () => {
         const { container } = render(
             <TerminalSplit>

@@ -68,4 +68,15 @@ describe('PresenceList', () => {
         render(<PresenceList here={here} selected="kasra" />);
         expect(screen.getByRole('link', { name: /Kasra/ })).toHaveAttribute('aria-current', 'true');
     });
+
+    it('says what a click does when the screen gives a row title', () => {
+        render(<PresenceList here={here} rowTitle={(row) => `Show only @${row.handle}'s posts`} />);
+        expect(screen.getByRole('button', { name: /builder/ })).toHaveAttribute('title', "Show only @builder's posts");
+        expect(screen.getByRole('link', { name: /Kasra/ })).toHaveAttribute('title', "Show only @Kasra's posts");
+    });
+
+    it('keeps the terminal tooltip without one', () => {
+        render(<PresenceList here={here} />);
+        expect(screen.getByRole('button', { name: /builder/ })).toHaveAttribute('title', 'Open its terminal, recorded session and work');
+    });
 });

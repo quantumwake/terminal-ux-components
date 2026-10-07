@@ -27,6 +27,12 @@ export interface TerminalSplitProps {
     dividerClassName?: string;
     /** Wraps each pane; layout comes from inline styles, so this is for looks only. */
     paneClassName?: string;
+    /**
+     * A name for each divider, read out by screen readers: index i names the
+     * divider after pane i ("Resize the channel list"). Missing ones say
+     * "resize panes".
+     */
+    dividerLabels?: string[];
 }
 
 const equal = (n: number) => Array.from({ length: n }, () => 1 / n);
@@ -60,6 +66,7 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
     className = '',
     dividerClassName,
     paneClassName = '',
+    dividerLabels,
 }) => {
     const panes = React.Children.toArray(children);
     const n = panes.length;
@@ -159,7 +166,7 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
             aria-valuenow={Math.round(share(a) * 100)}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label="resize panes"
+            aria-label={dividerLabels?.[a] || 'resize panes'}
             tabIndex={0}
             onPointerDown={onPointerDown(a, b)}
             onPointerMove={onPointerMove}

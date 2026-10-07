@@ -34,6 +34,10 @@ export interface PresenceListProps {
     // selected is the id of the row a screen has picked (a channel filtered
     // to that seat's posts). It is ringed and marked pressed or current.
     selected?: string;
+    // rowTitle is a here-now row's tooltip, for what a click does on this
+    // screen (a channel filters to the seat's posts). Without it a row says
+    // it opens the seat's terminal.
+    rowTitle?: (row: PresenceHere) => string;
     // heading replaces the default "Here now · N" row, in the same place and
     // gap, so a screen can draw its own row (a fold button beside the count).
     heading?: React.ReactNode;
@@ -89,6 +93,7 @@ function Row({
     href,
     onClick,
     selected,
+    title = 'Open its terminal, recorded session and work',
 }: {
     glyph: string;
     person?: boolean;
@@ -99,6 +104,7 @@ function Row({
     href?: string;
     onClick?: () => void;
     selected?: boolean;
+    title?: string;
 }) {
     const body = (
         <>
@@ -146,13 +152,13 @@ function Row({
     }
     if (href) {
         return (
-            <a href={href} title="Open its terminal, recorded session and work" aria-current={selected ? 'true' : undefined} onClick={onClick} style={{ ...shared, cursor: 'pointer' }}>
+            <a href={href} title={title} aria-current={selected ? 'true' : undefined} onClick={onClick} style={{ ...shared, cursor: 'pointer' }}>
                 {body}
             </a>
         );
     }
     return (
-        <button type="button" title="Open its terminal, recorded session and work" aria-pressed={selected === undefined ? undefined : selected} onClick={onClick} style={{ ...shared, cursor: 'pointer' }}>
+        <button type="button" title={title} aria-pressed={selected === undefined ? undefined : selected} onClick={onClick} style={{ ...shared, cursor: 'pointer' }}>
             {body}
         </button>
     );
@@ -161,7 +167,7 @@ function Row({
 // PresenceList is the Here now rail on board 1. here is listening now;
 // recent has dropped off. A row with a person draws a circle; an agent draws
 // a square in its job colour. text is plain.
-export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], onSelect, heading, selected }) => (
+export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], onSelect, heading, selected, rowTitle }) => (
     <section
         aria-label="Who is here"
         style={{
@@ -189,6 +195,7 @@ export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], o
                 href={a.href}
                 onClick={onSelect ? () => onSelect(a.id) : undefined}
                 selected={selected === undefined ? undefined : selected === a.id}
+                title={rowTitle?.(a)}
             />
         ))}
         {recent.length ? <Heading lift>Recently here</Heading> : null}
