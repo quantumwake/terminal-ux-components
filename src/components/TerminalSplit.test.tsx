@@ -25,7 +25,7 @@ const sized = (c: HTMLElement, width: number, height = 400) => {
 };
 
 describe('TerminalSplit', () => {
-    it('draws the studio look: a grip-token line at rest, an accent grip on hover, focus and drag', () => {
+    it('draws the studio look: a splitter-token line at rest, an accent grip on hover, focus and drag', () => {
         render(
             <TerminalSplit look="studio">
                 <div>a</div>
@@ -35,7 +35,7 @@ describe('TerminalSplit', () => {
         const divider = screen.getByRole('separator');
         const line = divider.querySelector('[data-split-line]') as HTMLElement;
         const grip = divider.querySelector('[data-split-grip]') as HTMLElement;
-        expect(line).toHaveInlineStyle({ background: 'var(--studio-grip, #7d7369)', width: '1px' });
+        expect(line).toHaveInlineStyle({ background: 'var(--studio-splitter, #7d7369)', width: '1px' });
         expect(grip).toHaveInlineStyle({ display: 'none' });
         fireEvent.pointerEnter(divider);
         expect(grip).toHaveInlineStyle({ display: 'block', background: 'var(--studio-accent, #e8743b)' });

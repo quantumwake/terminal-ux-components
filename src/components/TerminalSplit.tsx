@@ -35,7 +35,7 @@ export interface TerminalSplitProps {
      */
     dividerLabels?: string[];
     /**
-     * 'studio' draws each divider as a 1px line in the grip token, visible at
+     * 'studio' draws each divider as a 1px line in the splitter token, visible at
      * rest, with an accent grip that shows on hover, keyboard focus and drag.
      * Without it the divider keeps its classes (dividerClassName or Classic's
      * midnight ones).
@@ -218,7 +218,7 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
                 style={{
                     position: 'absolute',
                     pointerEvents: 'none',
-                    background: active ? studio.accent : studio.grip,
+                    background: active ? studio.accent : studio.splitter,
                     ...(horizontal
                         ? { top: 0, bottom: 0, left: '50%', width: 1, transform: 'translateX(-50%)' }
                         : { left: 0, right: 0, top: '50%', height: 1, transform: 'translateY(-50%)' }),
