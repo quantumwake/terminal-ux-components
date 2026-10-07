@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import { cardChrome, flagTint, objectiveChrome, WorkCardItem } from './cardChrome';
 
 export interface WorkCardProps {
@@ -22,7 +22,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({ item, selected = false, onSe
                 alignItems: 'flex-start',
                 gap: 6,
                 padding: 10,
-                borderRadius: 9,
+                borderRadius: radius(9),
                 cursor: 'pointer',
                 textAlign: 'left',
                 color: studio.text,
@@ -44,7 +44,7 @@ export const WorkCard: React.FC<WorkCardProps> = ({ item, selected = false, onSe
                 style={{
                     fontSize: 11,
                     padding: '2px 8px',
-                    borderRadius: 999,
+                    borderRadius: radius(999),
                     borderWidth: 1, borderStyle: 'solid', borderColor: objective.borderColor,
                     color: objective.color,
                 }}

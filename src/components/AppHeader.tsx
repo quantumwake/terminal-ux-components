@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import { SegmentedNav, SegmentedNavItem } from './SegmentedNav';
 
 export interface AppHeaderProps {
@@ -93,7 +93,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         justifyContent: 'center',
                         width: 28,
                         height: 28,
-                        borderRadius: 6,
+                        borderRadius: radius(6),
                         background: studio.accent,
                         color: studio.ink,
                         fontFamily: studio.mono,
@@ -123,7 +123,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                             alignItems: 'center',
                             gap: 8,
                             padding: '7px 12px',
-                            borderRadius: 8,
+                            borderRadius: radius(8),
                             border: `1px solid ${studio.line}`,
                             background: studio.track,
                             color: studio.text,
@@ -148,7 +148,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                                 minWidth: '100%',
                                 background: studio.track,
                                 border: `1px solid ${studio.line}`,
-                                borderRadius: 8,
+                                borderRadius: radius(8),
                                 padding: 4,
                                 zIndex: 1,
                             }}
@@ -167,7 +167,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                                         width: '100%',
                                         textAlign: 'left',
                                         border: 0,
-                                        borderRadius: 6,
+                                        borderRadius: radius(6),
                                         padding: '6px 10px',
                                         background: 'transparent',
                                         color: studio.text,
@@ -193,7 +193,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         alignItems: 'center',
                         gap: 8,
                         border: 0,
-                        borderRadius: 8,
+                        borderRadius: radius(8),
                         padding: '10px 16px',
                         background: studio.accent,
                         color: studio.ink,
@@ -216,7 +216,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                             justifyContent: 'center',
                             width: 28,
                             height: 28,
-                            borderRadius: '50%',
+                            borderRadius: radius('50%'),
                             background: studio.job.person,
                             color: studio.personInk,
                             fontSize: 11,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface PanelProps {
     title: string;
@@ -19,7 +19,7 @@ export const Panel: React.FC<PanelProps> = ({ title, action, note, gap = 10, sty
     return (
         <section
             aria-labelledby={id}
-            style={{ background: studio.panel, border: `1px solid ${studio.line}`, borderRadius: 12, padding: 16, display: 'flex', flexDirection: 'column', gap, fontFamily: studio.font, color: studio.text, ...style }}
+            style={{ background: studio.panel, border: `1px solid ${studio.line}`, borderRadius: radius(12), padding: 16, display: 'flex', flexDirection: 'column', gap, fontFamily: studio.font, color: studio.text, ...style }}
         >
             <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12 }}>
                 <h2 id={id} style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>{title}</h2>
@@ -27,7 +27,7 @@ export const Panel: React.FC<PanelProps> = ({ title, action, note, gap = 10, sty
                     <button
                         type="button"
                         onClick={action.onClick}
-                        style={{ padding: '6px 12px', borderRadius: 6, border: `1px solid ${studio.dashed}`, background: 'none', color: studio.text, font: 'inherit', fontSize: 12, cursor: 'pointer' }}
+                        style={{ padding: '6px 12px', borderRadius: radius(6), border: `1px solid ${studio.dashed}`, background: 'none', color: studio.text, font: 'inherit', fontSize: 12, cursor: 'pointer' }}
                     >
                         {action.label}
                     </button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface SelectableColumn {
     label: string;
@@ -40,7 +40,7 @@ export const SelectableRowTable: React.FC<SelectableRowTableProps> = ({
                 boxSizing: 'border-box',
                 background: studio.panel,
                 border: `1px solid ${studio.line}`,
-                borderRadius: 12,
+                borderRadius: radius(12),
                 overflow: 'hidden',
                 fontFamily: studio.font,
                 color: studio.text,

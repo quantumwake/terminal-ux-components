@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import { AgentBadge, type Job } from './AgentBadge';
 
 // A shell's state, as its dot draws it: working (the accent), listening
@@ -40,11 +40,11 @@ const DOT: Record<ShellState, string> = { working: studio.accent, listening: stu
 export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, note, shells, selected, onSelect, onNewShell, onStop }) => (
     <section
         aria-label={name}
-        style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 10, borderRadius: 10, border: `1px solid ${studio.line}`, background: studio.panel, color: studio.text, fontFamily: studio.font }}
+        style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 10, borderRadius: radius(10), border: `1px solid ${studio.line}`, background: studio.panel, color: studio.text, fontFamily: studio.font }}
     >
         <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
             <span style={{ fontSize: 14, fontWeight: 600 }}>{name}</span>
-            <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 999, border: `1px solid ${studio.dashed}`, color: cloud ? studio.link : studio.textFaint }}>{kind}</span>
+            <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: radius(999), border: `1px solid ${studio.dashed}`, color: cloud ? studio.link : studio.textFaint }}>{kind}</span>
         </span>
         <span style={{ fontSize: 12, color: studio.textFaint }}>{note}</span>
         {shells.map((s) => {
@@ -60,7 +60,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                         alignItems: 'center',
                         gap: 10,
                         padding: 8,
-                        borderRadius: 8,
+                        borderRadius: radius(8),
                         cursor: 'pointer',
                         textAlign: 'left',
                         color: studio.text,
@@ -76,7 +76,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                         <span title={s.handle} style={{ fontFamily: studio.mono, fontSize: 13, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.handle}</span>
                         <span style={{ fontSize: 11, color: studio.textFaint }}>{s.detail}</span>
                     </span>
-                    <span aria-label={s.state} role="img" style={{ width: 9, height: 9, borderRadius: '50%', flexShrink: 0, background: DOT[s.state] }} />
+                    <span aria-label={s.state} role="img" style={{ width: 9, height: 9, borderRadius: radius('50%'), flexShrink: 0, background: DOT[s.state] }} />
                 </button>
             );
         })}
@@ -86,7 +86,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                     <button
                         type="button"
                         onClick={onNewShell}
-                        style={{ flex: 1, padding: 6, borderRadius: 6, border: `1px dashed ${studio.dashed}`, background: 'none', color: studio.textMuted, font: 'inherit', fontSize: 12, textAlign: 'center', cursor: 'pointer' }}
+                        style={{ flex: 1, padding: 6, borderRadius: radius(6), border: `1px dashed ${studio.dashed}`, background: 'none', color: studio.textMuted, font: 'inherit', fontSize: 12, textAlign: 'center', cursor: 'pointer' }}
                     >
                         New shell
                     </button>
@@ -95,7 +95,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                     <button
                         type="button"
                         onClick={onStop}
-                        style={{ padding: '6px 10px', borderRadius: 6, border: `1px solid ${studio.dashed}`, background: 'none', color: studio.textFaint, font: 'inherit', fontSize: 12, cursor: 'pointer' }}
+                        style={{ padding: '6px 10px', borderRadius: radius(6), border: `1px solid ${studio.dashed}`, background: 'none', color: studio.textFaint, font: 'inherit', fontSize: 12, cursor: 'pointer' }}
                     >
                         Stop machine
                     </button>

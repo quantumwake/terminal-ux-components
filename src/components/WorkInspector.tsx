@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import { Callout } from './Callout';
 import { KeyValueList } from './KeyValueList';
 
@@ -34,7 +34,7 @@ export interface WorkInspectorProps {
 const approve = {
     flex: 1,
     padding: 12,
-    borderRadius: 8,
+    borderRadius: radius(8),
     border: 'none',
     background: studio.accent,
     color: studio.ink,
@@ -46,7 +46,7 @@ const approve = {
 const ask = {
     flex: 1,
     padding: 12,
-    borderRadius: 8,
+    borderRadius: radius(8),
     border: `1px solid ${studio.dashed}`,
     background: 'none',
     color: studio.text,
@@ -120,7 +120,7 @@ export const WorkInspector: React.FC<WorkInspectorProps> = ({
             </div>
         )}
         {unlinked && (
-            <button type="button" onClick={onLink} style={{ marginTop: 'auto', padding: 12, borderRadius: 8, border: `1px solid ${studio.accent}`, background: 'none', color: studio.link, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>Link an objective</button>
+            <button type="button" onClick={onLink} style={{ marginTop: 'auto', padding: 12, borderRadius: radius(8), border: `1px solid ${studio.accent}`, background: 'none', color: studio.link, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>Link an objective</button>
         )}
     </aside>
 );

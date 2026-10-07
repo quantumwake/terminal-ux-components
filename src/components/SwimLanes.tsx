@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import { WorkCard } from './WorkCard';
 import { WorkCardItem } from './cardChrome';
 
@@ -25,7 +25,7 @@ export const SwimLanes: React.FC<SwimLanesProps> = ({ lanes, selected, onSelect 
                 style={{
                     background: studio.header,
                     border: `1px solid ${studio.line}`,
-                    borderRadius: 12,
+                    borderRadius: radius(12),
                     padding: 10,
                     display: 'flex',
                     flexDirection: 'column',

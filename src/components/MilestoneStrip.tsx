@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface MilestoneStripProps {
     name: string;
@@ -15,7 +15,7 @@ export const MilestoneStrip: React.FC<MilestoneStripProps> = ({ name, check }) =
             alignItems: 'center',
             gap: 10,
             padding: '8px 12px',
-            borderRadius: 8,
+            borderRadius: radius(8),
             background: studio.track,
             fontSize: 13,
             fontFamily: studio.font,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import type { Job } from './AgentBadge';
 import { postKindColor } from './PostItem';
 
@@ -47,7 +47,7 @@ function Badge({ glyph, person, job = 'builder', size }: { glyph: string; person
                 width: size,
                 height: size,
                 flexShrink: 0,
-                borderRadius: person ? '50%' : 7,
+                borderRadius: radius(person ? '50%' : 7),
                 background: person ? studio.job.person : studio.job[job],
                 color: ink,
                 display: 'flex',
@@ -65,7 +65,7 @@ function Badge({ glyph, person, job = 'builder', size }: { glyph: string; person
 
 function Kind({ kind }: { kind: string }) {
     return (
-        <span style={{ fontSize: 11, padding: '1px 8px', borderRadius: 999, border: `1px solid ${studio.dashed}`, color: kindColor(kind) }}>{kind}</span>
+        <span style={{ fontSize: 11, padding: '1px 8px', borderRadius: radius(999), border: `1px solid ${studio.dashed}`, color: kindColor(kind) }}>{kind}</span>
     );
 }
 
@@ -127,7 +127,7 @@ export const ThreadRow: React.FC<ThreadRowProps> = ({
                                     alignItems: 'center',
                                     gap: 6,
                                     padding: '3px 9px',
-                                    borderRadius: 6,
+                                    borderRadius: radius(6),
                                     border: `1px solid ${studio.line}`,
                                     background: studio.panel,
                                     color: studio.link,
@@ -188,7 +188,7 @@ export const ThreadRow: React.FC<ThreadRowProps> = ({
                                 width: '100%',
                                 boxSizing: 'border-box',
                                 padding: '8px 10px',
-                                borderRadius: 6,
+                                borderRadius: radius(6),
                                 border: `1px solid ${studio.dashed}`,
                                 background: studio.ground,
                                 color: studio.text,

@@ -1,5 +1,5 @@
 // Theme plumbing
-export { ThemeProvider, useTheme, defaultTheme, studio, studioDark, studioThemeVars, varName } from './theme';
+export { ThemeProvider, useTheme, defaultTheme, studio, studioDark, studioThemeVars, varName, radius } from './theme';
 export type { Theme, ThemeProviderProps, StudioTokens, StudioPalette } from './theme';
 
 // Leaf primitives

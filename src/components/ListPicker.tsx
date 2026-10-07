@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface ListPickerItem {
     id: string;
@@ -33,7 +33,7 @@ export const ListPicker: React.FC<ListPickerProps> = ({ items, value, onSelect, 
                 placeholder={searchPlaceholder}
                 value={query}
                 onChange={(e) => onQuery?.(e.target.value)}
-                style={{ padding: '10px 12px', borderRadius: 8, border: `1px solid ${studio.dashed}`, background: studio.panel, color: studio.text, font: 'inherit' }}
+                style={{ padding: '10px 12px', borderRadius: radius(8), border: `1px solid ${studio.dashed}`, background: studio.panel, color: studio.text, font: 'inherit' }}
             />
         </label>
         {items.map((item) => {
@@ -50,7 +50,7 @@ export const ListPicker: React.FC<ListPickerProps> = ({ items, value, onSelect, 
                         alignItems: 'flex-start',
                         gap: 2,
                         padding: '10px 12px',
-                        borderRadius: 8,
+                        borderRadius: radius(8),
                         cursor: 'pointer',
                         textAlign: 'left',
                         font: 'inherit',
@@ -68,7 +68,7 @@ export const ListPicker: React.FC<ListPickerProps> = ({ items, value, onSelect, 
             <button
                 type="button"
                 onClick={action.onClick}
-                style={{ marginTop: 4, padding: 11, borderRadius: 8, border: 'none', background: studio.accent, color: studio.ink, font: 'inherit', fontWeight: 600, cursor: 'pointer' }}
+                style={{ marginTop: 4, padding: 11, borderRadius: radius(8), border: 'none', background: studio.accent, color: studio.ink, font: 'inherit', fontWeight: 600, cursor: 'pointer' }}
             >
                 {action.label}
             </button>

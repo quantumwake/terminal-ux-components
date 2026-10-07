@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface FilterChip {
     key: string;
@@ -28,7 +28,7 @@ export const FilterChips: React.FC<FilterChipsProps> = ({ items, value, onChange
                     onClick={() => onChange(item.key)}
                     style={{
                         padding: '7px 12px',
-                        borderRadius: 999,
+                        borderRadius: radius(999),
                         cursor: 'pointer',
                         font: 'inherit',
                         fontFamily: studio.font,

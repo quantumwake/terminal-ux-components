@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import type { Job } from './AgentBadge';
 
 // Board 1's rail. Agents appear while they listen on this channel and leave
@@ -51,7 +51,7 @@ function Badge({ glyph, person, job = 'builder' }: { glyph: string; person?: boo
                 width: 28,
                 height: 28,
                 flexShrink: 0,
-                borderRadius: person ? '50%' : 7,
+                borderRadius: radius(person ? '50%' : 7),
                 background: person ? studio.job.person : studio.job[job],
                 color: studio.ink,
                 display: 'flex',
@@ -119,7 +119,7 @@ function Row({
                     style={{
                         width: 9,
                         height: 9,
-                        borderRadius: '50%',
+                        borderRadius: radius('50%'),
                         flexShrink: 0,
                         background: state === 'working' ? studio.accent : studio.job.person,
                     }}
@@ -134,7 +134,7 @@ function Row({
         color: studio.text,
         textDecoration: 'none',
         padding: state ? 4 : 0,
-        borderRadius: 8,
+        borderRadius: radius(8),
         font: 'inherit',
         textAlign: 'left',
         background: selected ? studio.selected : 'none',

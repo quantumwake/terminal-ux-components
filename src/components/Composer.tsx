@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export const composerKinds = [
     { value: 'comment', label: 'Comment' },
@@ -48,7 +48,7 @@ export const Composer: React.FC<ComposerProps> = ({ channel, value, onChange, ki
             onChange={(event) => onChange(event.target.value)}
             style={{
                 padding: '10px 12px',
-                borderRadius: 8,
+                borderRadius: radius(8),
                 border: `1px solid ${studio.dashed}`,
                 background: studio.ground,
                 color: studio.text,
@@ -66,7 +66,7 @@ export const Composer: React.FC<ComposerProps> = ({ channel, value, onChange, ki
                     onChange={(event) => onKind(event.target.value as ComposerKind)}
                     style={{
                         padding: '6px 10px',
-                        borderRadius: 6,
+                        borderRadius: radius(6),
                         border: `1px solid ${studio.dashed}`,
                         background: studio.ground,
                         color: studio.text,
@@ -86,7 +86,7 @@ export const Composer: React.FC<ComposerProps> = ({ channel, value, onChange, ki
                 type="submit"
                 style={{
                     padding: '9px 18px',
-                    borderRadius: 8,
+                    borderRadius: radius(8),
                     border: 'none',
                     background: studio.accent,
                     color: studio.ink,
