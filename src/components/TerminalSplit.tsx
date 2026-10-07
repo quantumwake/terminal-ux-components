@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { studio } from '../theme/studio';
 
 export interface TerminalSplitProps {
     /** One pane per child, laid out side by side ('horizontal') or stacked ('vertical'). */
@@ -33,6 +34,13 @@ export interface TerminalSplitProps {
      * "resize panes".
      */
     dividerLabels?: string[];
+    /**
+     * 'studio' draws each divider as a 1px line in the grip token, visible at
+     * rest, with an accent grip that shows on hover, keyboard focus and drag.
+     * Without it the divider keeps its classes (dividerClassName or Classic's
+     * midnight ones).
+     */
+    look?: 'studio';
 }
 
 const equal = (n: number) => Array.from({ length: n }, () => 1 / n);
@@ -67,6 +75,7 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
     dividerClassName,
     paneClassName = '',
     dividerLabels,
+    look,
 }) => {
     const panes = React.Children.toArray(children);
     const n = panes.length;
@@ -75,6 +84,9 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
     const box = useRef<HTMLDivElement>(null);
     const drag = useRef<{ a: number; b: number; start: number; startSizes: number[]; total: number } | null>(null);
     const [dragging, setDragging] = useState<number | null>(null);
+    // The studio look's grip shows for the divider under the pointer or with focus.
+    const [hovered, setHovered] = useState<number | null>(null);
+    const [focused, setFocused] = useState<number | null>(null);
     const horizontal = direction === 'horizontal';
 
     // Which panes are showing. Without collapsed panes every size is used as
@@ -174,6 +186,10 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
             onPointerCancel={onPointerUp}
             onKeyDown={onKeyDown(a, b)}
             onDoubleClick={even(a, b)}
+            onPointerEnter={() => setHovered(a)}
+            onPointerLeave={() => setHovered((h) => (h === a ? null : h))}
+            onFocus={() => setFocused(a)}
+            onBlur={() => setFocused((f) => (f === a ? null : f))}
             data-dragging={dragging === a || undefined}
             className={
                 dividerClassName ??
@@ -185,8 +201,44 @@ export const TerminalSplit: React.FC<TerminalSplitProps> = ({
                 flex: `0 0 ${dividerSize}px`,
                 cursor: horizontal ? 'col-resize' : 'row-resize',
                 touchAction: 'none',
+                ...(look === 'studio' ? { position: 'relative', background: 'transparent', outline: 'none' } : null),
             }}
-        />
+        >
+            {look === 'studio' ? studioDivider(dragging === a || hovered === a || focused === a) : null}
+        </div>
+    );
+
+    // studioDivider is the studio look: a 1px line down the middle, accent
+    // while active, and a grip bar across it that shows only then.
+    const studioDivider = (active: boolean) => (
+        <>
+            <span
+                aria-hidden
+                data-split-line
+                style={{
+                    position: 'absolute',
+                    pointerEvents: 'none',
+                    background: active ? studio.accent : studio.grip,
+                    ...(horizontal
+                        ? { top: 0, bottom: 0, left: '50%', width: 1, transform: 'translateX(-50%)' }
+                        : { left: 0, right: 0, top: '50%', height: 1, transform: 'translateY(-50%)' }),
+                }}
+            />
+            <span
+                aria-hidden
+                data-split-grip
+                style={{
+                    position: 'absolute',
+                    pointerEvents: 'none',
+                    display: active ? 'block' : 'none',
+                    background: studio.accent,
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    ...(horizontal ? { width: 4, height: 28 } : { width: 28, height: 4 }),
+                }}
+            />
+        </>
     );
 
     return (

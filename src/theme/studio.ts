@@ -48,6 +48,9 @@ type Palette = {
     threadRule: string;
     // A workflow row that is on.
     activeSurface: string;
+    // A splitter's line between panes at rest: at least 3:1 against every
+    // surface a divider sits between (statefs.ai v3-3).
+    grip: string;
     job: {
         coordinator: string;
         builder: string;
@@ -87,6 +90,7 @@ export const studioDark: Palette = {
     rule: '#221f1b',
     threadRule: '#1d1a17',
     activeSurface: '#1f1a16',
+    grip: '#7d7369',
     job: {
         coordinator: '#f2b35b',
         builder: '#e8743b',
