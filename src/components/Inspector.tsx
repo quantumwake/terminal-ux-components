@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import { AgentBadge, Job } from './AgentBadge';
 
 export interface InspectorPost {
@@ -128,7 +128,7 @@ export const Inspector: React.FC<InspectorProps> = ({
             </span>
             <a href="#" style={{ ...link, fontSize: 13 }}>Persona</a>
         </div>
-        <div style={{ padding: '12px 14px', borderRadius: 10, background: studio.card, border: `1px solid ${studio.line}`, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ padding: '12px 14px', borderRadius: radius(10), background: studio.card, border: `1px solid ${studio.line}`, display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span style={kicker}>Claimed work</span>
             <a href="#" style={{ fontSize: 15, color: studio.text, textDecoration: 'none' }}>{work}</a>
             <span style={{ fontSize: 12, color: studio.textFaint }}>{project} · {stage} · <span style={{ color: stateColor }}>{state}</span> · {formatSince(since, now)}</span>
@@ -142,18 +142,18 @@ export const Inspector: React.FC<InspectorProps> = ({
                         <a href="#" style={link} onClick={press}>Take over</a>
                     </span>
                 </span>
-                <div role="log" aria-label="Terminal" style={{ background: studio.terminal, border: `1px solid ${studio.line}`, borderRadius: 10, padding: '12px 14px', fontFamily: studio.mono, fontSize: 12, lineHeight: 1.6, color: studio.textMuted, display: 'flex', flexDirection: 'column', gap: 1, minHeight: 250 }}>
+                <div role="log" aria-label="Terminal" style={{ background: studio.terminal, border: `1px solid ${studio.line}`, borderRadius: radius(10), padding: '12px 14px', fontFamily: studio.mono, fontSize: 12, lineHeight: 1.6, color: studio.textMuted, display: 'flex', flexDirection: 'column', gap: 1, minHeight: 250 }}>
                     {terminal}
                 </div>
                 <span style={{ fontSize: 12, color: studio.textFaint }}>Only the machine’s owner sees this terminal. It runs with their logins, so it is read only until they take over, and every take over is recorded. Everyone else sees the agent’s state and work.</span>
             </div>
         ) : place === 'cloud' ? (
-            <div style={{ padding: 14, borderRadius: 10, border: `1px dashed ${studio.dashed}`, display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, lineHeight: 1.5, color: studio.textMuted }}>
+            <div style={{ padding: 14, borderRadius: radius(10), border: `1px dashed ${studio.dashed}`, display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, lineHeight: 1.5, color: studio.textMuted }}>
                 <span style={{ fontWeight: 600, color: studio.text }}>Only the machine’s owner sees its terminal</span>
                 <span>It runs with their logins. You see this agent’s state and work, not its screen.</span>
             </div>
         ) : (
-            <div style={{ padding: 14, borderRadius: 10, border: `1px dashed ${studio.dashed}`, display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, lineHeight: 1.5, color: studio.textMuted }}>
+            <div style={{ padding: 14, borderRadius: radius(10), border: `1px dashed ${studio.dashed}`, display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13, lineHeight: 1.5, color: studio.textMuted }}>
                 <span style={{ fontWeight: 600, color: studio.text }}>Runs on {where}</span>
                 <span>This agent was enrolled by hand on someone’s own computer, so its terminal stays there. You see its posts and claims, not its screen.</span>
             </div>

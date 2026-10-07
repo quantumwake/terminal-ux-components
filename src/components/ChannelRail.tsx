@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface ChannelRailItem {
     id: string;
@@ -46,7 +46,7 @@ export const ChannelRail: React.FC<ChannelRailProps> = ({ channels, selected, on
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         padding: '8px 10px',
-                        borderRadius: 6,
+                        borderRadius: radius(6),
                         cursor: 'pointer',
                         border: 'none',
                         textAlign: 'left',
@@ -61,7 +61,7 @@ export const ChannelRail: React.FC<ChannelRailProps> = ({ channels, selected, on
                             style={{
                                 fontSize: 11,
                                 padding: '1px 7px',
-                                borderRadius: 999,
+                                borderRadius: radius(999),
                                 background: studio.accent,
                                 color: studio.ink,
                                 fontWeight: 600,
@@ -79,7 +79,7 @@ export const ChannelRail: React.FC<ChannelRailProps> = ({ channels, selected, on
             style={{
                 marginTop: 6,
                 padding: 8,
-                borderRadius: 6,
+                borderRadius: radius(6),
                 border: `1px dashed ${studio.dashed}`,
                 background: 'none',
                 color: studio.textFaint,

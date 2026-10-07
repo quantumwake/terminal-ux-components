@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import { MilestoneStrip } from './MilestoneStrip';
 
 export type WorkflowJob = 'coordinator' | 'builder' | 'reviewer' | 'security' | 'person';
@@ -55,7 +55,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected
                                 alignItems: 'center',
                                 gap: 12,
                                 padding: '12px 14px',
-                                borderRadius: 10,
+                                borderRadius: radius(10),
                                 cursor: 'pointer',
                                 textAlign: 'left',
                                 color: studio.text,
@@ -79,7 +79,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected
                                             width: 20,
                                             height: 20,
                                             flexShrink: 0,
-                                            borderRadius: 5,
+                                            borderRadius: radius(5),
                                             background: chipColor(agent.job),
                                             color: studio.ink,
                                             display: 'flex',
@@ -104,7 +104,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({ milestones, selected
                         marginLeft: 24,
                         alignSelf: 'flex-start',
                         padding: '6px 12px',
-                        borderRadius: 6,
+                        borderRadius: radius(6),
                         border: `1px dashed ${studio.dashed}`,
                         background: 'none',
                         color: studio.textFaint,

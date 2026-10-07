@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface SegmentedNavItem {
     id: string;
@@ -36,7 +36,7 @@ export const SegmentedNav: React.FC<SegmentedNavProps> = ({
             gap: 4,
             background: chip,
             border: `1px solid ${studio.line}`,
-            borderRadius: 8,
+            borderRadius: radius(8),
             padding: 4,
             fontFamily: studio.font,
         }}
@@ -52,7 +52,7 @@ export const SegmentedNav: React.FC<SegmentedNavProps> = ({
                     onClick={() => onChange(item.id)}
                     style={{
                         border: 0,
-                        borderRadius: 6,
+                        borderRadius: radius(6),
                         padding: size === 'small' ? '7px 12px' : '8px 14px',
                         font: 'inherit',
                         fontSize: size === 'small' ? 13 : 14,

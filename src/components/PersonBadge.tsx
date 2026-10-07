@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface PersonBadgeProps {
     glyph: string;
@@ -18,7 +18,7 @@ export const PersonBadge: React.FC<PersonBadgeProps> = ({ glyph, size = 30, labe
             width: size,
             height: size,
             flexShrink: 0,
-            borderRadius: '50%',
+            borderRadius: radius('50%'),
             background: studio.job.person,
             color: studio.personInk,
             display: 'flex',

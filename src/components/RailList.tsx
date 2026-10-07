@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import type { Job } from './AgentBadge';
 
 // The waiting row on board 5. Same warm border as a yours card.
@@ -39,7 +39,7 @@ function Badge({ glyph, person, job = 'builder' }: { glyph: string; person?: boo
                 width: 22,
                 height: 22,
                 flexShrink: 0,
-                borderRadius: person ? '50%' : 5,
+                borderRadius: radius(person ? '50%' : 5),
                 background: person ? studio.job.person : studio.job[job],
                 color: studio.ink,
                 display: 'flex',
@@ -87,7 +87,7 @@ export const RailList: React.FC<RailListProps> = ({ work, members, onOpen }) => 
                     style={{
                         margin: 0,
                         padding: '9px 10px',
-                        borderRadius: 8,
+                        borderRadius: radius(8),
                         background: item.yours ? waiting.background : studio.panel,
                         borderWidth: 1, borderStyle: 'solid', borderColor: item.yours ? waiting.border : studio.line,
                         color: studio.text,

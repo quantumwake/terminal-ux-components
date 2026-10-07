@@ -5,7 +5,7 @@ import { FilterChips } from './FilterChips';
 import { StatusDot } from './StatusDot';
 import { AgentBadge } from './AgentBadge';
 import { PersonBadge } from './PersonBadge';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 const items = [
     { key: 'all', name: 'All', count: 9 },
@@ -53,9 +53,9 @@ describe('AgentBadge and PersonBadge', () => {
     it('tints an agent by its job and rounds its corners, wider when large', () => {
         const { rerender } = render(<AgentBadge glyph="RV" job="reviewer" label="reviewer" />);
         const badge = screen.getByRole('img', { name: 'reviewer' });
-        expect(badge).toHaveInlineStyle({ background: studio.job.reviewer, width: '30px', borderRadius: '7px', fontSize: '11px' });
+        expect(badge).toHaveInlineStyle({ background: studio.job.reviewer, width: '30px', borderRadius: radius(7), fontSize: '11px' });
         rerender(<AgentBadge glyph="RV" job="reviewer" label="reviewer" size={48} />);
-        expect(screen.getByRole('img', { name: 'reviewer' })).toHaveStyle({ width: '48px', borderRadius: '12px', fontSize: '16px' });
+        expect(screen.getByRole('img', { name: 'reviewer' })).toHaveInlineStyle({ width: '48px', borderRadius: radius(12), fontSize: '16px' });
     });
 
     it('hides an unlabelled badge from assistive tech, so a row reads its name once', () => {
@@ -65,6 +65,6 @@ describe('AgentBadge and PersonBadge', () => {
 
     it('draws a person round, on the person tint', () => {
         render(<PersonBadge glyph="KR" label="Kasra" />);
-        expect(screen.getByRole('img', { name: 'Kasra' })).toHaveInlineStyle({ background: studio.job.person, borderRadius: '50%' });
+        expect(screen.getByRole('img', { name: 'Kasra' })).toHaveInlineStyle({ background: studio.job.person, borderRadius: radius('50%') });
     });
 });

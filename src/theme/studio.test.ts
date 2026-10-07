@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { studio, studioDark, studioThemeVars, varName } from './studio';
+import { radius, studio, studioDark, studioThemeVars, varName } from './studio';
 
 describe('studio tokens', () => {
     it('keeps the app v2 mockup colours as the dark palette', () => {
@@ -45,5 +45,12 @@ describe('studio tokens', () => {
         expect(vars['--studio-job-person']).toBe('#2a7a2a');
         expect(vars['--studio-accent-line']).toBe('#6a3e22');
         expect(Object.keys(vars)).toHaveLength(Object.keys(studioDark).length - 1 + Object.keys(studioDark.job).length);
+    });
+});
+
+describe('radius', () => {
+    it('scales a corner by --studio-radius, so one variable set to 0 squares every corner', () => {
+        expect(radius(8)).toBe('calc(var(--studio-radius, 1) * 8px)');
+        expect(radius('50%')).toBe('calc(var(--studio-radius, 1) * 50%)');
     });
 });

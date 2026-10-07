@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 // A gate is what a card needs to leave a stage. It is never a persona.
 export const gateKinds = ['none', 'pass', 'approval', 'evidence'] as const;
@@ -66,7 +66,7 @@ export const GateList: React.FC<GateListProps> = ({ name, href, gates, action })
             boxSizing: 'border-box',
             width: '100%',
             padding: 12,
-            borderRadius: 10,
+            borderRadius: radius(10),
             background: studio.card,
             border: `1px solid ${studio.line}`,
             display: 'flex',
@@ -98,7 +98,7 @@ export const GateList: React.FC<GateListProps> = ({ name, href, gates, action })
                     style={{
                         marginTop: 3,
                         padding: 8,
-                        borderRadius: 6,
+                        borderRadius: radius(6),
                         border: `1px solid ${actionBorder}`,
                         color: unmet,
                         textDecoration: 'none',
@@ -118,7 +118,7 @@ export const GateList: React.FC<GateListProps> = ({ name, href, gates, action })
                     style={{
                         marginTop: 3,
                         padding: 8,
-                        borderRadius: 6,
+                        borderRadius: radius(6),
                         border: `1px solid ${actionBorder}`,
                         color: unmet,
                         background: 'none',

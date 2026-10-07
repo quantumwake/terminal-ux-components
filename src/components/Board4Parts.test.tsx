@@ -1,4 +1,5 @@
 import React from 'react';
+import { radius } from '../theme/studio';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ListPicker } from './ListPicker';
@@ -55,7 +56,7 @@ describe('MemberRow and ChannelRow', () => {
     it('draws a channel with its kind as a pill', () => {
         render(<ChannelRow name="studio" kind="main" note="created with the project" />);
         expect(screen.getByText('studio')).toHaveStyle({ fontFamily: studio.mono });
-        expect(screen.getByText('main')).toHaveStyle({ borderRadius: '999px' });
+        expect(screen.getByText('main')).toHaveInlineStyle({ borderRadius: radius(999) });
     });
 });
 

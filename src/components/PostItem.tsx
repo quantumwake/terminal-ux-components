@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 import type { Job } from './AgentBadge';
 
 // Board 5's post body. It sits between the text and muted tokens.
@@ -60,7 +60,7 @@ export const PostItem: React.FC<PostItemProps> = ({ glyph, person, job = 'builde
                 width: 34,
                 height: 34,
                 flexShrink: 0,
-                borderRadius: person ? '50%' : 8,
+                borderRadius: radius(person ? '50%' : 8),
                 background: person ? studio.job.person : studio.job[job],
                 color: studio.ink,
                 display: 'flex',
@@ -80,7 +80,7 @@ export const PostItem: React.FC<PostItemProps> = ({ glyph, person, job = 'builde
                     style={{
                         fontSize: 11,
                         padding: '1px 8px',
-                        borderRadius: 999,
+                        borderRadius: radius(999),
                         border: `1px solid ${studio.dashed}`,
                         color: postKindColor(kind),
                     }}
@@ -102,7 +102,7 @@ export const PostItem: React.FC<PostItemProps> = ({ glyph, person, job = 'builde
                         gap: 10,
                         margin: 0,
                         padding: '8px 12px',
-                        borderRadius: 8,
+                        borderRadius: radius(8),
                         background: studio.panel,
                         border: `1px solid ${studio.line}`,
                         color: studio.text,

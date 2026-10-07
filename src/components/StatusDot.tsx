@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export interface StatusDotProps {
     // The dot's and the label's colour; omitted, the dot is a dashed ring
@@ -18,7 +18,7 @@ export const StatusDot: React.FC<StatusDotProps> = ({ color, label, size = 8 }) 
             style={{
                 width: size,
                 height: size,
-                borderRadius: '50%',
+                borderRadius: radius('50%'),
                 flexShrink: 0,
                 ...(color ? { background: color } : { borderWidth: '1px', borderStyle: 'dashed', borderColor: studio.textQuiet }),
             }}

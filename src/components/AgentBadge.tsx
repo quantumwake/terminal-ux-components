@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio } from '../theme/studio';
+import { studio, radius } from '../theme/studio';
 
 export type Job = keyof typeof studio.job;
 
@@ -23,7 +23,7 @@ export const AgentBadge: React.FC<BadgeProps> = ({ glyph, job = 'builder', size 
                 width: size,
                 height: size,
                 flexShrink: 0,
-                borderRadius: big ? 12 : 7,
+                borderRadius: radius(big ? 12 : 7),
                 background: studio.job[job],
                 color: studio.ink,
                 display: 'flex',

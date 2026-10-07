@@ -138,3 +138,11 @@ export function studioThemeVars(palette: Palette): Record<string, string> {
 }
 
 export type StudioPalette = Palette;
+
+// radius is a corner as drawn: its size scaled by --studio-radius, which a
+// host sets to 0 for straight edges (statefs.ai v3-2) and leaves unset for
+// today's corners. One variable switches every corner at once.
+export function radius(size: number | string): string {
+    const v = typeof size === 'number' ? `${size}px` : size;
+    return `calc(var(--studio-radius, 1) * ${v})`;
+}
