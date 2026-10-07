@@ -49,4 +49,23 @@ describe('PresenceList', () => {
         expect(container.querySelector('img')).toBeNull();
         expect(screen.getByText(/onerror/)).toBeInTheDocument();
     });
+
+    it('rings the selected row and marks it pressed or current, and only it', () => {
+        render(<PresenceList here={[...here, { id: 'reviewer', glyph: 'RV', job: 'reviewer', handle: 'reviewer', note: 'Reviewer', state: 'here' }]} selected="builder" />);
+        const builder = screen.getByRole('button', { name: /builder/ });
+        expect(builder).toHaveAttribute('aria-pressed', 'true');
+        expect(builder).toHaveInlineStyle({ boxShadow: 'inset 0 0 0 1px var(--studio-accent, #e8743b)' });
+        expect(screen.getByRole('button', { name: /reviewer/ })).toHaveAttribute('aria-pressed', 'false');
+        expect(screen.getByRole('link', { name: /Kasra/ })).not.toHaveAttribute('aria-current');
+    });
+
+    it('marks nothing when no selection is given', () => {
+        render(<PresenceList here={here} />);
+        expect(screen.getByRole('button', { name: /builder/ })).not.toHaveAttribute('aria-pressed');
+    });
+
+    it('marks a selected link current', () => {
+        render(<PresenceList here={here} selected="kasra" />);
+        expect(screen.getByRole('link', { name: /Kasra/ })).toHaveAttribute('aria-current', 'true');
+    });
 });
