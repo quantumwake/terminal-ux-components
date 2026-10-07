@@ -71,7 +71,9 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                 >
                     <AgentBadge glyph={s.glyph} job={s.job} size={28} />
                     <span style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minWidth: 0 }}>
-                        <span style={{ fontFamily: studio.mono, fontSize: 13 }}>{s.handle}</span>
+                        {/* One line, cut with an ellipsis: a shell's name can be a
+                            40-character label with no spaces (statefs.ai #414). */}
+                        <span title={s.handle} style={{ fontFamily: studio.mono, fontSize: 13, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.handle}</span>
                         <span style={{ fontSize: 11, color: studio.textFaint }}>{s.detail}</span>
                     </span>
                     <span aria-label={s.state} role="img" style={{ width: 9, height: 9, borderRadius: '50%', flexShrink: 0, background: DOT[s.state] }} />

@@ -49,4 +49,12 @@ describe('MachineCard', () => {
         expect(container.querySelector('img')).toBeNull();
         expect(container.querySelector('b')).toBeNull();
     });
+
+    it('keeps a long shell name on one line inside the card', () => {
+        const long = 'x'.repeat(40);
+        render(<MachineCard name="m" kind="Cloud" cloud note="n" shells={[{ id: 's', glyph: 'XX', job: 'builder', handle: long, detail: 'd', state: 'working' }]} selected="" onSelect={() => {}} />);
+        const name = screen.getByText(long);
+        expect(name).toHaveInlineStyle({ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' });
+        expect(name).toHaveAttribute('title', long);
+    });
 });
