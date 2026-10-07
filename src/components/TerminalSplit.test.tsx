@@ -25,6 +25,58 @@ const sized = (c: HTMLElement, width: number, height = 400) => {
 };
 
 describe('TerminalSplit', () => {
+    it('draws the studio look: a splitter-token line at rest, an accent grip on hover, focus and drag', () => {
+        render(
+            <TerminalSplit look="studio">
+                <div>a</div>
+                <div>b</div>
+            </TerminalSplit>,
+        );
+        const divider = screen.getByRole('separator');
+        const line = divider.querySelector('[data-split-line]') as HTMLElement;
+        const grip = divider.querySelector('[data-split-grip]') as HTMLElement;
+        expect(line).toHaveInlineStyle({ background: 'var(--studio-splitter, #7d7369)', width: '1px', left: '2px' });
+        expect(line.style.transform).toBe('');
+        expect(grip).toHaveInlineStyle({ display: 'none' });
+        fireEvent.pointerEnter(divider);
+        expect(grip).toHaveInlineStyle({ display: 'block', background: 'var(--studio-accent, #e8743b)' });
+        expect(line).toHaveInlineStyle({ background: 'var(--studio-accent, #e8743b)' });
+        fireEvent.pointerLeave(divider);
+        expect(grip).toHaveInlineStyle({ display: 'none' });
+        fireEvent.focus(divider);
+        expect(grip).toHaveInlineStyle({ display: 'block' });
+        fireEvent.blur(divider);
+        expect(grip).toHaveInlineStyle({ display: 'none' });
+    });
+
+    it('turns the studio line for a vertical split', () => {
+        render(
+            <TerminalSplit look="studio" direction="vertical">
+                <div>a</div>
+                <div>b</div>
+            </TerminalSplit>,
+        );
+        const line = screen.getByRole('separator').querySelector('[data-split-line]') as HTMLElement;
+        expect(line).toHaveInlineStyle({ height: '1px' });
+    });
+
+    it('keeps the old divider without the studio look', () => {
+        render(
+            <TerminalSplit>
+                <div>a</div>
+                <div>b</div>
+            </TerminalSplit>,
+        );
+        const divider = screen.getByRole('separator');
+        expect(divider.querySelector('[data-split-line]')).toBeNull();
+        expect(divider.className).toContain('bg-midnight-border');
+        // The studio styles stay off a split without the look, so Classic keeps
+        // its divider background and focus outline (reviewer, #49).
+        expect(divider.style.outline).toBe('');
+        expect(divider.style.background).toBe('');
+        expect(divider.style.position).toBe('');
+    });
+
     it('names each divider when given labels, and falls back to "resize panes"', () => {
         render(
             <TerminalSplit dividerLabels={['Resize the channel list']}>
