@@ -70,6 +70,11 @@ describe('TerminalSplit', () => {
         const divider = screen.getByRole('separator');
         expect(divider.querySelector('[data-split-line]')).toBeNull();
         expect(divider.className).toContain('bg-midnight-border');
+        // The studio styles stay off a split without the look, so Classic keeps
+        // its divider background and focus outline (reviewer, #49).
+        expect(divider.style.outline).toBe('');
+        expect(divider.style.background).toBe('');
+        expect(divider.style.position).toBe('');
     });
 
     it('names each divider when given labels, and falls back to "resize panes"', () => {
