@@ -16,6 +16,9 @@ export interface PresenceHere {
     note: string;
     state: 'here' | 'working';
     href?: string;
+    // activity is what a working seat is doing, as one word from presence
+    // (thinking, writing, working, starting). It is drawn after the note.
+    activity?: string;
 }
 
 export interface PresenceRecent {
@@ -41,7 +44,46 @@ export interface PresenceListProps {
     // heading replaces the default "Here now · N" row, in the same place and
     // gap, so a screen can draw its own row (a fold button beside the count).
     heading?: React.ReactNode;
+    // animate makes a working seat look busy at a glance: its dot pulses and
+    // its activity sweeps the accent across the word with running dots.
+    // Under prefers-reduced-motion only a slow pulse is left. Off, the rail
+    // draws as it always has.
+    animate?: boolean;
 }
+
+// The busy look, ported from the portal's Classic presence (index.css
+// .presence-busy, .presence-dot-busy, .presence-ellipsis). Class names are
+// prefixed so a host's own styles never collide. Every effect is opacity,
+// transform or a background, so nothing moves the layout.
+export const PRESENCE_BUSY_CSS = `
+.tuxc-presence-pulse { animation: tuxc-presence-pulse 1.2s ease-in-out infinite; }
+.tuxc-presence-sweep {
+  color: ${studio.accent};
+  background: linear-gradient(90deg, ${studio.textFaint} 0%, ${studio.accent} 45%, ${studio.accent} 55%, ${studio.textFaint} 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: tuxc-presence-sweep 1.6s linear infinite;
+}
+.tuxc-presence-dots::after {
+  content: '';
+  display: inline-block;
+  width: 1.5ch;
+  text-align: left;
+  color: ${studio.accent};
+  -webkit-text-fill-color: ${studio.accent};
+  animation: tuxc-presence-dots 1.2s steps(4, end) infinite;
+}
+@keyframes tuxc-presence-sweep { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+@keyframes tuxc-presence-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.7); } }
+@keyframes tuxc-presence-dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
+@media (prefers-reduced-motion: reduce) {
+  .tuxc-presence-sweep { animation: none; background: none; -webkit-text-fill-color: ${studio.accent}; }
+  .tuxc-presence-dots::after { animation: none; content: '\\2026'; }
+  .tuxc-presence-pulse { animation-duration: 2.4s; }
+}
+`;
 
 function Badge({ glyph, person, job = 'builder' }: { glyph: string; person?: boolean; job?: Job }) {
     return (
@@ -94,6 +136,8 @@ function Row({
     onClick,
     selected,
     title = 'Open its terminal, recorded session and work',
+    activity,
+    animate,
 }: {
     glyph: string;
     person?: boolean;
@@ -105,17 +149,33 @@ function Row({
     onClick?: () => void;
     selected?: boolean;
     title?: string;
+    activity?: string;
+    animate?: boolean;
 }) {
+    const busy = state === 'working';
+    const word = busy ? activity?.trim() : '';
     const body = (
         <>
             <Badge glyph={glyph} person={person} job={job} />
             <span style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minWidth: 0 }}>
                 <span style={{ fontFamily: studio.mono, fontSize: 13 }}>{handle}</span>
-                <span style={{ fontSize: 11, color: studio.textFaint }}>{note}</span>
+                <span style={{ fontSize: 11, color: studio.textFaint }}>
+                    {note}
+                    {word ? (
+                        <>
+                            {note ? ' · ' : null}
+                            <span className={animate ? 'tuxc-presence-sweep' : undefined} style={animate ? undefined : { color: studio.accent }}>
+                                {word}
+                            </span>
+                            {animate ? <span className="tuxc-presence-dots" aria-hidden /> : null}
+                        </>
+                    ) : null}
+                </span>
             </span>
             {state ? (
                 <span
                     aria-label={state}
+                    className={animate && busy ? 'tuxc-presence-pulse' : undefined}
                     style={{
                         width: 9,
                         height: 9,
@@ -167,7 +227,7 @@ function Row({
 // PresenceList is the Here now rail on board 1. here is listening now;
 // recent has dropped off. A row with a person draws a circle; an agent draws
 // a square in its job colour. text is plain.
-export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], onSelect, heading, selected, rowTitle }) => (
+export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], onSelect, heading, selected, rowTitle, animate = false }) => (
     <section
         aria-label="Who is here"
         style={{
@@ -182,6 +242,7 @@ export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], o
             color: studio.text,
         }}
     >
+        {animate && here.some((a) => a.state === 'working') ? <style>{PRESENCE_BUSY_CSS}</style> : null}
         {heading ?? <Heading>Here now · {here.length}</Heading>}
         {here.map((a) => (
             <Row
@@ -196,6 +257,8 @@ export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], o
                 onClick={onSelect ? () => onSelect(a.id) : undefined}
                 selected={selected === undefined ? undefined : selected === a.id}
                 title={rowTitle?.(a)}
+                activity={a.activity}
+                animate={animate}
             />
         ))}
         {recent.length ? <Heading lift>Recently here</Heading> : null}

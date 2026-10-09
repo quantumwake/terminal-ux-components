@@ -80,3 +80,51 @@ describe('PresenceList', () => {
         expect(screen.getByRole('button', { name: /builder/ })).toHaveAttribute('title', 'Open its terminal, recorded session and work');
     });
 });
+
+describe('PresenceList busy look', () => {
+    const busy: PresenceHere[] = [
+        { id: 'builder', glyph: 'BU', job: 'builder', handle: 'builder', note: 'Builder', state: 'working', activity: 'thinking' },
+        { id: 'kasra', glyph: 'KR', person: true, handle: 'Kasra', note: 'you · owner', state: 'here' },
+    ];
+
+    it('changes nothing for a caller that does not ask for it', () => {
+        const { container } = render(<PresenceList here={here} />);
+        expect(container.querySelector('style')).toBeNull();
+        expect(container.querySelector('.tuxc-presence-pulse, .tuxc-presence-sweep, .tuxc-presence-dots')).toBeNull();
+    });
+
+    it('shows the activity word, still, without animate', () => {
+        const { container } = render(<PresenceList here={busy} />);
+        expect(screen.getByText('thinking')).toBeInTheDocument();
+        expect(container.querySelector('style')).toBeNull();
+        expect(container.querySelector('.tuxc-presence-sweep')).toBeNull();
+    });
+
+    it('pulses a working dot and sweeps its word, with running dots', () => {
+        const { container } = render(<PresenceList here={busy} animate />);
+        const working = screen.getByRole('button', { name: /builder/ });
+        expect(working.querySelector('[aria-label="working"]')).toHaveClass('tuxc-presence-pulse');
+        expect(screen.getByText('thinking')).toHaveClass('tuxc-presence-sweep');
+        expect(working.querySelector('.tuxc-presence-dots')).not.toBeNull();
+        const css = container.querySelector('style')?.textContent ?? '';
+        expect(css).toContain('@keyframes tuxc-presence-pulse');
+        expect(css).toContain('@keyframes tuxc-presence-sweep');
+        expect(css).toContain('prefers-reduced-motion');
+    });
+
+    it('never animates a seat that is only here', () => {
+        render(<PresenceList here={busy} animate />);
+        const listening = screen.getByRole('button', { name: /Kasra/ });
+        expect(listening.querySelector('.tuxc-presence-pulse, .tuxc-presence-sweep, .tuxc-presence-dots')).toBeNull();
+    });
+
+    it('adds no stylesheet when nobody is working', () => {
+        const { container } = render(<PresenceList here={[busy[1]]} animate />);
+        expect(container.querySelector('style')).toBeNull();
+    });
+
+    it('ignores an activity on a seat that is not working', () => {
+        render(<PresenceList here={[{ ...busy[1], activity: 'thinking' }]} animate />);
+        expect(screen.queryByText('thinking')).toBeNull();
+    });
+});
