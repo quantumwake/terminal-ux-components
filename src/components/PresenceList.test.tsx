@@ -208,4 +208,19 @@ describe('PresenceList survivors (reviewer @1298)', () => {
         expect(dot).toHaveInlineStyle({ background: studio.job.person });
         expect(dot.className).toBe('');
     });
+
+    it('draws a seat\'s handle and note as isolated plain text', () => {
+        const { container } = render(
+            <PresenceList
+                here={[{ id: 'x', glyph: 'B\u202e', job: 'builder', handle: 'build\u202eer\u200b-1', note: 'Builder\u2066 · x', state: 'here' }]}
+                recent={[{ id: 'y', glyph: 'RV', job: 'reviewer', handle: 'rev\u202eiewer', note: 'left\u200f 10:02' }]}
+            />,
+        );
+        const bdis = Array.from(container.querySelectorAll('bdi')).map((b) => b.textContent);
+        expect(bdis).toContain('builder-1');
+        expect(bdis).toContain('Builder · x');
+        expect(bdis).toContain('reviewer');
+        expect(bdis).toContain('left 10:02');
+        expect(container.textContent).not.toMatch(/[\u202a-\u202e\u2066-\u2069\u200b\u200e\u200f]/);
+    });
 });
