@@ -193,3 +193,19 @@ describe('PresenceList with an unknown state (security @1295)', () => {
         expect(screen.getByRole('button', { name: /builder/ })).toBeInTheDocument();
     });
 });
+
+describe('PresenceList survivors (reviewer @1298)', () => {
+    it('blinks a rail whose only moving seat is waiting', () => {
+        const { container } = render(<PresenceList here={[{ id: 'w', glyph: 'W', job: 'reviewer', handle: 'w', note: 'Reviewer', state: 'waiting' }]} animate />);
+        expect(container.querySelector('[data-state="waiting"]')).toHaveClass('tuxc-state-waiting');
+        expect(container.querySelector('style')?.textContent).toContain('@keyframes tuxc-state-blink');
+    });
+
+    it('draws here as the still green listening dot, never as working', () => {
+        render(<PresenceList here={[here[0]]} animate />);
+        const dot = screen.getByRole('link', { name: /Kasra/ }).querySelector('[aria-label="here"]') as HTMLElement;
+        expect(dot).toHaveAttribute('data-state', 'listening');
+        expect(dot).toHaveInlineStyle({ background: studio.job.person });
+        expect(dot.className).toBe('');
+    });
+});
