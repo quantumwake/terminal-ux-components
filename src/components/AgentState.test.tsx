@@ -112,3 +112,13 @@ describe('shownText', () => {
         expect(shownText('  working  ')).toBe('working');
     });
 });
+
+describe('an unknown state (security @1295)', () => {
+    it('draws as listening, never throws', () => {
+        const odd = 'rate-limited' as unknown as AgentStateName;
+        render(<AgentStateDot state={odd} />);
+        expect(screen.getByRole('img', { name: 'listening' })).toHaveAttribute('data-state', 'listening');
+        render(<AgentStateLabel state={odd} since="1m" />);
+        expect(screen.getByText('1m')).toBeInTheDocument();
+    });
+});

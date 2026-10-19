@@ -1,7 +1,7 @@
 import React from 'react';
 import { studio, radius } from '../theme/studio';
 import { AgentBadge, type Job } from './AgentBadge';
-import { AGENT_STATE_CSS, AgentStateDot, type AgentStateName } from './AgentState';
+import { AGENT_STATE_CSS, AgentStateDot, knownState, type AgentStateName } from './AgentState';
 
 // A shell's state, as its dot draws it (AgentState): working (the accent),
 // listening (green), gone (a hollow dashed ring, the agent left), and
@@ -81,7 +81,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                         <span title={s.handle} style={{ fontFamily: studio.mono, fontSize: 13, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.handle}</span>
                         <span style={{ fontSize: 11, color: studio.textFaint }}>{s.detail}</span>
                     </span>
-                    <AgentStateDot state={s.state} animate={animate} label={s.state} />
+                    <AgentStateDot state={knownState(s.state, 'gone')} animate={animate} label={knownState(s.state, 'gone')} />
                 </button>
             );
         })}

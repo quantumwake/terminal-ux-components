@@ -184,3 +184,12 @@ describe('PresenceList agent states', () => {
         expect(screen.getByRole('button', { name: /builder/ }).querySelector('[aria-label="working"]')).not.toBeNull();
     });
 });
+
+describe('PresenceList with an unknown state (security @1295)', () => {
+    it('draws the row as here, and the rest of the rail with it', () => {
+        const odd = { id: 'x', glyph: 'X', job: 'builder' as const, handle: 'odd', note: 'Builder', state: 'rate-limited' as unknown as 'here' };
+        render(<PresenceList here={[odd, here[1]]} animate />);
+        expect(screen.getByRole('button', { name: /odd/ }).querySelector('[aria-label="here"]')).not.toBeNull();
+        expect(screen.getByRole('button', { name: /builder/ })).toBeInTheDocument();
+    });
+});

@@ -64,6 +64,14 @@ export const AGENT_STATE_CSS = `
 }
 `;
 
+// knownState is a state as given, or fallback for a name this library does
+// not know: a typo, or a newer parley's state. A presence state comes from an
+// agent, so an unknown one must draw something, never throw and blank the
+// list (security @1295).
+export function knownState(state: unknown, fallback: AgentStateName = 'listening'): AgentStateName {
+    return isAgentState(state) ? state : fallback;
+}
+
 function dotStyle(state: AgentStateName, size: number): React.CSSProperties {
     const { color } = AGENT_STATES[state];
     // Round even under --studio-radius: 0. A state dot is a signal, not a
@@ -95,7 +103,8 @@ export interface AgentStateDotProps {
 
 // AgentStateDot is the state on its own: a dot with the state's colour and,
 // with animate, its motion. It is an image whose name is the state's word.
-export const AgentStateDot: React.FC<AgentStateDotProps> = ({ state, size = 9, animate = false, label }) => {
+export const AgentStateDot: React.FC<AgentStateDotProps> = ({ state: given, size = 9, animate = false, label }) => {
+    const state = knownState(given);
     const moving = animate && state !== 'listening' && state !== 'gone';
     return (
         <span
@@ -122,7 +131,8 @@ export interface AgentStateLabelProps {
 // AgentStateLabel is the dot, the word in the state's colour and, faint, the
 // since: "● working · 2m". Text is plain, and drawn isolated (bdi), since a
 // word or since can come from an agent.
-export const AgentStateLabel: React.FC<AgentStateLabelProps> = ({ state, since, word, animate = false, size = 9 }) => {
+export const AgentStateLabel: React.FC<AgentStateLabelProps> = ({ state: given, since, word, animate = false, size = 9 }) => {
+    const state = knownState(given);
     const look = AGENT_STATES[state];
     return (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: studio.font, fontSize: 12, minWidth: 0 }}>

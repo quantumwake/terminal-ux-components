@@ -117,7 +117,7 @@ export { FilterChips } from './components/FilterChips';
 export type { FilterChipsProps, FilterChip } from './components/FilterChips';
 export { StatusDot } from './components/StatusDot';
 export type { StatusDotProps } from './components/StatusDot';
-export { AgentStateDot, AgentStateLabel, AgentStateStyles, AGENT_STATES, AGENT_STATE_CSS, isAgentState, shownText } from './components/AgentState';
+export { AgentStateDot, AgentStateLabel, AgentStateStyles, AGENT_STATES, AGENT_STATE_CSS, isAgentState, knownState, shownText } from './components/AgentState';
 export type { AgentStateName, AgentStateLook, AgentStateDotProps, AgentStateLabelProps } from './components/AgentState';
 export { AgentBadge } from './components/AgentBadge';
 export type { BadgeProps as AgentBadgeProps, Job } from './components/AgentBadge';

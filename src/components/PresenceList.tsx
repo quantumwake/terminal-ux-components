@@ -194,7 +194,7 @@ function Row({
                     ) : null}
                 </span>
             </span>
-            {state ? <AgentStateDot state={state === 'here' ? 'listening' : state} label={state === 'here' ? 'here' : undefined} animate={animate} /> : null}
+            {state ? <AgentStateDot state={isAgentState(state) ? state : 'listening'} label={isAgentState(state) ? undefined : 'here'} animate={animate} /> : null}
         </>
     );
     const shared: React.CSSProperties = {

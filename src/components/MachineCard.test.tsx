@@ -83,3 +83,12 @@ describe('MachineCard agent states', () => {
         expect(container.querySelectorAll('style')).toHaveLength(1);
     });
 });
+
+describe('MachineCard with an unknown state (security @1295)', () => {
+    it('draws that shell as gone, and the others as given', () => {
+        const odd = { id: 'o', glyph: 'OD', handle: 'odd', detail: 'd', state: 'rate-limited' as unknown as 'gone' };
+        render(<MachineCard name="m" kind="Cloud" note="n" shells={[odd, shells[0]]} animate />);
+        expect(screen.getByRole('button', { name: /odd/ }).querySelector('[data-state="gone"]')).not.toBeNull();
+        expect(screen.getByRole('img', { name: 'working' })).toBeInTheDocument();
+    });
+});
