@@ -71,6 +71,14 @@ describe('AgentStateDot', () => {
         expect(style('gone').background).toBe('');
     });
 
+    it('never lets a working dot look empty mid-pulse: its trough stays at 60% and 85% size (champion @1316)', () => {
+        const pulse = AGENT_STATE_CSS.match(/@keyframes tuxc-state-pulse \{([^\n]*)\}/)?.[1] ?? '';
+        const trough = pulse.match(/50% \{ opacity: ([\d.]+); transform: scale\(([\d.]+)\); \}/);
+        expect(trough).not.toBeNull();
+        expect(Number(trough![1])).toBeGreaterThanOrEqual(0.6);
+        expect(Number(trough![2])).toBeGreaterThanOrEqual(0.85);
+    });
+
     it('keeps its motions off for reduced motion', () => {
         expect(AGENT_STATE_CSS).toContain('@keyframes tuxc-state-pulse');
         expect(AGENT_STATE_CSS).toContain('@keyframes tuxc-state-breathe');
