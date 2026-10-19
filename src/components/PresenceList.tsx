@@ -1,6 +1,7 @@
 import React from 'react';
 import { studio, radius } from '../theme/studio';
 import type { Job } from './AgentBadge';
+import { AGENT_STATE_CSS, AGENT_STATES, AgentStateDot, isAgentState, shownText, type AgentStateName } from './AgentState';
 
 // Board 1's rail. Agents appear while they listen on this channel and leave
 // when they stop. Nobody is added by hand.
@@ -14,12 +15,20 @@ export interface PresenceHere {
     job?: Job;
     handle: string;
     note: string;
-    state: 'here' | 'working';
+    // here and working are the rail's first two states and draw as they
+    // always have. Any of the agent states (AgentState) draws that state's
+    // dot, colour and, with animate, its motion.
+    state: 'here' | PresenceState;
     href?: string;
-    // activity is what a working seat is doing, as one word from presence
+    // activity is what a busy seat is doing, as one word from presence
     // (thinking, writing, working, starting). It is drawn after the note.
     activity?: string;
+    // since is how long it has been in its state, or its last activity, as
+    // the host words it ("2m", "last post 4m ago"). Drawn last, faint.
+    since?: string;
 }
+
+export type PresenceState = AgentStateName;
 
 export interface PresenceRecent {
     id: string;
@@ -137,6 +146,7 @@ function Row({
     selected,
     title = 'Open its terminal, recorded session and work',
     activity,
+    since,
     animate,
 }: {
     glyph: string;
@@ -144,16 +154,20 @@ function Row({
     job?: Job;
     handle: string;
     note: string;
-    state?: 'here' | 'working';
+    state?: 'here' | PresenceState;
     href?: string;
     onClick?: () => void;
     selected?: boolean;
     title?: string;
     activity?: string;
+    since?: string;
     animate?: boolean;
 }) {
-    const busy = state === 'working';
-    const word = busy ? activity?.trim() : '';
+    const busy = isAgentState(state) && AGENT_STATES[state].busy;
+    // A state other than here or working says its word when no activity is given.
+    const word = busy ? shownText(activity) || (state === 'working' ? '' : AGENT_STATES[state as AgentStateName].word) : state && state !== 'here' && isAgentState(state) ? AGENT_STATES[state].word : '';
+    const wordColor = isAgentState(state) ? AGENT_STATES[state].color : studio.accent;
+    const shownSince = shownText(since);
     const body = (
         <>
             <Badge glyph={glyph} person={person} job={job} />
@@ -164,27 +178,23 @@ function Row({
                     {word ? (
                         <>
                             {note ? ' · ' : null}
-                            <span className={animate ? 'tuxc-presence-sweep' : undefined} style={animate ? undefined : { color: studio.accent }}>
-                                {word}
-                            </span>
-                            {animate ? <span className="tuxc-presence-dots" aria-hidden /> : null}
+                            {state === 'working' && animate ? (
+                                <bdi className="tuxc-presence-sweep">{word}</bdi>
+                            ) : (
+                                <bdi style={{ color: state === 'gone' ? studio.textFaint : wordColor }}>{word}</bdi>
+                            )}
+                            {animate && busy ? <span className="tuxc-presence-dots" aria-hidden /> : null}
+                        </>
+                    ) : null}
+                    {shownSince ? (
+                        <>
+                            {note || word ? ' · ' : null}
+                            <bdi>{shownSince}</bdi>
                         </>
                     ) : null}
                 </span>
             </span>
-            {state ? (
-                <span
-                    aria-label={state}
-                    className={animate && busy ? 'tuxc-presence-pulse' : undefined}
-                    style={{
-                        width: 9,
-                        height: 9,
-                        borderRadius: radius('50%'),
-                        flexShrink: 0,
-                        background: state === 'working' ? studio.accent : studio.job.person,
-                    }}
-                />
-            ) : null}
+            {state ? <AgentStateDot state={isAgentState(state) ? state : 'listening'} label={isAgentState(state) ? undefined : 'here'} animate={animate} /> : null}
         </>
     );
     const shared: React.CSSProperties = {
@@ -242,7 +252,12 @@ export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], o
             color: studio.text,
         }}
     >
-        {animate && here.some((a) => a.state === 'working') ? <style>{PRESENCE_BUSY_CSS}</style> : null}
+        {animate && here.some((a) => a.state !== 'here' && a.state !== 'listening' && a.state !== 'gone') ? (
+            <style>
+                {PRESENCE_BUSY_CSS}
+                {AGENT_STATE_CSS}
+            </style>
+        ) : null}
         {heading ?? <Heading>Here now · {here.length}</Heading>}
         {here.map((a) => (
             <Row
@@ -258,6 +273,7 @@ export const PresenceList: React.FC<PresenceListProps> = ({ here, recent = [], o
                 selected={selected === undefined ? undefined : selected === a.id}
                 title={rowTitle?.(a)}
                 activity={a.activity}
+                since={a.since}
                 animate={animate}
             />
         ))}

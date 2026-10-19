@@ -41,7 +41,8 @@ describe('MachineCard', () => {
         expect(screen.queryByRole('button', { name: 'New shell' })).toBeNull();
         expect(screen.queryByRole('button', { name: 'Stop machine' })).toBeNull();
         expect(screen.getByText('Connected computer')).toHaveInlineStyle({ color: studio.textFaint });
-        expect(screen.getByRole('img', { name: 'gone' })).toHaveInlineStyle({ background: studio.dashed });
+        // Gone is a hollow dashed ring, as AgentState draws it everywhere.
+        expect(screen.getByRole('img', { name: 'gone' })).toHaveInlineStyle({ borderStyle: 'dashed', borderColor: studio.textQuiet });
     });
 
     it('renders names as text', () => {
@@ -56,5 +57,38 @@ describe('MachineCard', () => {
         const name = screen.getByText(long);
         expect(name).toHaveInlineStyle({ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' });
         expect(name).toHaveAttribute('title', long);
+    });
+});
+
+describe('MachineCard agent states', () => {
+    const more = [
+        { id: 't', glyph: 'TH', handle: 'thinker', detail: 'Builder · thinking', state: 'thinking' as const },
+        { id: 'w', glyph: 'WA', handle: 'waiter', detail: 'Reviewer · waiting on you', state: 'waiting' as const },
+        { id: 'k', glyph: 'WK', handle: 'worker', detail: 'Builder · CSV export', state: 'working' as const },
+    ];
+
+    it('draws a new state’s dot, named by the state', () => {
+        render(<MachineCard name="m" kind="Cloud" note="n" shells={more} />);
+        expect(screen.getByRole('img', { name: 'thinking' })).toHaveAttribute('data-state', 'thinking');
+        expect(screen.getByRole('img', { name: 'waiting' })).toHaveAttribute('data-state', 'waiting');
+        expect(screen.getByRole('img', { name: 'working' })).toHaveInlineStyle({ background: studio.accent });
+    });
+
+    it('moves busy and waiting shells only with animate', () => {
+        const { container, rerender } = render(<MachineCard name="m" kind="Cloud" note="n" shells={more} />);
+        expect(container.querySelector('style')).toBeNull();
+        rerender(<MachineCard name="m" kind="Cloud" note="n" shells={more} animate />);
+        expect(container.querySelector('[data-state="thinking"]')).toHaveClass('tuxc-state-thinking');
+        expect(container.querySelector('[data-state="working"]')).toHaveClass('tuxc-state-working');
+        expect(container.querySelectorAll('style')).toHaveLength(1);
+    });
+});
+
+describe('MachineCard with an unknown state (security @1295)', () => {
+    it('draws that shell as gone, and the others as given', () => {
+        const odd = { id: 'o', glyph: 'OD', handle: 'odd', detail: 'd', state: 'rate-limited' as unknown as 'gone' };
+        render(<MachineCard name="m" kind="Cloud" note="n" shells={[odd, shells[0]]} animate />);
+        expect(screen.getByRole('button', { name: /odd/ }).querySelector('[data-state="gone"]')).not.toBeNull();
+        expect(screen.getByRole('img', { name: 'working' })).toBeInTheDocument();
     });
 });

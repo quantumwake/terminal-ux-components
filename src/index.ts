@@ -117,6 +117,8 @@ export { FilterChips } from './components/FilterChips';
 export type { FilterChipsProps, FilterChip } from './components/FilterChips';
 export { StatusDot } from './components/StatusDot';
 export type { StatusDotProps } from './components/StatusDot';
+export { AgentStateDot, AgentStateLabel, AgentStateStyles, AGENT_STATES, AGENT_STATE_CSS, isAgentState, knownState, shownText } from './components/AgentState';
+export type { AgentStateName, AgentStateLook, AgentStateDotProps, AgentStateLabelProps } from './components/AgentState';
 export { AgentBadge } from './components/AgentBadge';
 export type { BadgeProps as AgentBadgeProps, Job } from './components/AgentBadge';
 export { PersonBadge } from './components/PersonBadge';
@@ -161,6 +163,6 @@ export type { RailListProps, RailWork, RailMember } from './components/RailList'
 export { ThreadRow } from './components/ThreadRow';
 export type { ThreadRowProps, ThreadReply } from './components/ThreadRow';
 export { PresenceList } from './components/PresenceList';
-export type { PresenceListProps, PresenceHere, PresenceRecent } from './components/PresenceList';
+export type { PresenceListProps, PresenceHere, PresenceRecent, PresenceState } from './components/PresenceList';
 export { GateList, gateKinds } from './components/GateList';
 export type { GateListProps, GateRow, GateAction, GateKind } from './components/GateList';

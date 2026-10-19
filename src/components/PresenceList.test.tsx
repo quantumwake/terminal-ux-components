@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { studio } from '../theme/studio';
 import { PresenceList, type PresenceHere } from './PresenceList';
 
 const here: PresenceHere[] = [
@@ -90,7 +91,15 @@ describe('PresenceList busy look', () => {
     it('changes nothing for a caller that does not ask for it', () => {
         const { container } = render(<PresenceList here={here} />);
         expect(container.querySelector('style')).toBeNull();
-        expect(container.querySelector('.tuxc-presence-pulse, .tuxc-presence-sweep, .tuxc-presence-dots')).toBeNull();
+        expect(container.querySelector('.tuxc-presence-pulse, .tuxc-presence-sweep, .tuxc-presence-dots, [class^="tuxc-state-"]')).toBeNull();
+    });
+
+    it('rests a working dot at full strength, in the accent, without animate', () => {
+        render(<PresenceList here={here} />);
+        const dot = screen.getByRole('button', { name: /builder/ }).querySelector('[aria-label="working"]') as HTMLElement;
+        expect(dot.className).toBe('');
+        expect(dot).toHaveInlineStyle({ background: studio.accent });
+        expect(dot.style.opacity).toBe('');
     });
 
     it('shows the activity word, still, without animate', () => {
@@ -103,7 +112,7 @@ describe('PresenceList busy look', () => {
     it('pulses a working dot and sweeps its word, with running dots', () => {
         const { container } = render(<PresenceList here={busy} animate />);
         const working = screen.getByRole('button', { name: /builder/ });
-        expect(working.querySelector('[aria-label="working"]')).toHaveClass('tuxc-presence-pulse');
+        expect(working.querySelector('[aria-label="working"]')).toHaveClass('tuxc-state-working');
         expect(screen.getByText('thinking')).toHaveClass('tuxc-presence-sweep');
         expect(working.querySelector('.tuxc-presence-dots')).not.toBeNull();
         const css = container.querySelector('style')?.textContent ?? '';
@@ -126,5 +135,77 @@ describe('PresenceList busy look', () => {
     it('ignores an activity on a seat that is not working', () => {
         render(<PresenceList here={[{ ...busy[1], activity: 'thinking' }]} animate />);
         expect(screen.queryByText('thinking')).toBeNull();
+    });
+});
+
+describe('PresenceList agent states', () => {
+    const seats: PresenceHere[] = [
+        { id: 'a', glyph: 'A', job: 'builder', handle: 'a', note: 'Builder', state: 'thinking', since: '20s' },
+        { id: 'b', glyph: 'B', job: 'reviewer', handle: 'b', note: 'Reviewer', state: 'waiting', since: '5m' },
+        { id: 'c', glyph: 'C', job: 'builder', handle: 'c', note: 'Builder', state: 'listening', since: 'last post 4m ago' },
+        { id: 'd', glyph: 'D', job: 'builder', handle: 'd', note: 'Builder', state: 'starting' },
+    ];
+
+    it('draws each state’s dot and word, and its since', () => {
+        render(<PresenceList here={seats} />);
+        expect(screen.getByRole('img', { name: 'thinking' })).toBeInTheDocument();
+        expect(screen.getByRole('img', { name: 'waiting on you' })).toBeInTheDocument();
+        expect(screen.getByRole('img', { name: 'listening' })).toBeInTheDocument();
+        expect(screen.getByText('20s')).toBeInTheDocument();
+        expect(screen.getByText('last post 4m ago')).toBeInTheDocument();
+        expect(screen.getByText('waiting on you', { selector: 'bdi' })).toBeInTheDocument();
+    });
+
+    it('moves each busy or waiting state its own way, with one stylesheet', () => {
+        const { container } = render(<PresenceList here={seats} animate />);
+        expect(container.querySelector('[data-state="thinking"]')).toHaveClass('tuxc-state-thinking');
+        expect(container.querySelector('[data-state="waiting"]')).toHaveClass('tuxc-state-waiting');
+        expect(container.querySelector('[data-state="starting"]')).toHaveClass('tuxc-state-starting');
+        expect(container.querySelector('[data-state="listening"]')?.className).toBe('');
+        const css = container.querySelectorAll('style');
+        expect(css).toHaveLength(1);
+        expect(css[0].textContent).toContain('@keyframes tuxc-state-blink');
+    });
+
+    it('adds no stylesheet when everyone is only listening or gone', () => {
+        const { container } = render(<PresenceList here={[seats[2], { ...seats[2], id: 'e', state: 'gone' }]} animate />);
+        expect(container.querySelector('style')).toBeNull();
+    });
+
+    it('prefers an activity word for a busy state, stripped of controls', () => {
+        render(<PresenceList here={[{ ...seats[0], activity: '‮writing' }]} />);
+        expect(screen.getByText('writing').tagName).toBe('BDI');
+        expect(screen.queryByText('thinking')).toBeNull();
+    });
+
+    it('draws since for the old states too', () => {
+        render(<PresenceList here={[{ ...here[1], since: '2m' }]} />);
+        expect(screen.getByText('2m')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /builder/ }).querySelector('[aria-label="working"]')).not.toBeNull();
+    });
+});
+
+describe('PresenceList with an unknown state (security @1295)', () => {
+    it('draws the row as here, and the rest of the rail with it', () => {
+        const odd = { id: 'x', glyph: 'X', job: 'builder' as const, handle: 'odd', note: 'Builder', state: 'rate-limited' as unknown as 'here' };
+        render(<PresenceList here={[odd, here[1]]} animate />);
+        expect(screen.getByRole('button', { name: /odd/ }).querySelector('[aria-label="here"]')).not.toBeNull();
+        expect(screen.getByRole('button', { name: /builder/ })).toBeInTheDocument();
+    });
+});
+
+describe('PresenceList survivors (reviewer @1298)', () => {
+    it('blinks a rail whose only moving seat is waiting', () => {
+        const { container } = render(<PresenceList here={[{ id: 'w', glyph: 'W', job: 'reviewer', handle: 'w', note: 'Reviewer', state: 'waiting' }]} animate />);
+        expect(container.querySelector('[data-state="waiting"]')).toHaveClass('tuxc-state-waiting');
+        expect(container.querySelector('style')?.textContent).toContain('@keyframes tuxc-state-blink');
+    });
+
+    it('draws here as the still green listening dot, never as working', () => {
+        render(<PresenceList here={[here[0]]} animate />);
+        const dot = screen.getByRole('link', { name: /Kasra/ }).querySelector('[aria-label="here"]') as HTMLElement;
+        expect(dot).toHaveAttribute('data-state', 'listening');
+        expect(dot).toHaveInlineStyle({ background: studio.job.person });
+        expect(dot.className).toBe('');
     });
 });

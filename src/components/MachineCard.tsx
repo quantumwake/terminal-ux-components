@@ -1,10 +1,12 @@
 import React from 'react';
 import { studio, radius } from '../theme/studio';
 import { AgentBadge, type Job } from './AgentBadge';
+import { AGENT_STATE_CSS, AgentStateDot, knownState, type AgentStateName } from './AgentState';
 
-// A shell's state, as its dot draws it: working (the accent), listening
-// (green) or gone (a dim dot, the agent left).
-export type ShellState = 'working' | 'listening' | 'gone';
+// A shell's state, as its dot draws it (AgentState): working (the accent),
+// listening (green), gone (a hollow dashed ring, the agent left), and
+// starting, thinking or waiting, each its own colour and shape.
+export type ShellState = AgentStateName;
 
 export interface MachineShell {
     id: string;
@@ -31,13 +33,15 @@ export interface MachineCardProps {
     // A Cloud machine's actions. Each shows only when given.
     onNewShell?: () => void;
     onStop?: () => void;
+    // animate gives each busy or waiting shell's dot its state's motion.
+    animate?: boolean;
 }
 
-const DOT: Record<ShellState, string> = { working: studio.accent, listening: studio.job.person, gone: studio.dashed };
+const MOVING: ShellState[] = ['starting', 'thinking', 'working', 'waiting'];
 
 // MachineCard is one machine on the Agents page (board 4): its name and kind,
 // whose it is, its shells as rows to pick, and a Cloud machine's actions.
-export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, note, shells, selected, onSelect, onNewShell, onStop }) => (
+export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, note, shells, selected, onSelect, onNewShell, onStop, animate = false }) => (
     <section
         aria-label={name}
         style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 10, borderRadius: radius(10), border: `1px solid ${studio.line}`, background: studio.panel, color: studio.text, fontFamily: studio.font }}
@@ -47,6 +51,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
             <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: radius(999), border: `1px solid ${studio.dashed}`, color: cloud ? studio.link : studio.textFaint }}>{kind}</span>
         </span>
         <span style={{ fontSize: 12, color: studio.textFaint }}>{note}</span>
+        {animate && shells.some((s) => MOVING.includes(s.state)) ? <style>{AGENT_STATE_CSS}</style> : null}
         {shells.map((s) => {
             const on = s.id === selected;
             return (
@@ -76,7 +81,7 @@ export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, not
                         <span title={s.handle} style={{ fontFamily: studio.mono, fontSize: 13, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.handle}</span>
                         <span style={{ fontSize: 11, color: studio.textFaint }}>{s.detail}</span>
                     </span>
-                    <span aria-label={s.state} role="img" style={{ width: 9, height: 9, borderRadius: radius('50%'), flexShrink: 0, background: DOT[s.state] }} />
+                    <AgentStateDot state={knownState(s.state, 'gone')} animate={animate} label={knownState(s.state, 'gone')} />
                 </button>
             );
         })}

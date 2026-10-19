@@ -52,6 +52,9 @@ type Palette = {
     // surface a divider sits between (statefs.ai v3-3). Not the pane grip
     // icon's colour, which hosts set as --studio-grip.
     splitter: string;
+    // An agent waiting on a person (an approval, a review): the state that
+    // asks for you, so it is its own colour, apart from the accent.
+    waiting: string;
     job: {
         coordinator: string;
         builder: string;
@@ -92,6 +95,7 @@ export const studioDark: Palette = {
     threadRule: '#1d1a17',
     activeSurface: '#1f1a16',
     splitter: '#7d7369',
+    waiting: '#f2cf4a',
     job: {
         coordinator: '#f2b35b',
         builder: '#e8743b',

@@ -18,6 +18,9 @@ describe('studio corners', () => {
             scanned += 1;
             text.split('\n').forEach((line, i) => {
                 for (const m of line.matchAll(/borderRadius:\s*([^,}\n]+)/g)) {
+                    // A state dot is the one round thing on square v2 (champion
+                    // @1293); it says so on its line.
+                    if (file === 'AgentState.tsx' && line.includes('/* state dot */')) continue;
                     if (!m[1].trim().startsWith('radius(')) raw.push(`${file}:${i + 1} ${m[0].trim()}`);
                 }
             });
