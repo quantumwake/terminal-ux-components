@@ -168,7 +168,6 @@ function Row({
     const word = busy ? shownText(activity) || (state === 'working' ? '' : AGENT_STATES[state as AgentStateName].word) : state && state !== 'here' && isAgentState(state) ? AGENT_STATES[state].word : '';
     const wordColor = isAgentState(state) ? AGENT_STATES[state].color : studio.accent;
     const shownSince = shownText(since);
-    const classic = state === 'here' || state === 'working';
     const body = (
         <>
             <Badge glyph={glyph} person={person} job={job} />
@@ -195,21 +194,7 @@ function Row({
                     ) : null}
                 </span>
             </span>
-            {state && classic ? (
-                <span
-                    aria-label={state}
-                    className={animate && busy ? 'tuxc-presence-pulse' : undefined}
-                    style={{
-                        width: 9,
-                        height: 9,
-                        borderRadius: radius('50%'),
-                        flexShrink: 0,
-                        background: state === 'working' ? studio.accent : studio.job.person,
-                    }}
-                />
-            ) : state ? (
-                <AgentStateDot state={state as AgentStateName} animate={animate} />
-            ) : null}
+            {state ? <AgentStateDot state={state === 'here' ? 'listening' : state} label={state === 'here' ? 'here' : undefined} animate={animate} /> : null}
         </>
     );
     const shared: React.CSSProperties = {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { studio } from '../theme/studio';
 import { PresenceList, type PresenceHere } from './PresenceList';
 
 const here: PresenceHere[] = [
@@ -90,7 +91,15 @@ describe('PresenceList busy look', () => {
     it('changes nothing for a caller that does not ask for it', () => {
         const { container } = render(<PresenceList here={here} />);
         expect(container.querySelector('style')).toBeNull();
-        expect(container.querySelector('.tuxc-presence-pulse, .tuxc-presence-sweep, .tuxc-presence-dots')).toBeNull();
+        expect(container.querySelector('.tuxc-presence-pulse, .tuxc-presence-sweep, .tuxc-presence-dots, [class^="tuxc-state-"]')).toBeNull();
+    });
+
+    it('rests a working dot at full strength, in the accent, without animate', () => {
+        render(<PresenceList here={here} />);
+        const dot = screen.getByRole('button', { name: /builder/ }).querySelector('[aria-label="working"]') as HTMLElement;
+        expect(dot.className).toBe('');
+        expect(dot).toHaveInlineStyle({ background: studio.accent });
+        expect(dot.style.opacity).toBe('');
     });
 
     it('shows the activity word, still, without animate', () => {
@@ -103,7 +112,7 @@ describe('PresenceList busy look', () => {
     it('pulses a working dot and sweeps its word, with running dots', () => {
         const { container } = render(<PresenceList here={busy} animate />);
         const working = screen.getByRole('button', { name: /builder/ });
-        expect(working.querySelector('[aria-label="working"]')).toHaveClass('tuxc-presence-pulse');
+        expect(working.querySelector('[aria-label="working"]')).toHaveClass('tuxc-state-working');
         expect(screen.getByText('thinking')).toHaveClass('tuxc-presence-sweep');
         expect(working.querySelector('.tuxc-presence-dots')).not.toBeNull();
         const css = container.querySelector('style')?.textContent ?? '';

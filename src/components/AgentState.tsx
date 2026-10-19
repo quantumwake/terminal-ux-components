@@ -1,5 +1,5 @@
 import React from 'react';
-import { studio, radius } from '../theme/studio';
+import { studio } from '../theme/studio';
 
 // An agent's state, as Studio draws it everywhere an agent appears (the
 // channel rail, the Agents page, a pane header). Each state has its own
@@ -66,9 +66,10 @@ export const AGENT_STATE_CSS = `
 
 function dotStyle(state: AgentStateName, size: number): React.CSSProperties {
     const { color } = AGENT_STATES[state];
-    // Round by default, square under --studio-radius: 0 like every Studio
-    // corner. The states keep apart by colour, fill and motion either way.
-    const base: React.CSSProperties = { display: 'inline-block', width: size, height: size, borderRadius: radius('50%'), flexShrink: 0, boxSizing: 'border-box' };
+    // Round even under --studio-radius: 0. A state dot is a signal, not a
+    // container's corner, and round keeps starting's open ring and thinking's
+    // half fill legible (champion @1293). radius.test.ts allows this one.
+    const base: React.CSSProperties = { display: 'inline-block', width: size, height: size, borderRadius: '50%' /* state dot */, flexShrink: 0, boxSizing: 'border-box' };
     switch (state) {
         case 'starting':
             return { ...base, border: `2px solid ${color}`, borderTopColor: 'transparent' };
