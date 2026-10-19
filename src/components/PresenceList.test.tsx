@@ -128,3 +128,50 @@ describe('PresenceList busy look', () => {
         expect(screen.queryByText('thinking')).toBeNull();
     });
 });
+
+describe('PresenceList agent states', () => {
+    const seats: PresenceHere[] = [
+        { id: 'a', glyph: 'A', job: 'builder', handle: 'a', note: 'Builder', state: 'thinking', since: '20s' },
+        { id: 'b', glyph: 'B', job: 'reviewer', handle: 'b', note: 'Reviewer', state: 'waiting', since: '5m' },
+        { id: 'c', glyph: 'C', job: 'builder', handle: 'c', note: 'Builder', state: 'listening', since: 'last post 4m ago' },
+        { id: 'd', glyph: 'D', job: 'builder', handle: 'd', note: 'Builder', state: 'starting' },
+    ];
+
+    it('draws each state’s dot and word, and its since', () => {
+        render(<PresenceList here={seats} />);
+        expect(screen.getByRole('img', { name: 'thinking' })).toBeInTheDocument();
+        expect(screen.getByRole('img', { name: 'waiting on you' })).toBeInTheDocument();
+        expect(screen.getByRole('img', { name: 'listening' })).toBeInTheDocument();
+        expect(screen.getByText('20s')).toBeInTheDocument();
+        expect(screen.getByText('last post 4m ago')).toBeInTheDocument();
+        expect(screen.getByText('waiting on you', { selector: 'bdi' })).toBeInTheDocument();
+    });
+
+    it('moves each busy or waiting state its own way, with one stylesheet', () => {
+        const { container } = render(<PresenceList here={seats} animate />);
+        expect(container.querySelector('[data-state="thinking"]')).toHaveClass('tuxc-state-thinking');
+        expect(container.querySelector('[data-state="waiting"]')).toHaveClass('tuxc-state-waiting');
+        expect(container.querySelector('[data-state="starting"]')).toHaveClass('tuxc-state-starting');
+        expect(container.querySelector('[data-state="listening"]')?.className).toBe('');
+        const css = container.querySelectorAll('style');
+        expect(css).toHaveLength(1);
+        expect(css[0].textContent).toContain('@keyframes tuxc-state-blink');
+    });
+
+    it('adds no stylesheet when everyone is only listening or gone', () => {
+        const { container } = render(<PresenceList here={[seats[2], { ...seats[2], id: 'e', state: 'gone' }]} animate />);
+        expect(container.querySelector('style')).toBeNull();
+    });
+
+    it('prefers an activity word for a busy state, stripped of controls', () => {
+        render(<PresenceList here={[{ ...seats[0], activity: '‮writing' }]} />);
+        expect(screen.getByText('writing').tagName).toBe('BDI');
+        expect(screen.queryByText('thinking')).toBeNull();
+    });
+
+    it('draws since for the old states too', () => {
+        render(<PresenceList here={[{ ...here[1], since: '2m' }]} />);
+        expect(screen.getByText('2m')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /builder/ }).querySelector('[aria-label="working"]')).not.toBeNull();
+    });
+});
