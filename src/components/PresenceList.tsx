@@ -168,16 +168,21 @@ function Row({
     const word = busy ? shownText(activity) || (state === 'working' ? '' : AGENT_STATES[state as AgentStateName].word) : state && state !== 'here' && isAgentState(state) ? AGENT_STATES[state].word : '';
     const wordColor = isAgentState(state) ? AGENT_STATES[state].color : studio.accent;
     const shownSince = shownText(since);
+    // The handle, its note and its glyph are another seat's text: drawn
+    // plain and isolated, so a bidi override or a zero-width character in
+    // one seat's name can't reorder or hide anything around it (SAI-45).
+    const shownHandle = shownText(handle);
+    const shownNote = shownText(note);
     const body = (
         <>
-            <Badge glyph={glyph} person={person} job={job} />
+            <Badge glyph={shownText(glyph)} person={person} job={job} />
             <span style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minWidth: 0 }}>
-                <span style={{ fontFamily: studio.mono, fontSize: 13 }}>{handle}</span>
+                <bdi style={{ fontFamily: studio.mono, fontSize: 13 }}>{shownHandle}</bdi>
                 <span style={{ fontSize: 11, color: studio.textFaint }}>
-                    {note}
+                    {shownNote ? <bdi>{shownNote}</bdi> : null}
                     {word ? (
                         <>
-                            {note ? ' · ' : null}
+                            {shownNote ? ' · ' : null}
                             {state === 'working' && animate ? (
                                 <bdi className="tuxc-presence-sweep">{word}</bdi>
                             ) : (
@@ -188,7 +193,7 @@ function Row({
                     ) : null}
                     {shownSince ? (
                         <>
-                            {note || word ? ' · ' : null}
+                            {shownNote || word ? ' · ' : null}
                             <bdi>{shownSince}</bdi>
                         </>
                     ) : null}
