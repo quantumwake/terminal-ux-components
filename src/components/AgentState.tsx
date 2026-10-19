@@ -55,7 +55,7 @@ export const AGENT_STATE_CSS = `
 .tuxc-state-thinking { animation: tuxc-state-breathe 2.4s ease-in-out infinite; }
 .tuxc-state-starting { animation: tuxc-state-spin 1s linear infinite; }
 .tuxc-state-waiting { animation: tuxc-state-blink 1s steps(2, jump-none) infinite; }
-@keyframes tuxc-state-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.7); } }
+@keyframes tuxc-state-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }
 @keyframes tuxc-state-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 @keyframes tuxc-state-spin { to { transform: rotate(360deg); } }
 @keyframes tuxc-state-blink { 0% { opacity: 1; } 100% { opacity: 0.25; } }
