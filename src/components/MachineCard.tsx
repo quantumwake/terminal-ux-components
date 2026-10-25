@@ -33,6 +33,9 @@ export interface MachineCardProps {
     // A Cloud machine's actions. Each shows only when given.
     onNewShell?: () => void;
     onStop?: () => void;
+    // menu sits in the header row, after the kind: the card's More button,
+    // so it reads as part of the card and not between cards.
+    menu?: React.ReactNode;
     // animate gives each busy or waiting shell's dot its state's motion.
     animate?: boolean;
 }
@@ -41,14 +44,17 @@ const MOVING: ShellState[] = ['starting', 'thinking', 'working', 'waiting'];
 
 // MachineCard is one machine on the Agents page (board 4): its name and kind,
 // whose it is, its shells as rows to pick, and a Cloud machine's actions.
-export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, note, shells, selected, onSelect, onNewShell, onStop, animate = false }) => (
+export const MachineCard: React.FC<MachineCardProps> = ({ name, kind, cloud, note, shells, selected, onSelect, onNewShell, onStop, menu, animate = false }) => (
     <section
         aria-label={name}
         style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 10, borderRadius: radius(10), border: `1px solid ${studio.line}`, background: studio.panel, color: studio.text, fontFamily: studio.font }}
     >
         <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
             <span style={{ fontSize: 14, fontWeight: 600 }}>{name}</span>
-            <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: radius(999), border: `1px solid ${studio.dashed}`, color: cloud ? studio.link : studio.textFaint }}>{kind}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: radius(999), border: `1px solid ${studio.dashed}`, color: cloud ? studio.link : studio.textFaint }}>{kind}</span>
+                {menu}
+            </span>
         </span>
         <span style={{ fontSize: 12, color: studio.textFaint }}>{note}</span>
         {animate && shells.some((s) => MOVING.includes(s.state)) ? <style>{AGENT_STATE_CSS}</style> : null}
