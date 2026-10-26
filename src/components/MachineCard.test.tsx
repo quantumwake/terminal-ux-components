@@ -22,6 +22,16 @@ describe('MachineCard', () => {
         expect(screen.getByRole('img', { name: 'listening' })).toHaveInlineStyle({ background: studio.job.person });
     });
 
+    it('puts the menu in the header row, after the kind', () => {
+        const { rerender } = render(<MachineCard name="Kasra’s MacBook" kind="Connected computer" note="n" shells={shells} menu={<button type="button" aria-label="More for Kasra’s MacBook">⋯</button>} />);
+        const more = screen.getByRole('button', { name: 'More for Kasra’s MacBook' });
+        const header = screen.getByText('Kasra’s MacBook').parentElement!;
+        expect(header.contains(more)).toBe(true);
+        expect(screen.getByText('Connected computer').nextElementSibling).toBe(more);
+        rerender(<MachineCard name="Kasra’s MacBook" kind="Connected computer" note="n" shells={shells} />);
+        expect(screen.queryByRole('button', { name: /^More for/ })).toBeNull();
+    });
+
     it('picks a shell', () => {
         const onSelect = vi.fn();
         render(<MachineCard name="studio-1" kind="Cloud" cloud note="n" shells={shells} onSelect={onSelect} />);
